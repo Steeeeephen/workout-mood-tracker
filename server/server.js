@@ -1,14 +1,24 @@
 import express from 'express';
 import {prisma} from './src/lib/prisma.js'
-
+import usersRouter from './src/routes/usersRouter.js'
 
 const app = express();
 const PORT = 3000;
 
+app.use(express.json());
+
+// JSON can't handle bigint, apparently.
+BigInt.prototype.toJSON = function() {
+    return this.toString()
+}
+
+
+
+app.use('/users', usersRouter)
 
 app.get('/', (req, res)=>{
-    res.send('Hello')
-})
+    res.send('WELCOME.')
+});
 
 
 
