@@ -2,6 +2,7 @@ import express from 'express';
 import {prisma} from './src/lib/prisma.js'
 import usersRouter from './src/routes/usersRouter.js'
 import entriesRouter from './src/routes/entriesRouter.js'
+import authRouter from './src/routes/authRoutes.js'
 
 const app = express();
 const PORT = 3000;
@@ -17,6 +18,7 @@ BigInt.prototype.toJSON = function() {
 
 app.use('/users', usersRouter)
 app.use('/entries', entriesRouter)
+app.use('/auth', authRouter)
 
 app.get('/', (req, res)=>{
     res.send('WELCOME.')
