@@ -1,12 +1,13 @@
 import express from "express";
 import * as EntryController from "../controllers/EntryController.js"
+import { authenticateToken } from "../middleware/authMiddleware.js";
 
 const entriesRouter = express.Router();
 
-entriesRouter.post('/', EntryController.createEntry);
-entriesRouter.get('/date/:date', EntryController.getEntriesByDate);
-entriesRouter.get('/:id', EntryController.getEntry);
-entriesRouter.patch('/:id/update', EntryController.updateEntry);
-entriesRouter.delete('/:id/delete', EntryController.deleteEntry)
+entriesRouter.post('/', authenticateToken, EntryController.createEntry);
+entriesRouter.get('/date/:date', authenticateToken, EntryController.getEntriesByDate);
+entriesRouter.get('/:id', authenticateToken, EntryController.getEntry);
+entriesRouter.patch('/:id/update', authenticateToken, EntryController.updateEntry);
+entriesRouter.delete('/:id/delete', authenticateToken, EntryController.deleteEntry)
 
 export default entriesRouter;
