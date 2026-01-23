@@ -6,7 +6,7 @@ const usersRouter = express.Router();
 
 
 usersRouter.post('/', UserController.createUser)
-usersRouter.get('/me', UserController.getUser)
+usersRouter.get('/me', UserController.getCurrentUser)
 usersRouter.patch('/me/update', UserController.updateCurrentUser)
 
 export default usersRouter;
