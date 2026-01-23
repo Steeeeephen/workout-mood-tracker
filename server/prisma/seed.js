@@ -1,17 +1,24 @@
 import { prisma } from '../src/lib/prisma.js';
 import { faker } from '@faker-js/faker';
+import bcrypt from "bcrypt";
 
 
 async function main() {
     console.log('Start seeding...');
 
-    // Create 3 test users
+    // Hash the password once for all users
+    const hashedPassword = await bcrypt.hash('12345', 10);
+
+    // Clear existing data (optional)
+    await prisma.entry.deleteMany();
+    await prisma.user.deleteMany();
+
     const users = [];
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < 20; i++) {
         const user = await prisma.user.create({
             data: {
                 email: faker.internet.email(),
-                password: faker.internet.password(),
+                password: hashedPassword,
                 first_name: faker.person.firstName(),
                 last_name: faker.person.lastName()
             },
