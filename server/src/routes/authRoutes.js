@@ -1,6 +1,5 @@
 import express from 'express';
 import * as AuthController from '../controllers/AuthController.js';
-import {defaults} from "pg";
 
 const authRouter = express.Router();
 

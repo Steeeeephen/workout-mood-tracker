@@ -1,18 +1,17 @@
 import {prisma} from "../lib/prisma.js";
 
 export const createEntry = async (req, res) => {
-    const userID = 9
     const entry = await prisma.entry.create({
         data: {
             ...req.body,
-            user_id: userID
+            user_id: req.user.userId
         }
     })
     res.status(201).json(entry)
 }
 
 export const getEntriesByDate = async (req, res) => {
-    const userId = 9;
+    const userId = req.user.userId;
     const { date } = req.params
 
     const startOfDay = new Date(date + 'T00:00:00.000Z');
@@ -34,7 +33,7 @@ export const getEntriesByDate = async (req, res) => {
 }
 
 export const getEntry = async (req, res) => {
-    const userID = 9;
+    const userId = req.user.userId;
     const entryId = parseInt(req.params.id);
 
     // Validate it's a valid number
@@ -45,7 +44,7 @@ export const getEntry = async (req, res) => {
     const entry = await prisma.entry.findFirst({
         where: {
             id: entryId,
-            user_id: userID
+            user_id: userId
         }
     })
 
@@ -59,7 +58,7 @@ export const getEntry = async (req, res) => {
 
 
 export const updateEntry = async (req, res) => {
-    const userId = 9
+    const userId = req.user.userId;
     const entryId = parseInt(req.params.id);
 
     // Validate it's a valid number
@@ -80,7 +79,7 @@ export const updateEntry = async (req, res) => {
 
 
 export const deleteEntry = async(req, res) => {
-    const userId = 9
+    const userId = req.user.userId;
     const entryId = parseInt(req.params.id);
 
     // Validate it's a valid number
