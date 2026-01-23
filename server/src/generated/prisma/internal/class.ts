@@ -17,8 +17,8 @@ import type * as Prisma from "./prismaNamespace.ts"
 
 const config: runtime.GetPrismaClientConfig = {
   "previewFeatures": [],
-  "clientVersion": "7.2.0",
-  "engineVersion": "0c8ef2ce45c83248ab3df073180d5eda9e8be7a3",
+  "clientVersion": "7.3.0",
+  "engineVersion": "9d6ad21cbbceab97458517b147a6a09ff43aa735",
   "activeProvider": "postgresql",
   "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ndatasource db {\n  provider = \"postgresql\"\n}\n\ngenerator client {\n  provider = \"prisma-client\"\n  output   = \"../src/generated/prisma\"\n}\n\nmodel User {\n  id         BigInt   @id @default(autoincrement())\n  first_name String\n  last_name  String\n  email      String   @unique\n  password   String\n  created_at DateTime @default(now())\n  updated_at DateTime @updatedAt\n\n  entries Entry[]\n\n  @@map(\"users\")\n}\n\nmodel Entry {\n  id          BigInt    @id @default(autoincrement())\n  user_id     BigInt\n  created_at  DateTime  @default(now())\n  updated_at  DateTime  @updatedAt\n  entry_type  EntryType\n  mood_rating Int?      @db.SmallInt\n  content     String?   @db.Text\n  details     Json?\n\n  user User @relation(fields: [user_id], references: [id])\n\n  @@map(\"entries\")\n}\n\nenum EntryType {\n  PRE_WORKOUT  @map(\"pre-workout\")\n  WORKOUT      @map(\"workout\")\n  POST_WORKOUT @map(\"post-workout\")\n  MISC         @map(\"misc\")\n}\n",
   "runtimeDataModel": {
@@ -37,12 +37,14 @@ async function decodeBase64AsWasm(wasmBase64: string): Promise<WebAssembly.Modul
 }
 
 config.compilerWasm = {
-  getRuntime: async () => await import("@prisma/client/runtime/query_compiler_bg.postgresql.mjs"),
+  getRuntime: async () => await import("@prisma/client/runtime/query_compiler_fast_bg.postgresql.mjs"),
 
   getQueryCompilerWasmModule: async () => {
-    const { wasm } = await import("@prisma/client/runtime/query_compiler_bg.postgresql.wasm-base64.mjs")
+    const { wasm } = await import("@prisma/client/runtime/query_compiler_fast_bg.postgresql.wasm-base64.mjs")
     return await decodeBase64AsWasm(wasm)
-  }
+  },
+
+  importName: "./query_compiler_fast_bg.js"
 }
 
 

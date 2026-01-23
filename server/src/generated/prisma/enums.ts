@@ -10,10 +10,10 @@
 */
 
 export const EntryType = {
-  PRE_WORKOUT: 'pre-workout',
-  WORKOUT: 'workout',
-  POST_WORKOUT: 'post-workout',
-  MISC: 'misc'
+  PRE_WORKOUT: 'PRE_WORKOUT',
+  WORKOUT: 'WORKOUT',
+  POST_WORKOUT: 'POST_WORKOUT',
+  MISC: 'MISC'
 } as const
 
 export type EntryType = (typeof EntryType)[keyof typeof EntryType]
