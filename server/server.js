@@ -3,6 +3,7 @@ import {prisma} from './src/lib/prisma.js'
 import usersRouter from './src/routes/usersRouter.js'
 import entriesRouter from './src/routes/entriesRouter.js'
 import authRouter from './src/routes/authRoutes.js'
+import cors from 'cors';
 
 const app = express();
 const PORT = 3000;
@@ -14,7 +15,10 @@ BigInt.prototype.toJSON = function() {
     return this.toString()
 }
 
-
+app.use(cors({
+    origin: 'http://localhost:5173',
+    credentials: true
+}));
 
 app.use('/users', usersRouter)
 app.use('/entries', entriesRouter)
@@ -23,8 +27,6 @@ app.use('/auth', authRouter)
 app.get('/', (req, res)=>{
     res.send('WELCOME.')
 });
-
-
 
 
 process.on('SIGINT', async () => {
