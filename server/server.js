@@ -20,9 +20,9 @@ app.use(cors({
     credentials: true
 }));
 
-app.use('/users', usersRouter)
-app.use('/entries', entriesRouter)
-app.use('/auth', authRouter)
+app.use('/api/users', usersRouter)
+app.use('/api/entries', entriesRouter)
+app.use('/api/auth', authRouter)
 
 app.get('/', (req, res)=>{
     res.send('WELCOME.')
