@@ -11,13 +11,12 @@ export const createUser = async (req, res) => {
 export const getCurrentUser = async (req, res) => {
     try {
         const user = await prisma.user.findUnique({
-            where: { id: BigInt(req.user.userId) },
+            where: { id: BigInt(req.userId) },
             select: {
                 id: true,
                 first_name: true,
                 last_name: true,
                 email: true
-                // Don't include password!
             }
         });
 
