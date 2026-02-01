@@ -1,5 +1,7 @@
 import React, {useState} from 'react'
 import api from '../../config/api.js'
+import { useNavigate } from 'react-router-dom'; // Add this
+import { useAuth } from '../../context/AuthContext'; // Add this
 
 const Login = () => {
 
@@ -9,21 +11,18 @@ const Login = () => {
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
 
+    const { login } = useAuth();
+    const navigate = useNavigate();
+
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
         setLoading(true)
         try {
-            console.log('Email:', email);
-            console.log('Password:', password);
-
-            const response = await api.post('/auth/login', {
-                email,
-                password
-            });
-
-            localStorage.setItem('token', response.data.token);
-            console.log('Login successful!', response.data);
+            await login(email, password);
+            console.log('Login worked!');
+            navigate('/dashboard');
 
 
         } catch (err) {
