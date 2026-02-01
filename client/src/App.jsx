@@ -5,6 +5,7 @@ import Home from "./components/Home.jsx";
 import Navbar from "./components/Navbar.jsx";
 import Dashboard from "./components/Dashboard.jsx";
 import {AuthProvider} from "./context/AuthContext.jsx";
+import ProtectedRoute from "./components/ProtectedRoute.jsx";
 
 function App() {
     console.log('rendering')
@@ -17,7 +18,7 @@ function App() {
         <Navbar />
           <Routes>
               <Route path="/" element={<Home />}/>
-              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>}/>
           </Routes>
         </BrowserRouter>
       </AuthProvider>
