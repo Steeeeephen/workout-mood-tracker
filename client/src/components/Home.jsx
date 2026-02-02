@@ -5,11 +5,7 @@ import Auth from "./auth/Auth.jsx";
 const Home = () => {
     return (
         <>
-
-            <div>Home</div>
-
             <Auth />
-
         </>
 
     )
