@@ -10,12 +10,15 @@ const Navbar = () => {
     <>
 
     
-        <nav className='flex'>
-            <h1>NAVBAAAAR</h1>
-            <a href="/">GO TO Home</a>
+        <nav className='flex justify-between w-3/4 m-auto items-center'>
+            <h1 className="text-4xl">NAVBAAAAR (Eventually the logo)</h1>
+
+            <div className="flex gap-4">
+                <a href="/">GO TO Home</a>
+                {isAuthenticated ? <a href="/dashboard">Dashboard</a> : ''}
+            </div>
 
 
-            {isAuthenticated ? <a href="/dashboard">Dashboard</a> : ''}
 
 
         </nav>
