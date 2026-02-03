@@ -1,5 +1,6 @@
 import React, {useEffect} from 'react'
 import {useAuth} from "../context/AuthContext.jsx";
+import WeeklyView from "./WeeklyView.jsx";
 
 const Dashboard = () => {
 
@@ -16,10 +17,11 @@ const Dashboard = () => {
 
 
     return (
-        <>
+        <div className="w-3/5 m-auto">
             <title>{user?.first_name}'s Dashboard</title>
-            <h1>Welcome, {user?.first_name}</h1>
-        </>
+            <h1 className="text-3xl">Welcome, {user?.first_name}</h1>
+            <WeeklyView />
+        </div>
 
     )
 }
