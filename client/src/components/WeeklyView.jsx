@@ -26,7 +26,18 @@ const WeeklyView = () => {
 
     return (
         <>
+
+            {/* Control Bar */}
+
+            <div className="flex flex-row-reverse">
+                <div className="flex gap-2">
+
+                </div>
+            </div>
+
+
             <div className="grid grid-cols-8 gap-1 mt-10">
+
 
                 <div className="bg-gray-100 p-2"></div>
 

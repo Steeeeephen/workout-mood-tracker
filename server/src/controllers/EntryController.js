@@ -32,6 +32,18 @@ export const getEntriesByDate = async (req, res) => {
     res.status(200).json(entries)
 }
 
+export const getEntries = async (req, res) => {
+    const userId = req.userId;
+
+    const entries = await prisma.entry.findMany({
+        where: {
+            user_id: userId
+        }
+    })
+    console.log('hi')
+    res.status(200).json(entries)
+}
+
 export const getEntry = async (req, res) => {
     const userId = req.user.userId;
     const entryId = parseInt(req.params.id);

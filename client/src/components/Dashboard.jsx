@@ -1,10 +1,15 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, useState, useTransition} from 'react'
 import {useAuth} from "../context/AuthContext.jsx";
 import WeeklyView from "./WeeklyView.jsx";
+import axios from "axios";
+import api from "../config/api.js";
 
 const Dashboard = () => {
 
     const { user, loading } = useAuth();
+
+    const [ entries, setEntries ] = useState([]);
+
 
     useEffect(() => {
         // Setting page title
@@ -14,6 +19,26 @@ const Dashboard = () => {
             document.title = 'Dashboard';
         }
     }, [user]);
+
+    useEffect(() => {
+        const fetchEntries = async () => {
+            try {
+                const token = localStorage.getItem('token');
+                const response = await axios.get('http://localhost:3000/api/entries', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                setEntries(response.data);
+            } catch (err){
+                console.error(err);
+            }
+        }
+
+        fetchEntries()
+
+    }, []);
+
 
 
     return (
