@@ -28,14 +28,15 @@ model User {
 }
 
 model Entry {
-  id          BigInt    @id @default(autoincrement())
-  user_id     BigInt
-  created_at  DateTime  @default(now())
-  updated_at  DateTime  @updatedAt
-  entry_type  EntryType
-  mood_rating Int?      @db.SmallInt
-  content     String?   @db.Text
-  details     Json?
+  id             BigInt    @id @default(autoincrement())
+  user_id        BigInt
+  created_at     DateTime  @default(now())
+  updated_at     DateTime  @updatedAt
+  entry_type     EntryType
+  entry_datetime DateTime
+  mood           Int?      @db.SmallInt
+  content        String?   @db.Text
+  details        Json?
 
   user User @relation(fields: [user_id], references: [id])
 

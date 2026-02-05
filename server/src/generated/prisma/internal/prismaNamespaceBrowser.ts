@@ -90,7 +90,8 @@ export const EntryScalarFieldEnum = {
   created_at: 'created_at',
   updated_at: 'updated_at',
   entry_type: 'entry_type',
-  mood_rating: 'mood_rating',
+  entry_datetime: 'entry_datetime',
+  mood: 'mood',
   content: 'content',
   details: 'details'
 } as const

@@ -29,13 +29,13 @@ export type AggregateEntry = {
 export type EntryAvgAggregateOutputType = {
   id: number | null
   user_id: number | null
-  mood_rating: number | null
+  mood: number | null
 }
 
 export type EntrySumAggregateOutputType = {
   id: bigint | null
   user_id: bigint | null
-  mood_rating: number | null
+  mood: number | null
 }
 
 export type EntryMinAggregateOutputType = {
@@ -44,7 +44,8 @@ export type EntryMinAggregateOutputType = {
   created_at: Date | null
   updated_at: Date | null
   entry_type: $Enums.EntryType | null
-  mood_rating: number | null
+  entry_datetime: Date | null
+  mood: number | null
   content: string | null
 }
 
@@ -54,7 +55,8 @@ export type EntryMaxAggregateOutputType = {
   created_at: Date | null
   updated_at: Date | null
   entry_type: $Enums.EntryType | null
-  mood_rating: number | null
+  entry_datetime: Date | null
+  mood: number | null
   content: string | null
 }
 
@@ -64,7 +66,8 @@ export type EntryCountAggregateOutputType = {
   created_at: number
   updated_at: number
   entry_type: number
-  mood_rating: number
+  entry_datetime: number
+  mood: number
   content: number
   details: number
   _all: number
@@ -74,13 +77,13 @@ export type EntryCountAggregateOutputType = {
 export type EntryAvgAggregateInputType = {
   id?: true
   user_id?: true
-  mood_rating?: true
+  mood?: true
 }
 
 export type EntrySumAggregateInputType = {
   id?: true
   user_id?: true
-  mood_rating?: true
+  mood?: true
 }
 
 export type EntryMinAggregateInputType = {
@@ -89,7 +92,8 @@ export type EntryMinAggregateInputType = {
   created_at?: true
   updated_at?: true
   entry_type?: true
-  mood_rating?: true
+  entry_datetime?: true
+  mood?: true
   content?: true
 }
 
@@ -99,7 +103,8 @@ export type EntryMaxAggregateInputType = {
   created_at?: true
   updated_at?: true
   entry_type?: true
-  mood_rating?: true
+  entry_datetime?: true
+  mood?: true
   content?: true
 }
 
@@ -109,7 +114,8 @@ export type EntryCountAggregateInputType = {
   created_at?: true
   updated_at?: true
   entry_type?: true
-  mood_rating?: true
+  entry_datetime?: true
+  mood?: true
   content?: true
   details?: true
   _all?: true
@@ -207,7 +213,8 @@ export type EntryGroupByOutputType = {
   created_at: Date
   updated_at: Date
   entry_type: $Enums.EntryType
-  mood_rating: number | null
+  entry_datetime: Date
+  mood: number | null
   content: string | null
   details: runtime.JsonValue | null
   _count: EntryCountAggregateOutputType | null
@@ -241,7 +248,8 @@ export type EntryWhereInput = {
   created_at?: Prisma.DateTimeFilter<"Entry"> | Date | string
   updated_at?: Prisma.DateTimeFilter<"Entry"> | Date | string
   entry_type?: Prisma.EnumEntryTypeFilter<"Entry"> | $Enums.EntryType
-  mood_rating?: Prisma.IntNullableFilter<"Entry"> | number | null
+  entry_datetime?: Prisma.DateTimeFilter<"Entry"> | Date | string
+  mood?: Prisma.IntNullableFilter<"Entry"> | number | null
   content?: Prisma.StringNullableFilter<"Entry"> | string | null
   details?: Prisma.JsonNullableFilter<"Entry">
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
@@ -253,7 +261,8 @@ export type EntryOrderByWithRelationInput = {
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
   entry_type?: Prisma.SortOrder
-  mood_rating?: Prisma.SortOrderInput | Prisma.SortOrder
+  entry_datetime?: Prisma.SortOrder
+  mood?: Prisma.SortOrderInput | Prisma.SortOrder
   content?: Prisma.SortOrderInput | Prisma.SortOrder
   details?: Prisma.SortOrderInput | Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
@@ -268,7 +277,8 @@ export type EntryWhereUniqueInput = Prisma.AtLeast<{
   created_at?: Prisma.DateTimeFilter<"Entry"> | Date | string
   updated_at?: Prisma.DateTimeFilter<"Entry"> | Date | string
   entry_type?: Prisma.EnumEntryTypeFilter<"Entry"> | $Enums.EntryType
-  mood_rating?: Prisma.IntNullableFilter<"Entry"> | number | null
+  entry_datetime?: Prisma.DateTimeFilter<"Entry"> | Date | string
+  mood?: Prisma.IntNullableFilter<"Entry"> | number | null
   content?: Prisma.StringNullableFilter<"Entry"> | string | null
   details?: Prisma.JsonNullableFilter<"Entry">
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
@@ -280,7 +290,8 @@ export type EntryOrderByWithAggregationInput = {
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
   entry_type?: Prisma.SortOrder
-  mood_rating?: Prisma.SortOrderInput | Prisma.SortOrder
+  entry_datetime?: Prisma.SortOrder
+  mood?: Prisma.SortOrderInput | Prisma.SortOrder
   content?: Prisma.SortOrderInput | Prisma.SortOrder
   details?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.EntryCountOrderByAggregateInput
@@ -299,7 +310,8 @@ export type EntryScalarWhereWithAggregatesInput = {
   created_at?: Prisma.DateTimeWithAggregatesFilter<"Entry"> | Date | string
   updated_at?: Prisma.DateTimeWithAggregatesFilter<"Entry"> | Date | string
   entry_type?: Prisma.EnumEntryTypeWithAggregatesFilter<"Entry"> | $Enums.EntryType
-  mood_rating?: Prisma.IntNullableWithAggregatesFilter<"Entry"> | number | null
+  entry_datetime?: Prisma.DateTimeWithAggregatesFilter<"Entry"> | Date | string
+  mood?: Prisma.IntNullableWithAggregatesFilter<"Entry"> | number | null
   content?: Prisma.StringNullableWithAggregatesFilter<"Entry"> | string | null
   details?: Prisma.JsonNullableWithAggregatesFilter<"Entry">
 }
@@ -309,7 +321,8 @@ export type EntryCreateInput = {
   created_at?: Date | string
   updated_at?: Date | string
   entry_type: $Enums.EntryType
-  mood_rating?: number | null
+  entry_datetime: Date | string
+  mood?: number | null
   content?: string | null
   details?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   user: Prisma.UserCreateNestedOneWithoutEntriesInput
@@ -321,7 +334,8 @@ export type EntryUncheckedCreateInput = {
   created_at?: Date | string
   updated_at?: Date | string
   entry_type: $Enums.EntryType
-  mood_rating?: number | null
+  entry_datetime: Date | string
+  mood?: number | null
   content?: string | null
   details?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
 }
@@ -331,7 +345,8 @@ export type EntryUpdateInput = {
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   entry_type?: Prisma.EnumEntryTypeFieldUpdateOperationsInput | $Enums.EntryType
-  mood_rating?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  entry_datetime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  mood?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   details?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   user?: Prisma.UserUpdateOneRequiredWithoutEntriesNestedInput
@@ -343,7 +358,8 @@ export type EntryUncheckedUpdateInput = {
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   entry_type?: Prisma.EnumEntryTypeFieldUpdateOperationsInput | $Enums.EntryType
-  mood_rating?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  entry_datetime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  mood?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   details?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
 }
@@ -354,7 +370,8 @@ export type EntryCreateManyInput = {
   created_at?: Date | string
   updated_at?: Date | string
   entry_type: $Enums.EntryType
-  mood_rating?: number | null
+  entry_datetime: Date | string
+  mood?: number | null
   content?: string | null
   details?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
 }
@@ -364,7 +381,8 @@ export type EntryUpdateManyMutationInput = {
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   entry_type?: Prisma.EnumEntryTypeFieldUpdateOperationsInput | $Enums.EntryType
-  mood_rating?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  entry_datetime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  mood?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   details?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
 }
@@ -375,7 +393,8 @@ export type EntryUncheckedUpdateManyInput = {
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   entry_type?: Prisma.EnumEntryTypeFieldUpdateOperationsInput | $Enums.EntryType
-  mood_rating?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  entry_datetime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  mood?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   details?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
 }
@@ -396,7 +415,8 @@ export type EntryCountOrderByAggregateInput = {
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
   entry_type?: Prisma.SortOrder
-  mood_rating?: Prisma.SortOrder
+  entry_datetime?: Prisma.SortOrder
+  mood?: Prisma.SortOrder
   content?: Prisma.SortOrder
   details?: Prisma.SortOrder
 }
@@ -404,7 +424,7 @@ export type EntryCountOrderByAggregateInput = {
 export type EntryAvgOrderByAggregateInput = {
   id?: Prisma.SortOrder
   user_id?: Prisma.SortOrder
-  mood_rating?: Prisma.SortOrder
+  mood?: Prisma.SortOrder
 }
 
 export type EntryMaxOrderByAggregateInput = {
@@ -413,7 +433,8 @@ export type EntryMaxOrderByAggregateInput = {
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
   entry_type?: Prisma.SortOrder
-  mood_rating?: Prisma.SortOrder
+  entry_datetime?: Prisma.SortOrder
+  mood?: Prisma.SortOrder
   content?: Prisma.SortOrder
 }
 
@@ -423,14 +444,15 @@ export type EntryMinOrderByAggregateInput = {
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
   entry_type?: Prisma.SortOrder
-  mood_rating?: Prisma.SortOrder
+  entry_datetime?: Prisma.SortOrder
+  mood?: Prisma.SortOrder
   content?: Prisma.SortOrder
 }
 
 export type EntrySumOrderByAggregateInput = {
   id?: Prisma.SortOrder
   user_id?: Prisma.SortOrder
-  mood_rating?: Prisma.SortOrder
+  mood?: Prisma.SortOrder
 }
 
 export type EntryCreateNestedManyWithoutUserInput = {
@@ -496,7 +518,8 @@ export type EntryCreateWithoutUserInput = {
   created_at?: Date | string
   updated_at?: Date | string
   entry_type: $Enums.EntryType
-  mood_rating?: number | null
+  entry_datetime: Date | string
+  mood?: number | null
   content?: string | null
   details?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
 }
@@ -506,7 +529,8 @@ export type EntryUncheckedCreateWithoutUserInput = {
   created_at?: Date | string
   updated_at?: Date | string
   entry_type: $Enums.EntryType
-  mood_rating?: number | null
+  entry_datetime: Date | string
+  mood?: number | null
   content?: string | null
   details?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
 }
@@ -546,7 +570,8 @@ export type EntryScalarWhereInput = {
   created_at?: Prisma.DateTimeFilter<"Entry"> | Date | string
   updated_at?: Prisma.DateTimeFilter<"Entry"> | Date | string
   entry_type?: Prisma.EnumEntryTypeFilter<"Entry"> | $Enums.EntryType
-  mood_rating?: Prisma.IntNullableFilter<"Entry"> | number | null
+  entry_datetime?: Prisma.DateTimeFilter<"Entry"> | Date | string
+  mood?: Prisma.IntNullableFilter<"Entry"> | number | null
   content?: Prisma.StringNullableFilter<"Entry"> | string | null
   details?: Prisma.JsonNullableFilter<"Entry">
 }
@@ -556,7 +581,8 @@ export type EntryCreateManyUserInput = {
   created_at?: Date | string
   updated_at?: Date | string
   entry_type: $Enums.EntryType
-  mood_rating?: number | null
+  entry_datetime: Date | string
+  mood?: number | null
   content?: string | null
   details?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
 }
@@ -566,7 +592,8 @@ export type EntryUpdateWithoutUserInput = {
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   entry_type?: Prisma.EnumEntryTypeFieldUpdateOperationsInput | $Enums.EntryType
-  mood_rating?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  entry_datetime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  mood?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   details?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
 }
@@ -576,7 +603,8 @@ export type EntryUncheckedUpdateWithoutUserInput = {
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   entry_type?: Prisma.EnumEntryTypeFieldUpdateOperationsInput | $Enums.EntryType
-  mood_rating?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  entry_datetime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  mood?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   details?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
 }
@@ -586,7 +614,8 @@ export type EntryUncheckedUpdateManyWithoutUserInput = {
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   entry_type?: Prisma.EnumEntryTypeFieldUpdateOperationsInput | $Enums.EntryType
-  mood_rating?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  entry_datetime?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  mood?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   details?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
 }
@@ -599,7 +628,8 @@ export type EntrySelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   created_at?: boolean
   updated_at?: boolean
   entry_type?: boolean
-  mood_rating?: boolean
+  entry_datetime?: boolean
+  mood?: boolean
   content?: boolean
   details?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -611,7 +641,8 @@ export type EntrySelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   created_at?: boolean
   updated_at?: boolean
   entry_type?: boolean
-  mood_rating?: boolean
+  entry_datetime?: boolean
+  mood?: boolean
   content?: boolean
   details?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -623,7 +654,8 @@ export type EntrySelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   created_at?: boolean
   updated_at?: boolean
   entry_type?: boolean
-  mood_rating?: boolean
+  entry_datetime?: boolean
+  mood?: boolean
   content?: boolean
   details?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -635,12 +667,13 @@ export type EntrySelectScalar = {
   created_at?: boolean
   updated_at?: boolean
   entry_type?: boolean
-  mood_rating?: boolean
+  entry_datetime?: boolean
+  mood?: boolean
   content?: boolean
   details?: boolean
 }
 
-export type EntryOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "user_id" | "created_at" | "updated_at" | "entry_type" | "mood_rating" | "content" | "details", ExtArgs["result"]["entry"]>
+export type EntryOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "user_id" | "created_at" | "updated_at" | "entry_type" | "entry_datetime" | "mood" | "content" | "details", ExtArgs["result"]["entry"]>
 export type EntryInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
@@ -662,7 +695,8 @@ export type $EntryPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     created_at: Date
     updated_at: Date
     entry_type: $Enums.EntryType
-    mood_rating: number | null
+    entry_datetime: Date
+    mood: number | null
     content: string | null
     details: runtime.JsonValue | null
   }, ExtArgs["result"]["entry"]>
@@ -1094,7 +1128,8 @@ export interface EntryFieldRefs {
   readonly created_at: Prisma.FieldRef<"Entry", 'DateTime'>
   readonly updated_at: Prisma.FieldRef<"Entry", 'DateTime'>
   readonly entry_type: Prisma.FieldRef<"Entry", 'EntryType'>
-  readonly mood_rating: Prisma.FieldRef<"Entry", 'Int'>
+  readonly entry_datetime: Prisma.FieldRef<"Entry", 'DateTime'>
+  readonly mood: Prisma.FieldRef<"Entry", 'Int'>
   readonly content: Prisma.FieldRef<"Entry", 'String'>
   readonly details: Prisma.FieldRef<"Entry", 'Json'>
 }

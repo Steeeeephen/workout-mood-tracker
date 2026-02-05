@@ -35,7 +35,11 @@ async function main() {
             data: {
                 user_id: faker.helpers.arrayElement(users).id,
                 entry_type: faker.helpers.arrayElement(entryTypes),
-                mood_rating: faker.number.int({ min: 1, max: 5 }),
+                entry_datetime: faker.date.between({
+                    from: '2026-02-01',
+                    to: '2026-02-08'
+                }),
+                mood: faker.number.int({ min: 1, max: 5 }),
                 content: faker.lorem.sentence(),
                 details: {
                     duration: faker.number.int({ min: 30, max: 120 }),
