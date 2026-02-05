@@ -1,11 +1,19 @@
 import {prisma} from "../lib/prisma.js";
 
 export const createUser = async (req, res) => {
-    const { first_name, last_name, email, password } = req.body;
-    const user = await prisma.user.create({
-        data: { first_name, last_name, email, password }
-    })
-    res.status(201).json(user)
+    try {
+        const {first_name, last_name, email, password} = req.body;
+        const user = await prisma.user.create({
+            data: {first_name, last_name, email, password}
+        })
+        res.status(201).json(user)
+    } catch (err) {
+        console.error('Error in controller:', err)
+        res.status(500).json({
+            error: 'Error creating data',
+            message: err.message
+        })
+    }
 }
 
 export const getCurrentUser = async (req, res) => {
@@ -22,6 +30,7 @@ export const getCurrentUser = async (req, res) => {
 
         res.json(user);
     } catch (err) {
+        console.error('Error in controller:', err)
         res.status(500).json({ message: "Error fetching user" });
     }
 };
