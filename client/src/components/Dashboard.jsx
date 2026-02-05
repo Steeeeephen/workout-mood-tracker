@@ -30,22 +30,23 @@ const Dashboard = () => {
         }
     }, [user]);
 
-    useEffect(() => {
-        const fetchEntries = async () => {
-            try {
-                const token = localStorage.getItem('token');
-                const response = await axios.get('http://localhost:3000/api/entries', {
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
-                });
-                setEntries(response.data);
-            } catch (err){
-                console.error(err);
-            }
+    const fetchEntries = async () => {
+        try {
+            const token = localStorage.getItem('token');
+            const response = await axios.get('http://localhost:3000/api/entries', {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            setEntries(response.data);
+        } catch (err){
+            console.error(err);
         }
-        fetchEntries()
-    }, []);
+    }
+
+    useEffect(() => {
+        if (user) fetchEntries()
+    }, [user]);
 
 
     const handleSubmit = async (e) => {
@@ -68,6 +69,15 @@ const Dashboard = () => {
             })
 
             setIsModalOpen(false);
+
+            setFormData({
+                entry_datetime: '',
+                entry_type: '',
+                mood: '',
+                content: ''
+            });
+
+            await fetchEntries();  // ← Add this!
 
 
         } catch (err) {
@@ -111,9 +121,9 @@ const Dashboard = () => {
                                 >
                                     <option value="" selected disabled>Entry Type</option>
                                     <option value="PRE_WORKOUT">Pre Workout</option>
-                                    <option value="workout">Workout</option>
+                                    <option value="WORKOUT">Workout</option>
                                     <option value="POST_WORKOUT">Post Workout</option>
-                                    <option value="misc">Misc</option>
+                                    <option value="MISC">Misc</option>
                                 </select>
                             </div>
 
