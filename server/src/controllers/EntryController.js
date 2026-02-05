@@ -4,7 +4,7 @@ export const createEntry = async (req, res) => {
     const entry = await prisma.entry.create({
         data: {
             ...req.body,
-            user_id: req.user.userId
+            user_id: req.userId
         }
     })
     res.status(201).json(entry)
