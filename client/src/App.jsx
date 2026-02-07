@@ -6,6 +6,7 @@ import Navbar from "./components/Navbar.jsx";
 import Dashboard from "./components/Dashboard.jsx";
 import {AuthProvider} from "./context/AuthContext.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
+import DayView from "./components/DayView.jsx";
 
 function App() {
     console.log('rendering')
@@ -19,6 +20,7 @@ function App() {
           <Routes>
               <Route path="/" element={<Home />}/>
               <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>}/>
+              <Route path="/day/:date" element={<DayView />} />
           </Routes>
         </BrowserRouter>
       </AuthProvider>

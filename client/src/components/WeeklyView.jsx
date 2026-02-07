@@ -1,9 +1,21 @@
 import { startOfWeek, addDays, format } from 'date-fns';
 import {useState} from "react";
+import {useNavigate} from "react-router-dom";
+import { isToday } from 'date-fns';
 
 const WeeklyView = ({entries}) => {
 
+    const today = new Date().toISOString().split('T')[0];
+
     const [weekOffset, setWeekOffset] = useState(0);
+
+    const navigate = useNavigate();
+
+    const handleCellClick = (date, timeBlock) => {
+        const dateStr = date.toISOString().split('T')[0];
+        console.log(dateStr)
+        navigate(`/day/${dateStr}`)
+    }
 
     // Calculate week start based on offset
     const currentWeekStart = startOfWeek(
@@ -28,6 +40,15 @@ const WeeklyView = ({entries}) => {
         { label: '8pm - 12am', startHour: 20 }
     ];
 
+    // This is to conditionally color code entries based on the mood.
+    const moodColors = {
+        1: 'bg-red-200 border-red-300',
+        2: 'bg-orange-200 border-orange-300',
+        3: 'bg-yellow-200 border-yellow-300',
+        4: 'bg-lime-200 border-lime-300',
+        5: 'bg-green-200 border-green-300'
+    }
+
     const renderCell = (date, timeBlock) => {
         const dateStr = date.toISOString().split('T')[0];
 
@@ -45,7 +66,9 @@ const WeeklyView = ({entries}) => {
         });
 
         return cellEntries.map(entry => (
-            <div key={entry.id} className="text-xs p-1 bg-blue-100 rounded mb-1">
+            <div
+                key={entry.id}
+                className={`text-xs p-1 rounded mb-1 ${moodColors[entry.mood]}`}>
                 {entry.entry_type}
             </div>
         ));
@@ -78,14 +101,19 @@ const WeeklyView = ({entries}) => {
 
                 <div className="bg-gray-100 p-2"></div>
 
-                {weekDays.map((date)=>(
-                    <div key={date.toISOString()} className="bg-gray-100 p-2 text-center">
+                {weekDays.map((date)=>{
+                    return (
+                    <div
+                        key={date.toISOString()}
+                        className={`p-2 text-center ${ isToday(date) ? 'bg-blue-100 font-bold' : 'bg-gray-100 ' }`}
+                    >
                         <div>{format(date, 'EEE')} {/* Mon, Tue, Wed */}</div>
                         <div className="text-xs text-gray-600">
                             {format(date, 'M/d')} {/* 2/3, 2/4, etc */}
                         </div>
                     </div>
-                ))}
+                     );
+                })}
 
                 { timeBlocks.map((timeBlock)=>
                     <>
@@ -99,6 +127,8 @@ const WeeklyView = ({entries}) => {
                                 data-day={dayIndex}
                                 data-hour={timeBlock.startHour}
                                 className="bg-white p-3 min-h-20 hover:bg-blue-50 cursor-pointer transition-colors"
+                                onClick={()=> handleCellClick(date, timeBlock)}
+
                             >
 
                                 {renderCell(date, timeBlock)}

@@ -6,7 +6,7 @@ const entriesRouter = express.Router();
 
 entriesRouter.post('/', authenticateToken, EntryController.createEntry);
 entriesRouter.get('/', authenticateToken, EntryController.getEntries);
-entriesRouter.get('/date/:date', authenticateToken, EntryController.getEntriesByDate);
+entriesRouter.get('/day/:date', authenticateToken, EntryController.getEntriesByDate);
 entriesRouter.get('/:id', authenticateToken, EntryController.getEntry);
 entriesRouter.patch('/:id/update', authenticateToken, EntryController.updateEntry);
 entriesRouter.delete('/:id/delete', authenticateToken, EntryController.deleteEntry)
