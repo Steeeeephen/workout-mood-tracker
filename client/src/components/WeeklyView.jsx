@@ -17,16 +17,11 @@ const WeeklyView = ({entries}) => {
         navigate(`/day/${dateStr}`)
     }
 
-    // Calculate week start based on offset
     const currentWeekStart = startOfWeek(
-        addDays(new Date(), weekOffset * 7), // Add/subtract weeks
+        addDays(new Date(), weekOffset * 7),
         { weekStartsOn: 1 }
     );
 
-    // Creating an array starting with currentWeekStart...
-    // Starting with an empty array of 7 elements...
-    // Each iteration takes currentWeekStart (1) then adds the index to fill out the whole week...
-    // 1 + 0 = Monday, 1 + 1 = Tuesday, 1 + 2 = Wednesday, etc...
     const weekDays = Array.from({length: 7}, (_, i) =>
         addDays(currentWeekStart, i)
     );
@@ -40,13 +35,12 @@ const WeeklyView = ({entries}) => {
         { label: '8pm - 12am', startHour: 20 }
     ];
 
-    // This is to conditionally color code entries based on the mood.
     const moodColors = {
-        1: 'bg-red-200 border-red-300',
-        2: 'bg-orange-200 border-orange-300',
-        3: 'bg-yellow-200 border-yellow-300',
-        4: 'bg-lime-200 border-lime-300',
-        5: 'bg-green-200 border-green-300'
+        1: 'bg-red-100 border-red-400 text-red-800',
+        2: 'bg-orange-100 border-orange-400 text-orange-800',
+        3: 'bg-yellow-100 border-yellow-400 text-yellow-800',
+        4: 'bg-lime-100 border-lime-400 text-lime-800',
+        5: 'bg-green-100 border-green-400 text-green-800'
     }
 
     const renderCell = (date, timeBlock) => {
@@ -55,8 +49,6 @@ const WeeklyView = ({entries}) => {
         const cellEntries = entries.filter(entry => {
             const entryDate = entry.entry_datetime.split('T')[0];
             const entryHour = new Date(entry.entry_datetime).getHours();
-
-            console.log(`Entry: ${entry.entry_type}, Date: ${entryDate}, Hour: ${entryHour}`);
 
             const matchesDate = entryDate === dateStr;
             const matchesTime = entryHour >= timeBlock.startHour &&
@@ -68,14 +60,13 @@ const WeeklyView = ({entries}) => {
         return cellEntries.map(entry => (
             <div
                 key={entry.id}
-                className={`text-xs p-1 rounded mb-1 ${moodColors[entry.mood]}`}>
+                className={`text-xs p-2 rounded-md mb-1 border font-medium ${moodColors[entry.mood]}`}>
                 {entry.entry_type}
             </div>
         ));
 
     }
 
-    // Week nav functions
     const previousWeek = () => setWeekOffset(weekOffset - 1);
     const nextWeek = () => setWeekOffset(weekOffset + 1);
     const currentWeek = () => setWeekOffset(0);
@@ -83,62 +74,91 @@ const WeeklyView = ({entries}) => {
 
 
     return (
-        <>
+        <div className="max-w-7xl mx-auto p-6">
 
             {/* Control Bar */}
-
-            <div className="flex flex-row-reverse">
+            <div className="flex justify-between items-center mb-6">
+                <h2 className="text-2xl font-bold text-gray-800">
+                    Week of {format(currentWeekStart, 'MMMM d, yyyy')}
+                </h2>
                 <div className="flex gap-2">
-                    <button onClick={previousWeek}>← Previous Week</button>
-                    <button onClick={currentWeek}>Today</button>
-                    <button onClick={nextWeek}>Next Week →</button>
+                    <button
+                        onClick={previousWeek}
+                        className="px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors font-medium text-gray-700"
+                    >
+                        ← Previous
+                    </button>
+                    <button
+                        onClick={currentWeek}
+                        className="px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition-colors font-medium"
+                    >
+                        Today
+                    </button>
+                    <button
+                        onClick={nextWeek}
+                        className="px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors font-medium text-gray-700"
+                    >
+                        Next →
+                    </button>
                 </div>
             </div>
 
 
-            <div className="grid grid-cols-8 gap-1 mt-10">
+            {/* Calendar Grid */}
+            <div className="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-200">
+                <div className="grid grid-cols-8">
 
+                    {/* Empty corner cell */}
+                    <div className="bg-gradient-to-br from-gray-50 to-gray-100 border-b border-r border-gray-200"></div>
 
-                <div className="bg-gray-100 p-2"></div>
-
-                {weekDays.map((date)=>{
-                    return (
-                    <div
-                        key={date.toISOString()}
-                        className={`p-2 text-center ${ isToday(date) ? 'bg-blue-100 font-bold' : 'bg-gray-100 ' }`}
-                    >
-                        <div>{format(date, 'EEE')} {/* Mon, Tue, Wed */}</div>
-                        <div className="text-xs text-gray-600">
-                            {format(date, 'M/d')} {/* 2/3, 2/4, etc */}
-                        </div>
-                    </div>
-                     );
-                })}
-
-                { timeBlocks.map((timeBlock)=>
-                    <>
-                        <div key={timeBlock.label} className="bg-gray-100 p-3 text-xs text-gray-700 font-medium flex items-center justify-end pr-3">
-                            {timeBlock.label}
-                        </div>
-
-                        {weekDays.map((date, dayIndex)=>
+                    {/* Day headers */}
+                    {weekDays.map((date)=>{
+                        return (
                             <div
-                                key={`${date}-${timeBlock.startHour}`}
-                                data-day={dayIndex}
-                                data-hour={timeBlock.startHour}
-                                className="bg-white p-3 min-h-20 hover:bg-blue-50 cursor-pointer transition-colors"
-                                onClick={()=> handleCellClick(date, timeBlock)}
-
+                                key={date.toISOString()}
+                                className={`p-4 text-center border-b border-r border-gray-200 last:border-r-0 ${
+                                    isToday(date)
+                                        ? 'bg-gradient-to-br from-teal-500 to-emerald-500 text-white font-bold'
+                                        : 'bg-gradient-to-br from-gray-50 to-gray-100 text-gray-700 font-semibold'
+                                }`}
                             >
-
-                                {renderCell(date, timeBlock)}
+                                <div className="text-sm uppercase tracking-wide">{format(date, 'EEE')}</div>
+                                <div className={`text-lg font-bold mt-1 ${isToday(date) ? 'text-white' : 'text-gray-800'}`}>
+                                    {format(date, 'd')}
+                                </div>
                             </div>
-                        )}
-                    </>
-                )}
+                        );
+                    })}
+
+                    {/* Time blocks and cells */}
+                    { timeBlocks.map((timeBlock)=>
+                        <>
+                            {/* Time label */}
+                            <div
+                                key={timeBlock.label}
+                                className="bg-gradient-to-r from-gray-50 to-gray-100 p-3 text-xs text-gray-600 font-semibold flex items-center justify-end pr-4 border-b border-r border-gray-200 uppercase tracking-wide"
+                            >
+                                {timeBlock.label}
+                            </div>
+
+                            {/* Day cells */}
+                            {weekDays.map((date, dayIndex)=>
+                                <div
+                                    key={`${date}-${timeBlock.startHour}`}
+                                    data-day={dayIndex}
+                                    data-hour={timeBlock.startHour}
+                                    className="bg-white p-3 min-h-24 hover:bg-teal-50 cursor-pointer transition-all border-b border-r border-gray-200 last:border-r-0"
+                                    onClick={()=> handleCellClick(date, timeBlock)}
+                                >
+                                    {renderCell(date, timeBlock)}
+                                </div>
+                            )}
+                        </>
+                    )}
+                </div>
             </div>
 
-        </>
+        </div>
     )
 }
 export default WeeklyView

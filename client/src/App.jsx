@@ -13,17 +13,18 @@ function App() {
 
 
   return (
-
-      <AuthProvider>
-       <BrowserRouter>
-        <Navbar />
-          <Routes>
-              <Route path="/" element={<Home />}/>
-              <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>}/>
-              <Route path="/day/:date" element={<DayView />} />
-          </Routes>
-        </BrowserRouter>
-      </AuthProvider>
+      <div className="min-h-screen flex flex-col">
+          <AuthProvider>
+           <BrowserRouter>
+            <Navbar />
+              <Routes>
+                  <Route path="/" element={<Home />}/>
+                  <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>}/>
+                  <Route path="/day/:date" element={<DayView />} />
+              </Routes>
+            </BrowserRouter>
+          </AuthProvider>
+      </div>
   )
 }
 

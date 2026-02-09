@@ -11,7 +11,7 @@ const Navbar = () => {
 
     
         <nav className='flex justify-between w-3/4 m-auto items-center'>
-            <h1 className="text-4xl">NAVBAAAAR (Eventually the logo)</h1>
+            <h1 className="text-4xl"><span className="font-extrabold">App</span> Name</h1>
 
             <div className="flex gap-4">
                 <a href="/">GO TO Home</a>
