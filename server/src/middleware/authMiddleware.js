@@ -1,7 +1,8 @@
 import jwt from 'jsonwebtoken';
+import {prisma} from "../lib/prisma.js";
 
 
-export const authenticateToken = (req, res, next) => {
+export const authenticateToken = async (req, res, next) => {
     // Variable for token sent in header
     const authHeader = req.headers['authorization'];
     // Splitting authHeader by space
@@ -14,7 +15,15 @@ export const authenticateToken = (req, res, next) => {
     try{
 
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        console.log('Decoded token:', decoded);
+
+        const user = await prisma.user.findUnique({
+            where: { id: decoded.userId }
+        });
+
+        if (!user) {
+            return res.status(401).json({ error: 'User no longer exists' });
+        }
+
         req.userId = decoded.userId;
 
         next()

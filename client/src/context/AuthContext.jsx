@@ -11,18 +11,20 @@ export const AuthProvider = ({children}) => {
 
     useEffect(()=> {
         const fetchUser = async () => {
+            // Retrieve the token from users localStorage.
             const token = localStorage.getItem('token');
 
+            // If the token does not exist set loading state to false and return function.
             if(!token){
                 setLoading(false)
                 return;
             }
-
-            try {
+            try { // if the token exists...
                 const response = await api.get('/users/me');
                 setUser(response.data);
                 setIsAuthenticated(true)
             } catch (error) {
+                // Remove token on auth failure (user deleted, token expired, network error, etc.)
                 console.error('Failed to fetch user:', error);
                 localStorage.removeItem('token');
             } finally {
