@@ -81,6 +81,14 @@ const WeeklyView = ({entries}) => {
                 <h2 className="text-2xl font-bold text-gray-800">
                     Week of {format(currentWeekStart, 'MMMM d, yyyy')}
                 </h2>
+
+                <button
+                    className="bg-green-400 rounded cursor-pointer p-3 mt-3"
+                    onClick={()=>setIsModalOpen(true)}
+                >Create Entry
+                </button>
+
+
                 <div className="flex gap-2">
                     <button
                         onClick={previousWeek}
@@ -162,3 +170,4 @@ const WeeklyView = ({entries}) => {
     )
 }
 export default WeeklyView
+

@@ -69,170 +69,83 @@ const DayView = () => {
 
 
     return (
-        <>
-
+        <div className="flex-1 p-6">
             {isModalOpen && (
-                // <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-                //     <div className="bg-white p-6 rounded-lg shadow-xl max-w-md w-full">
-                //
-                //         <div className="flex justify-between">
-                //             <h2 className="text-xl font-bold mb-4">New Entry</h2>
-                //             <button
-                //                 onClick={()=>setIsModalOpen(false)}
-                //                 className=""
-                //             >CLOSE
-                //             </button>
-                //         </div>
-                //
-                //
-                //         <form onSubmit={handleSubmit}>
-                //
-                //             <div className="flex justify-between">
-                //                 <input
-                //                     type="datetime-local"
-                //                     value={formData.entry_datetime}
-                //                     onChange={(e)=>setFormData({...formData, entry_datetime: e.target.value})}
-                //                 />
-                //
-                //                 <select
-                //                     name="entryType" id="entryType"
-                //                     value={formData.entry_type}
-                //                     onChange={(e)=>setFormData({...formData, entry_type: e.target.value})}
-                //                 >
-                //                     <option value="" selected disabled>Entry Type</option>
-                //                     <option value="PRE_WORKOUT">Pre Workout</option>
-                //                     <option value="WORKOUT">Workout</option>
-                //                     <option value="POST_WORKOUT">Post Workout</option>
-                //                     <option value="MISC">Misc</option>
-                //                 </select>
-                //             </div>
-                //
-                //             <div>
-                //                 <fieldset className="flex border p-2 rounded">
-                //                     <legend>Mood Rating</legend>
-                //
-                //                     <div className="mr-4">
-                //                         <input
-                //                             type="radio"
-                //                             id="1"
-                //                             name="mood"
-                //                             value="1"
-                //                             checked={formData.mood === '1'}
-                //                             onChange={(e)=>setFormData({...formData, mood: e.target.value})}
-                //                         />
-                //                         <label htmlFor="1">1</label>
-                //                     </div>
-                //
-                //                     <div className="mr-4">
-                //                         <input
-                //                             type="radio"
-                //                             id="2"
-                //                             name="mood"
-                //                             value="2"
-                //                             checked={formData.mood === '2'}
-                //                             onChange={(e)=>setFormData({...formData, mood: e.target.value})}
-                //                         />
-                //                         <label htmlFor="2">2</label>
-                //                     </div>
-                //
-                //                     <div className="mr-4">
-                //                         <input
-                //                             type="radio"
-                //                             id="3"
-                //                             name="mood"
-                //                             value="3"
-                //                             checked={formData.mood === '3'}
-                //                             onChange={(e)=>setFormData({...formData, mood: e.target.value})}
-                //                         />
-                //                         <label htmlFor="3">3</label>
-                //                     </div>
-                //
-                //                     <div className="mr-4">
-                //                         <input
-                //                             type="radio"
-                //                             id="4"
-                //                             name="mood"
-                //                             value="4"
-                //                             checked={formData.mood === '4'}
-                //                             onChange={(e)=>setFormData({...formData, mood: e.target.value})}
-                //                         />
-                //                         <label htmlFor="4">4</label>
-                //                     </div>
-                //
-                //                     <div className="mr-4">
-                //                         <input
-                //                             type="radio"
-                //                             id="5"
-                //                             name="mood"
-                //                             value="5"
-                //                             checked={formData.mood === '3'}
-                //                             onChange={(e)=>setFormData({...formData, mood: e.target.value})}
-                //                         />
-                //                         <label htmlFor="5">5</label>
-                //                     </div>
-                //                 </fieldset>
-                //             </div>
-                //
-                //             <div className="bg-amber-200 p-3 rounded-2xl">
-                //                 <label htmlFor="content">Notes</label>
-                //                 <textarea
-                //                     value={formData.content}
-                //                     onChange={(e)=>setFormData({...formData, content: e.target.value})}
-                //                     name="content"
-                //                     id="content"
-                //                     cols="35"
-                //                     rows="10"
-                //                 />
-                //             </div>
-                //             <button className="cursor-pointer" type="submit">Submit</button>
-                //         </form>
-                //     </div>
-                // </div>
-
                 <EntryModal
                     entry={editingEntry}
                     onClose={() => {
                         setIsModalOpen(false)
                         setEditingEntry(null);
-                }}
+                    }}
                     onSuccess={handleSuccess}
                 />
-
             )}
 
+            <div className="max-w-4xl mx-auto">
+                {/* Header with back button and date */}
+                <div className="mb-6">
+                    <button
+                        onClick={() => navigate(-1)}
+                        className="mb-4 px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors font-medium text-gray-700"
+                    >
+                        ← Back to Calendar
+                    </button>
+                    <h1 className="text-3xl font-bold text-gray-800">
+                        {format(parseISO(date), 'EEEE, MMMM d, yyyy')}
+                    </h1>
+                </div>
 
-            <div className="w-3/4 m-auto">
-                <button onClick={() => navigate(-1)} className="my-4">
-                    ← Back to Calendar
-                </button>
-            </div>
-
-                { entries.length === 0 ? (
-                    <p>No entries for this day</p>
-                    ) : (
-                    <div className="max-w-3xl mx-auto">
+                {/* Entries timeline */}
+                {entries.length === 0 ? (
+                    <div className="text-center py-12 text-gray-500">
+                        <p className="text-lg">No entries for this day</p>
+                    </div>
+                ) : (
+                    <div className="space-y-6">
                         {entries.map(entry => (
-                            <div key={entry.id} className="flex items-center gap-4 my-6">
-                                <div className="w-24 text-right">{format(new Date(entry.entry_datetime), 'h:mm a')}</div>
-                                <div className="w-12 border-t-2 border-gray-400"></div>
-                                <div className={`flex-1 border p-4 rounded shadow ${moodColors[entry.mood]} `}>
-                                    <div className="font-semibold flex justify-between">
-                                        {entry.entry_type}
-                                        <div className="flex gap-4">
-                                            <button onClick={()=>handleEdit(entry)} className="cursor-pointer bg-blue-600 text-zinc-100 rounded py-1 px-2">Edit</button>
-                                            <button className="cursor-pointer bg-red-600 text-zinc-100 rounded py-1 px-2">Delete</button>
+                            <div key={entry.id} className="flex items-start gap-4">
+                                {/* Time */}
+                                <div className="w-20 text-right text-sm font-semibold text-gray-600 pt-1">
+                                    {format(new Date(entry.entry_datetime), 'h:mm a')}
+                                </div>
+
+                                {/* Timeline connector */}
+                                <div className="flex flex-col items-center">
+                                    <div className="w-3 h-3 rounded-full bg-teal-500 border-2 border-white shadow"></div>
+                                    <div className="w-0.5 h-full bg-gray-300 -mt-1"></div>
+                                </div>
+
+                                {/* Entry card */}
+                                <div className={`flex-1 border-2 p-4 rounded-lg shadow-sm ${moodColors[entry.mood]}`}>
+                                    <div className="flex justify-between items-start mb-2">
+                                        <h3 className="font-bold text-lg">{entry.entry_type}</h3>
+                                        <div className="flex gap-2">
+                                            <button
+                                                onClick={() => handleEdit(entry)}
+                                                className="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors text-sm font-medium"
+                                            >
+                                                Edit
+                                            </button>
+                                            <button
+                                                className="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700 transition-colors text-sm font-medium"
+                                            >
+                                                Delete
+                                            </button>
                                         </div>
                                     </div>
-                                    {entry.mood && <div>Mood: {entry.mood}/5</div>}
-                                    <p className="mt-2">{entry.content}</p>
+                                    {entry.mood && (
+                                        <div className="text-sm font-semibold mb-2">
+                                            Mood: {entry.mood}/5
+                                        </div>
+                                    )}
+                                    <p className="text-gray-700 whitespace-pre-wrap">{entry.content}</p>
                                 </div>
                             </div>
                         ))}
                     </div>
-                    )
-
-                }
-        </>
+                )}
+            </div>
+        </div>
     )
 }
 export default DayView
