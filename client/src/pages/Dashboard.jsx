@@ -1,10 +1,10 @@
 import React, {useEffect, useState, useTransition} from 'react'
 import {useAuth} from "../context/AuthContext.jsx";
-import WeeklyView from "./WeeklyView.jsx";
+import WeeklyView from "../components/WeeklyView.jsx";
 import axios from "axios";
 import {parse, parseISO} from "date-fns";
 import api from "../config/api.js";
-import EntryModal from "./EntryModal.jsx";
+import EntryModal from "../components/EntryModal.jsx";
 
 const Dashboard = () => {
 

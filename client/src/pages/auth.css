@@ -1,6 +1,7 @@
+@import "tailwindcss";
 @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap');
 
-@import "tailwindcss";
+
 
 
 body{
@@ -8,7 +9,7 @@ body{
 }
 
 .login-forms{
-    @apply bg-zinc-50 px-5 py-10 rounded-2xl flex flex-col gap-4 shadow-xl shadow-zinc-400;
+    @apply bg-zinc-50 px-5 py-10 rounded-2xl flex flex-col gap-4 shadow-xl shadow-zinc-400 mx-auto;
 }
 
 .text-input{

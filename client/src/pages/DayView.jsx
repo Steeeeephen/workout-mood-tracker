@@ -2,7 +2,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import {format, parseISO} from 'date-fns';
-import EntryModal from "./EntryModal.jsx";
+import EntryModal from "../components/EntryModal.jsx";
 
 const DayView = () => {
     const { date }= useParams();

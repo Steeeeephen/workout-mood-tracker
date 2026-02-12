@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
-import api from '../../config/api.js'
+import api from '../config/api.js'
 import { useNavigate } from 'react-router-dom'; // Add this
-import { useAuth } from '../../context/AuthContext'; // Add this
+import { useAuth } from '../context/AuthContext.jsx'; // Add this
 
 const Login = () => {
 
@@ -33,7 +33,7 @@ const Login = () => {
     }
 
     return (
-        <form onSubmit={handleSubmit} action="" className="login-forms" >
+        <form onSubmit={handleSubmit} action="" className="login-forms bg-zinc-50 px-5 py-10 rounded-2xl flex flex-col gap-4 shadow-xl shadow-zinc-400" >
             <h3 className="text-2xl mb-10 text-center">Login</h3>
 
             <label htmlFor="email" className="sr-only">Email</label>
@@ -42,7 +42,7 @@ const Login = () => {
                 name="email"
                 id="login-email"
                 placeholder='Email'
-                className="text-input"
+                className="text-input border-b-2  p-1"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
             />
@@ -53,7 +53,7 @@ const Login = () => {
                 name="password"
                 id="login-password"
                 placeholder="Password"
-                className="text-input mb-10"
+                className="text-input mb-10 border-b-2  p-1"
                 value={password}
                 onChange={(e)=> setPassword(e.target.value)}
             />

@@ -1,9 +1,9 @@
 import React from 'react'
-import Auth from "./auth/Auth.jsx";
+import Auth from "./Auth.jsx";
 
 const Home = () => {
     return (
-        <div className="flex-1 flex justify-around items-center px-8">
+        <div className="flex-1 flex justify-around mt-24 px-8">
             <div className="flex flex-col max-w-md gap-5">
                 <h1 className="text-8xl font-extrabold leading-tight">
                     Welcome to this Thing
