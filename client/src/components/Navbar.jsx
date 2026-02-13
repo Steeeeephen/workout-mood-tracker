@@ -5,11 +5,9 @@ const Navbar = () => {
     const {isAuthenticated} = useAuth();
     return (
         <nav className='flex justify-between w-3/4 mx-auto items-center py-6'>
-            <h1 className="text-4xl"><span className="font-extrabold">App</span> Name</h1>
-
+            <Link to="/"><h1 className="text-4xl"><span className="font-extrabold">App</span> Name</h1></Link>
             <div className="flex gap-4">
-                <a href="/">GO TO Home</a>
-                {isAuthenticated ? <Link to="/dashboard">Dashboard</Link> : ''}
+                {isAuthenticated ? <Link to="/calendar">Calendar</Link> : ''}
             </div>
         </nav>
     )
