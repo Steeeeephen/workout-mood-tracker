@@ -56,7 +56,6 @@ export const getEntries = async (req, res) => {
                 user_id: userId
             }
         })
-        console.log('hi')
         res.status(200).json(entries)
     } catch (err) {
         console.error('Error in controller:', err)
