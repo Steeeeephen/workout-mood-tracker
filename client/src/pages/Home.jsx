@@ -1,24 +1,13 @@
 import React from 'react'
 import Auth from "./Auth.jsx";
+import {useAuth} from "../context/AuthContext.jsx";
+import Dashboard from "./Dashboard.jsx";
 
 const Home = () => {
+    const { user } = useAuth();
+
     return (
-        <div className="flex-1 flex justify-around mt-24 px-8">
-            <div className="flex flex-col max-w-md gap-5">
-                <h1 className="text-8xl font-extrabold leading-tight">
-                    Welcome to this Thing
-                </h1>
-                <h2 className="text-5xl font-semibold text-teal-800">
-                    Subtitle 1
-                </h2>
-                <p className="text-lg text-gray-700 leading-relaxed">
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit...
-                </p>
-            </div>
-            <div>
-                <Auth />
-            </div>
-        </div>
+        <>{user ? <Dashboard /> : <Auth />}</>
     )
 }
 export default Home

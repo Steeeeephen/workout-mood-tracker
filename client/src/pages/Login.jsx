@@ -33,7 +33,7 @@ const Login = () => {
     }
 
     return (
-        <form onSubmit={handleSubmit} action="" className="login-forms bg-zinc-50 px-5 py-10 rounded-2xl flex flex-col gap-4 shadow-xl shadow-zinc-400" >
+        <form onSubmit={handleSubmit} action="" className="login-forms" >
             <h3 className="text-2xl mb-10 text-center">Login</h3>
 
             <label htmlFor="email" className="sr-only">Email</label>
