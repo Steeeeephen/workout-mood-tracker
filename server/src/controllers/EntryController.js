@@ -130,7 +130,7 @@ export const updateEntry = async (req, res) => {
 
 export const deleteEntry = async(req, res) => {
     try {
-        const userId = req.user.userId;
+        const userId = req.userId;
         const entryId = parseInt(req.params.id);
 
         // Validate it's a valid number
