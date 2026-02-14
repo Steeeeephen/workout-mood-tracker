@@ -2,9 +2,11 @@ import React, {useState} from 'react'
 import api from '../config/api.js'
 import { useNavigate } from 'react-router-dom'; // Add this
 import { useAuth } from '../context/AuthContext.jsx'; // Add this
+import { useError } from '../context/ErrorContext';
 
 const Login = () => {
 
+    const { showError } = useError();
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -26,7 +28,7 @@ const Login = () => {
 
 
         } catch (err) {
-            setError('Login Failed')
+            showError('Invalid email or password');
         } finally {
             setLoading(false)
         }

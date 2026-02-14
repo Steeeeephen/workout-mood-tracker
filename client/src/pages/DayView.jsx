@@ -6,6 +6,9 @@ import EntryModal from "../components/EntryModal.jsx";
 import DeleteEntryModal from "../components/DeleteEntryModal.jsx";
 
 const DayView = () => {
+
+    const { showError } = useError();
+
     const { date }= useParams(); // The date comes from the url parameters...
     const navigate = useNavigate();
     const [entries, setEntries] = useState([]); // This day's entries are saved to an array called 'entries' this is done via the 'fetchDayEntries' function below.
@@ -68,7 +71,7 @@ const DayView = () => {
 
                 setEntries(dayEntries);
             } catch (err) {
-                console.error('Error fetching entries:', err);
+                showError('Failed to load entries. Please try again.');
             }
         }
 

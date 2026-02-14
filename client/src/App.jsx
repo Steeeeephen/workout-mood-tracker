@@ -9,6 +9,8 @@ import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import DayView from "./pages/DayView.jsx";
 import Register from "./pages/Register.jsx";
 import Login from "./pages/Login.jsx";
+import ErrorToast from "./components/ErrorToast.jsx";
+import {ErrorProvider} from "./context/ErrorContext.jsx";
 
 function App() {
     console.log('rendering')
@@ -16,18 +18,21 @@ function App() {
 
   return (
       <div className="min-h-screen flex flex-col">
-          <AuthProvider>
-           <BrowserRouter>
-            <Navbar />
-              <Routes>
-                  <Route path="/" element={<Home />}/>
-                  <Route path="/calendar" element={<ProtectedRoute><Calendar /></ProtectedRoute>}/>
-                  <Route path="/day/:date" element={<ProtectedRoute><DayView /></ProtectedRoute>} />
-                  <Route path="/register" element={<Register />} />
-                  <Route path="/login" element={<Login />} />
-              </Routes>
-            </BrowserRouter>
-          </AuthProvider>
+          <ErrorProvider>
+              <AuthProvider>
+                   <BrowserRouter>
+                        <Navbar />
+                        <ErrorToast />
+                          <Routes>
+                              <Route path="/" element={<Home />}/>
+                              <Route path="/calendar" element={<ProtectedRoute><Calendar /></ProtectedRoute>}/>
+                              <Route path="/day/:date" element={<ProtectedRoute><DayView /></ProtectedRoute>} />
+                              <Route path="/register" element={<Register />} />
+                              <Route path="/login" element={<Login />} />
+                          </Routes>
+                    </BrowserRouter>
+              </AuthProvider>
+          </ErrorProvider>
       </div>
   )
 }
