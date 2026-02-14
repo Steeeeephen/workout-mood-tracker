@@ -3,33 +3,50 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import {format, parseISO} from 'date-fns';
 import EntryModal from "../components/EntryModal.jsx";
+import DeleteEntryModal from "../components/DeleteEntryModal.jsx";
 
 const DayView = () => {
-    const { date }= useParams();
+    const { date }= useParams(); // The date comes from the url parameters...
     const navigate = useNavigate();
-    const [entries, setEntries] = useState([]);
+    const [entries, setEntries] = useState([]); // This day's entries are saved to an array called 'entries' this is done via the 'fetchDayEntries' function below.
 
-    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    // Edit modal State Management
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [editingEntry, setEditingEntry] = useState(null);
 
+    // 'handleEdit' is used to open the edit entry modal. It is wired to the 'Edit' button rendered to each entry in the 'entries' array.
     const handleEdit = (entry) => {
-        setEditingEntry(entry);  // ← NOW editingEntry gets the object
-        setIsModalOpen(true);
+        setEditingEntry(entry); // Store the clicked entry's data
+        setIsEditModalOpen(true); // Show the modal
         console.log(entry)
     };
 
 
+    // Delete modal state management
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+    const [deletingEntry, setDeletingEntry] = useState(null)
 
-
-    const moodColors = {
-        1: 'bg-red-200 border-red-300',
-        2: 'bg-orange-200 border-orange-300',
-        3: 'bg-yellow-200 border-yellow-300',
-        4: 'bg-lime-200 border-lime-300',
-        5: 'bg-green-200 border-green-300'
+    const handleDelete = (entry) => {
+        setDeletingEntry(entry)
+        setIsDeleteModalOpen(true);
     }
 
 
+
+
+
+    // Color coding based on mood rating (1-5)
+    const moodColors = {
+        1: 'bg-red-200 border-red-300', // Worst mood.
+        2: 'bg-orange-200 border-orange-300',
+        3: 'bg-yellow-200 border-yellow-300',
+        4: 'bg-lime-200 border-lime-300',
+        5: 'bg-green-200 border-green-300' // Best mood.
+    }
+
+
+    // Fetch entries for the selected day.
         const fetchDayEntries = async () => {
             try {
                 const token = localStorage.getItem('token');
@@ -55,14 +72,17 @@ const DayView = () => {
             }
         }
 
+    // Fetch entries when component mounts or date changes
     useEffect(() => {
         fetchDayEntries();
     }, [date]);
 
+    // Called after successful edit - closes modal and refreshes entries
     const handleSuccess = () => {
-        setIsModalOpen(false);
-        setEditingEntry(null);
-        fetchDayEntries()
+        setIsEditModalOpen(false);
+        setIsDeleteModalOpen(false)
+        setEditingEntry(null); // Clear the editing state
+        fetchDayEntries() // Refresh to show updated entry
     }
 
 
@@ -70,16 +90,29 @@ const DayView = () => {
 
     return (
         <div className="flex-1 p-6">
-            {isModalOpen && (
+            {/* Edit Modal - only renders when isEditModalOpen is true */}
+            {isEditModalOpen && (
                 <EntryModal
-                    entry={editingEntry}
+                    entry={editingEntry} // Pass the entry data to pre-fill the form
                     onClose={() => {
-                        setIsModalOpen(false)
-                        setEditingEntry(null);
+                        setIsEditModalOpen(false)
+                        setEditingEntry(null); // Clear state when closing
                     }}
                     onSuccess={handleSuccess}
                 />
             )}
+
+            {isDeleteModalOpen && (
+                <DeleteEntryModal
+                    entry={deletingEntry}
+                    onClose = {()=>{
+                        setIsDeleteModalOpen(false)
+                        setDeletingEntry(null);
+                    }}
+                    onSuccess={handleSuccess}
+                />
+            )}
+
 
             <div className="max-w-4xl mx-auto">
                 {/* Header with back button and date */}
@@ -127,6 +160,7 @@ const DayView = () => {
                                                 Edit
                                             </button>
                                             <button
+                                                onClick={() => handleDelete(entry)}
                                                 className="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700 transition-colors text-sm font-medium"
                                             >
                                                 Delete
