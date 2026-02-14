@@ -8,7 +8,7 @@ entriesRouter.post('/', authenticateToken, EntryController.createEntry);
 entriesRouter.get('/', authenticateToken, EntryController.getEntries);
 entriesRouter.get('/day/:date', authenticateToken, EntryController.getEntriesByDate);
 entriesRouter.get('/:id', authenticateToken, EntryController.getEntry);
-entriesRouter.patch('/:id/update', authenticateToken, EntryController.updateEntry);
-entriesRouter.delete('/:id/delete', authenticateToken, EntryController.deleteEntry)
+entriesRouter.patch('/:id', authenticateToken, EntryController.updateEntry);
+entriesRouter.delete('/:id', authenticateToken, EntryController.deleteEntry)
 
 export default entriesRouter;

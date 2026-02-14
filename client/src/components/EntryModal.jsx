@@ -30,7 +30,7 @@ const EntryModal = ({ entry, onClose, onSuccess }) => {
 
 
             if (entry){
-                await axios.patch(`http://localhost:3000/api/entries/${entry.id}/update`, payload, {
+                await axios.patch(`http://localhost:3000/api/entries/${entry.id}`, payload, {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
             } else {
