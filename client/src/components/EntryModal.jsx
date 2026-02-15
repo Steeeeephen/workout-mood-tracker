@@ -2,16 +2,16 @@ import React, {useEffect, useState} from "react";
 import {format, parseISO} from "date-fns";
 import axios from "axios";
 
-const EntryModal = ({ entry, onClose, onSuccess }) => {
+const EntryModal = ({ entry, onClose, onSuccess, defaultDate }) => {
 
     const [formData, setFormData] = useState({
         entry_datetime: entry?.entry_datetime
             ? format(new Date(entry.entry_datetime), "yyyy-MM-dd'T'HH:mm")
-            : '',
+            : defaultDate ? `${defaultDate}T00:00` : '', // ← Use defaultDate if creating
         entry_type: entry?.entry_type || '',
-        mood: entry?.mood.toString() || '',
+        mood: entry?.mood?.toString() || '',
         content: entry?.content || ''
-    })
+    });
 
     const handleSubmit = async (e) => {
         e.preventDefault();

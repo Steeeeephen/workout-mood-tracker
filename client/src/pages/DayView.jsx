@@ -15,14 +15,14 @@ const DayView = () => {
     const [entries, setEntries] = useState([]); // This day's entries are saved to an array called 'entries' this is done via the 'fetchDayEntries' function below.
 
 
-    // Edit modal State Management
-    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingEntry, setEditingEntry] = useState(null);
+
 
     // 'handleEdit' is used to open the edit entry modal. It is wired to the 'Edit' button rendered to each entry in the 'entries' array.
     const handleEdit = (entry) => {
         setEditingEntry(entry); // Store the clicked entry's data
-        setIsEditModalOpen(true); // Show the modal
+        setIsModalOpen(true); // Show the modal
         console.log(entry)
     };
 
@@ -83,7 +83,7 @@ const DayView = () => {
 
     // Called after successful edit - closes modal and refreshes entries
     const handleSuccess = () => {
-        setIsEditModalOpen(false);
+        setIsModalOpen(false);
         setIsDeleteModalOpen(false)
         setEditingEntry(null); // Clear the editing state
         fetchDayEntries() // Refresh to show updated entry
@@ -95,11 +95,12 @@ const DayView = () => {
     return (
         <div className="flex-1 p-6">
             {/* Edit Modal - only renders when isEditModalOpen is true */}
-            {isEditModalOpen && (
+            {isModalOpen && (
                 <EntryModal
                     entry={editingEntry} // Pass the entry data to pre-fill the form
+                    defaultDate={date}
                     onClose={() => {
-                        setIsEditModalOpen(false)
+                        setIsModalOpen(false)
                         setEditingEntry(null); // Clear state when closing
                     }}
                     onSuccess={handleSuccess}
@@ -133,7 +134,7 @@ const DayView = () => {
 
                     <button
                         className="bg-green-400 rounded cursor-pointer p-3"
-                        onClick={()=>setIsEditModalOpen(true)}
+                        onClick={()=>setIsModalOpen(true)}
                     >Create Entry
                     </button>
 
