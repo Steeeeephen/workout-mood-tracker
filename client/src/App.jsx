@@ -9,8 +9,8 @@ import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import DayView from "./pages/DayView.jsx";
 import Register from "./pages/Register.jsx";
 import Login from "./pages/Login.jsx";
-import ErrorToast from "./components/ErrorToast.jsx";
-import {ErrorProvider} from "./context/ErrorContext.jsx";
+import NotificationToast from "./components/NotificationToast.jsx";
+import {NotificationProvider} from "./context/NotificationContext.jsx";
 
 function App() {
     console.log('rendering')
@@ -18,11 +18,11 @@ function App() {
 
   return (
       <div className="min-h-screen flex flex-col">
-          <ErrorProvider>
+          <NotificationProvider>
               <AuthProvider>
                    <BrowserRouter>
                         <Navbar />
-                        <ErrorToast />
+                        <NotificationToast />
                           <Routes>
                               <Route path="/" element={<Home />}/>
                               <Route path="/calendar" element={<ProtectedRoute><Calendar /></ProtectedRoute>}/>
@@ -32,7 +32,7 @@ function App() {
                           </Routes>
                     </BrowserRouter>
               </AuthProvider>
-          </ErrorProvider>
+          </NotificationProvider>
       </div>
   )
 }

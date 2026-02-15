@@ -4,10 +4,11 @@ import axios from 'axios';
 import {format, parseISO} from 'date-fns';
 import EntryModal from "../components/EntryModal.jsx";
 import DeleteEntryModal from "../components/DeleteEntryModal.jsx";
+import {useNotification} from "../context/NotificationContext.jsx";
 
 const DayView = () => {
 
-    const { showError } = useError();
+    const { showError } = useNotification();
 
     const { date }= useParams(); // The date comes from the url parameters...
     const navigate = useNavigate();
@@ -119,16 +120,23 @@ const DayView = () => {
 
             <div className="max-w-4xl mx-auto">
                 {/* Header with back button and date */}
-                <div className="mb-6">
+                <div className="mb-6 flex items-center">
                     <button
                         onClick={() => navigate(-1)}
-                        className="mb-4 px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors font-medium text-gray-700"
+                        className="px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors font-medium text-gray-700"
                     >
                         ← Back to Calendar
                     </button>
                     <h1 className="text-3xl font-bold text-gray-800">
                         {format(parseISO(date), 'EEEE, MMMM d, yyyy')}
                     </h1>
+
+                    <button
+                        className="bg-green-400 rounded cursor-pointer p-3"
+                        onClick={()=>setIsEditModalOpen(true)}
+                    >Create Entry
+                    </button>
+
                 </div>
 
                 {/* Entries timeline */}

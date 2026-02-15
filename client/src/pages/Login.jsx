@@ -2,11 +2,11 @@ import React, {useState} from 'react'
 import api from '../config/api.js'
 import { useNavigate } from 'react-router-dom'; // Add this
 import { useAuth } from '../context/AuthContext.jsx'; // Add this
-import { useError } from '../context/ErrorContext';
+import { useNotification } from '../context/NotificationContext.jsx';
 
 const Login = () => {
 
-    const { showError } = useError();
+    const { showError, showSuccess } = useNotification();
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -24,6 +24,7 @@ const Login = () => {
         try {
             await login(email, password);
             console.log('Login worked!');
+            showSuccess('Welcome back!');
             navigate('/dashboard');
 
 

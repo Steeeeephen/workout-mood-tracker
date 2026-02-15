@@ -1,10 +1,14 @@
 import {Link, useNavigate} from "react-router-dom";
 import {useAuth} from "../context/AuthContext.jsx";
+import {useEffect} from "react";
+import {useNotification} from "../context/NotificationContext.jsx";
 
 const UserNav = () => {
 
     const { user, setUser, logout } = useAuth(); // Need setUser for logout
     const userName = user.first_name +" " + user.last_name;
+    const {showSuccess} = useNotification();
+
 
     const navigate = useNavigate();
 
@@ -12,6 +16,7 @@ const UserNav = () => {
 
     const handleLogout = () => {
         logout();
+        showSuccess('Logged out successfully');
         navigate('/', { replace: true });
     };
 
