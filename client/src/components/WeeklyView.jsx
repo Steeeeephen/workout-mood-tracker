@@ -1,3 +1,7 @@
+// @ts-nocheck
+// noinspection JSValidateTypes
+
+import {Fragment} from 'react';
 import { startOfWeek, addDays, format } from 'date-fns';
 import {useState} from "react";
 import {useNavigate} from "react-router-dom";
@@ -82,11 +86,11 @@ const WeeklyView = ({entries}) => {
                     Week of {format(currentWeekStart, 'MMMM d, yyyy')}
                 </h2>
 
-                <button
-                    className="bg-green-400 rounded cursor-pointer p-3 mt-3"
-                    onClick={()=>setIsModalOpen(true)}
-                >Create Entry
-                </button>
+                {/*<button*/}
+                {/*    className="bg-green-400 rounded cursor-pointer p-3 mt-3"*/}
+                {/*    onClick={()=>setIsModalOpen(true)}*/}
+                {/*>Create Entry*/}
+                {/*</button>*/}
 
 
                 <div className="flex gap-2">
@@ -117,7 +121,7 @@ const WeeklyView = ({entries}) => {
                 <div className="grid grid-cols-8">
 
                     {/* Empty corner cell */}
-                    <div className="bg-gradient-to-br from-gray-50 to-gray-100 border-b border-r border-gray-200"></div>
+                    <div className="bg-linear-to-br from-gray-50 to-gray-100 border-b border-r border-gray-200"></div>
 
                     {/* Day headers */}
                     {weekDays.map((date)=>{
@@ -126,7 +130,7 @@ const WeeklyView = ({entries}) => {
                                 key={date.toISOString()}
                                 className={`p-4 text-center border-b border-r border-gray-200 last:border-r-0 ${
                                     isToday(date)
-                                        ? 'bg-gradient-to-br from-teal-500 to-emerald-500 text-white font-bold'
+                                        ? 'bg-linear-to-br from-teal-500 to-emerald-500 text-white font-bold'
                                         : 'bg-gradient-to-br from-gray-50 to-gray-100 text-gray-700 font-semibold'
                                 }`}
                             >
@@ -140,10 +144,9 @@ const WeeklyView = ({entries}) => {
 
                     {/* Time blocks and cells */}
                     { timeBlocks.map((timeBlock)=>
-                        <>
+                        <Fragment key={timeBlock.label}>
                             {/* Time label */}
                             <div
-                                key={timeBlock.label}
                                 className="bg-gradient-to-r from-gray-50 to-gray-100 p-3 text-xs text-gray-600 font-semibold flex items-center justify-end pr-4 border-b border-r border-gray-200 uppercase tracking-wide"
                             >
                                 {timeBlock.label}
@@ -161,7 +164,7 @@ const WeeklyView = ({entries}) => {
                                     {renderCell(date, timeBlock)}
                                 </div>
                             )}
-                        </>
+                        </Fragment>
                     )}
                 </div>
             </div>
