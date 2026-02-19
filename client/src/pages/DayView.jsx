@@ -32,9 +32,17 @@ const DayView = () => {
     const [deletingEntry, setDeletingEntry] = useState(null)
 
     const handleDelete = (entry) => {
-        setDeletingEntry(entry)
-        setIsDeleteModalOpen(true);
-    }
+      setDeletingEntry(entry);
+      setIsDeleteModalOpen(true);
+    };
+
+    // Called after successful edit - closes modal and refreshes entries
+    const handleSuccess = () => {
+      setIsModalOpen(false);
+      setIsDeleteModalOpen(false);
+      setEditingEntry(null); // Clear the editing state
+      fetchDayEntries(); // Refresh to show updated entry
+    };
 
 
 
@@ -81,13 +89,7 @@ const DayView = () => {
         fetchDayEntries();
     }, [date]);
 
-    // Called after successful edit - closes modal and refreshes entries
-    const handleSuccess = () => {
-        setIsModalOpen(false);
-        setIsDeleteModalOpen(false)
-        setEditingEntry(null); // Clear the editing state
-        fetchDayEntries() // Refresh to show updated entry
-    }
+
 
 
 
