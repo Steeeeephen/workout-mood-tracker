@@ -5,12 +5,12 @@ import { useAuth } from '../context/AuthContext.jsx'; // Add this
 import { useNotification } from '../context/NotificationContext.jsx';
 
 const Login = () => {
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
   const { showError, showSuccess } = useNotification();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
 
   const { login } = useAuth();
   const navigate = useNavigate();
@@ -18,7 +18,7 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
-    setLoading(true);
+    setIsLoggingIn(true);
     try {
       await login(email, password);
       console.log('Login worked!');
@@ -27,7 +27,7 @@ const Login = () => {
     } catch (err) {
       showError('Invalid email or password');
     } finally {
-      setLoading(false);
+      setIsLoggingIn(false);
     }
   };
 
@@ -63,8 +63,12 @@ const Login = () => {
 
       {error && <p style={{ color: 'red' }}>{error}</p>}
 
-      <button type="submit" className="btn-submit bg-green-400 rounded p-1">
-        Login
+      <button
+        type="submit"
+        className="btn-submit bg-green-400 rounded p-1"
+        disabled={isLoggingIn}
+      >
+        {isLoggingIn ? 'Logging in...' : 'Log In'}
       </button>
       <span className="m-auto pt-10">
         Forgot password? Click{' '}

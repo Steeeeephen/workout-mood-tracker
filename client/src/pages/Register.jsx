@@ -5,6 +5,7 @@ import { useNotification } from '../context/NotificationContext';
 import { useNavigate } from 'react-router-dom';
 
 const Register = () => {
+  const [isRegistering, setIsRegistering] = useState(false);
   const navigate = useNavigate();
   const { showError, showSuccess } = useNotification();
 
@@ -27,13 +28,15 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    setIsRegistering(true);
     try {
       await api.post('/auth/register', formData);
       showSuccess('Account created! Please log in.');
       navigate('/login');
     } catch (err) {
       showError('Registration failed. Please try again.');
+    } finally {
+      setIsRegistering(false);
     }
   };
 
@@ -111,8 +114,9 @@ const Register = () => {
           onClick={handleSubmit}
           type="submit"
           className="btn-submit bg-green-400 rounded p-1"
+          disabled={isRegistering}
         >
-          Register
+          {isRegistering ? 'Loading' : 'Register'}
         </button>
 
         <p className="text-center">Already have an account? Login here.</p>

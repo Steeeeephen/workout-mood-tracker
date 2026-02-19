@@ -6,6 +6,7 @@ import EntryModal from '../components/EntryModal.jsx';
 import DeleteEntryModal from '../components/DeleteEntryModal.jsx';
 
 const Dashboard = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const [entries, setEntries] = useState([]);
   const { showError } = useNotification();
   const todayDate = new Date();
@@ -48,6 +49,7 @@ const Dashboard = () => {
   };
 
   const fetchTodaysEntries = async () => {
+    setIsLoading(true);
     try {
       const token = localStorage.getItem('token');
       const response = await api.get('/entries', {
@@ -68,6 +70,8 @@ const Dashboard = () => {
     } catch (err) {
       console.error(err);
       showError('Failed to load entries.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -103,7 +107,9 @@ const Dashboard = () => {
         <div className="bg-slate-800/25 backdrop-blur rounded-xl p-6">
           <h2 className="text-2xl font-bold  mb-4">Today's Activities</h2>
           {/* Entries list will go here */}
-          {entries.length === 0 ? (
+          {isLoading ? (
+            <div>Loading entries...</div>
+          ) : entries.length === 0 ? (
             <div className="text-center py-12 text-gray-500">
               <p className="text-lg">No entries for this day</p>
             </div>
