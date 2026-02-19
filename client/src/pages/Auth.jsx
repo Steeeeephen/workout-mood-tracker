@@ -6,11 +6,14 @@ const Auth = () => {
     <div className="mt-24 mx-auto px-8 flex items-center gap-16 max-w-6xl">
       <div className="flex flex-col gap-5 flex-1">
         <h1 className="text-8xl font-extrabold leading-tight">
-          Welcome to this Thing
+          Find what works for you.
         </h1>
-        <h2 className="text-5xl font-semibold text-teal-800">Subtitle 1</h2>
+        <h2 className="text-5xl font-semibold text-teal-800">
+          {' '}
+          One workout at a time
+        </h2>
         <p className="text-lg text-gray-700 leading-relaxed">
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit...
+          {/*Lorem ipsum dolor sit amet, consectetur adipisicing elit...*/}
         </p>
 
         <div className="flex gap-8 mt-8 text-gray-600">

@@ -112,19 +112,19 @@ const DayView = () => {
 
       <div className="max-w-4xl mx-auto">
         {/* Header with back button and date */}
-        <div className="mb-6 flex items-center">
+        <div className="mb-6 flex items-center justify-between">
           <button
             onClick={() => navigate(-1)}
             className="px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors font-medium text-gray-700"
           >
             ← Back to Calendar
           </button>
-          <h1 className="text-3xl font-bold text-gray-800">
+          <h1 className="text-4xl font-bold text-gray-800">
             {format(parseISO(date), 'EEEE, MMMM d, yyyy')}
           </h1>
 
           <button
-            className="bg-green-400 rounded cursor-pointer p-3"
+            className=" px-8 py-3 bg-teal-600 text-white font-semibold rounded-lg hover:bg-teal-700 transition-colors shadow-md disabled:opacity-50 cursor-pointer"
             onClick={() => setIsModalOpen(true)}
           >
             Create Entry
