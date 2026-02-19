@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { format, parseISO } from 'date-fns';
-import axios from 'axios';
+import api from '../config/api.js';
+import { useNotification } from '../context/NotificationContext.jsx';
 
 const EntryModal = ({ entry, onClose, onSuccess, defaultDate }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const { showError, showSuccess } = useNotification();
 
   const [formData, setFormData] = useState({
     entry_datetime: entry?.entry_datetime
@@ -32,23 +34,19 @@ const EntryModal = ({ entry, onClose, onSuccess, defaultDate }) => {
       };
 
       if (entry) {
-        await axios.patch(
-          `http://localhost:3000/api/entries/${entry.id}`,
-          payload,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          },
-        );
+        await api.patch(`/entries/${entry.id}`, payload, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
       } else {
         // CREATE new entry
-        await axios.post('http://localhost:3000/api/entries', payload, {
+        await api.post('entries', payload, {
           headers: { Authorization: `Bearer ${token}` },
         });
       }
-
+      showSuccess('Entry saved!');
       onSuccess();
     } catch (err) {
-      console.error(err);
+      showError('Something went wrong. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
@@ -56,15 +54,17 @@ const EntryModal = ({ entry, onClose, onSuccess, defaultDate }) => {
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-      <div className="bg-white p-6 rounded-lg shadow-xl max-w-md w-full">
-        <div className="flex justify-between">
-          <h2 className="text-xl font-bold mb-4">New Entry</h2>
-          <button onClick={onClose} className="">
-            CLOSE
+      <div className="bg-white p-6 rounded-lg shadow-xl max-w-md w-full shadow-zinc-950">
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-xl font-bold">
+            {entry ? 'Edit Entry' : 'New Entry'}
+          </h2>{' '}
+          <button onClick={onClose} className="font-extrabold cursor-pointer">
+            X
           </button>
         </div>
 
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
           <div className="flex justify-between">
             <input
               type="datetime-local"
@@ -82,7 +82,7 @@ const EntryModal = ({ entry, onClose, onSuccess, defaultDate }) => {
                 setFormData({ ...formData, entry_type: e.target.value })
               }
             >
-              <option value="" selected disabled>
+              <option value="" disabled>
                 Entry Type
               </option>
               <option value="PRE_WORKOUT">Pre Workout</option>
@@ -167,21 +167,21 @@ const EntryModal = ({ entry, onClose, onSuccess, defaultDate }) => {
             </fieldset>
           </div>
 
-          <div className="bg-amber-200 p-3 rounded-2xl">
+          <div className=" rounded-2xl">
             <label htmlFor="content">Notes</label>
             <textarea
+              className="border-gray-300 bg-zinc-200 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent outline-none mb-4 p-3 w-full"
               value={formData.content}
               onChange={(e) =>
                 setFormData({ ...formData, content: e.target.value })
               }
               name="content"
               id="content"
-              cols="35"
               rows="10"
             />
           </div>
           <button
-            className="cursor-pointer"
+            className="w-full px-8 py-3 bg-teal-600 text-white font-semibold rounded-lg hover:bg-teal-700 transition-colors shadow-md disabled:opacity-50"
             type="submit"
             disabled={isSubmitting}
           >
