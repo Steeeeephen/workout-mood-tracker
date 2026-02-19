@@ -2,7 +2,7 @@
 
 
 .login-forms{
-    @apply bg-zinc-50 px-5 pt-10 pb-20 rounded-2xl flex flex-col gap-4 shadow-xl shadow-zinc-400 mx-auto;
+    @apply bg-zinc-50 px-5 py-10 rounded-2xl flex flex-col gap-4 shadow-xl shadow-zinc-400 mx-auto;
 }
 
 .text-input{

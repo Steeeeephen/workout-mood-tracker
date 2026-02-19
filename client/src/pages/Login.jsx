@@ -10,14 +10,12 @@ const Login = () => {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
 
   const { login } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
     setIsLoggingIn(true);
     try {
       await login(email, password);
@@ -33,12 +31,16 @@ const Login = () => {
 
   return (
     <>
-      <div className="mt-24 mx-auto px-8 flex items-center gap-16 max-w-6xl">
+      <div className="mt-12 mx-auto px-8 flex items-center gap-16 max-w-6xl">
         <div className="">
           <img src="/undraw_fitness-stats_bd09.svg" alt="" />
         </div>
 
-        <form onSubmit={handleSubmit} action="" className="login-forms flex-1">
+        <form
+          onSubmit={handleSubmit}
+          action=""
+          className="login-forms flex-1 space-y-4"
+        >
           <h1 className="text-6xl font-extrabold mb-10 text-center">
             Welcome Back!
           </h1>
@@ -50,9 +52,10 @@ const Login = () => {
             name="email"
             id="login-email"
             placeholder="Email"
-            className="text-input border-b-2  p-1"
+            className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent outline-none mb-4"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            required
           />
 
           <label htmlFor="password" className="sr-only">
@@ -63,27 +66,19 @@ const Login = () => {
             name="password"
             id="login-password"
             placeholder="Password"
-            className="text-input mb-10 border-b-2  p-1"
+            className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent outline-none mb-4"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            required
           />
-
-          {error && <p style={{ color: 'red' }}>{error}</p>}
 
           <button
             type="submit"
-            className="btn-submit bg-green-400 rounded p-1"
+            className="w-full px-8 py-3 bg-teal-600 text-white font-semibold rounded-lg hover:bg-teal-700 transition-colors shadow-md disabled:opacity-50"
             disabled={isLoggingIn}
           >
             {isLoggingIn ? 'Logging in...' : 'Log In'}
           </button>
-          <span className="m-auto pt-10">
-            Forgot password? Click{' '}
-            <a className="text-blue-600" href="#">
-              here
-            </a>
-            .
-          </span>
         </form>
       </div>
     </>
