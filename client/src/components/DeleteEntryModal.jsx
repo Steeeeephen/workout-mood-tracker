@@ -7,7 +7,7 @@ const DeleteEntryModal = ({ entry, onClose, onSuccess }) => {
     setIsDeleting(true);
     try {
       const token = localStorage.getItem('token');
-      await axios.delete(`http://localhost:3000/api/entries/${entry.id}`, {
+      await axios.delete(`entries/${entry.id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 

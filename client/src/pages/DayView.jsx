@@ -55,7 +55,7 @@ const DayView = () => {
     setIsLoading(true);
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get('api/entries', {
+      const response = await axios.get('/entries', {
         headers: { Authorization: `Bearer: ${token}` },
       });
 
