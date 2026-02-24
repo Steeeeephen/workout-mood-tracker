@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import api from '../config/api.js';
 
 const DeleteEntryModal = ({ entry, onClose, onSuccess }) => {
   const [isDeleting, setIsDeleting] = useState(false);
@@ -7,7 +7,7 @@ const DeleteEntryModal = ({ entry, onClose, onSuccess }) => {
     setIsDeleting(true);
     try {
       const token = localStorage.getItem('token');
-      await axios.delete(`entries/${entry.id}`, {
+      await api.delete(`entries/${entry.id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 

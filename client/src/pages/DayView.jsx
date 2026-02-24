@@ -1,10 +1,10 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { format, parseISO } from 'date-fns';
 import EntryModal from '../components/EntryModal.jsx';
 import DeleteEntryModal from '../components/DeleteEntryModal.jsx';
 import { useNotification } from '../context/NotificationContext.jsx';
+import api from '../config/api.js';
 
 const DayView = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -55,7 +55,7 @@ const DayView = () => {
     setIsLoading(true);
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get('/entries', {
+      const response = await api.get('/entries', {
         headers: { Authorization: `Bearer: ${token}` },
       });
 

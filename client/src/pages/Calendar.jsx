@@ -1,8 +1,6 @@
-import React, { useEffect, useState, useTransition } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAuth } from '../context/AuthContext.jsx';
 import WeeklyView from '../components/WeeklyView.jsx';
-import axios from 'axios';
-import { parse, parseISO } from 'date-fns';
 import api from '../config/api.js';
 import EntryModal from '../components/EntryModal.jsx';
 
@@ -32,7 +30,7 @@ const Calendar = () => {
   const fetchEntries = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get('/entries', {
+      const response = await api.get('/entries', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
