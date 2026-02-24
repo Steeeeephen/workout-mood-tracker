@@ -14,7 +14,6 @@ const WeeklyView = ({ entries }) => {
 
   const handleCellClick = (date) => {
     const dateStr = date.toISOString().split('T')[0];
-    console.log(dateStr);
     navigate(`/day/${dateStr}`);
   };
 
@@ -57,7 +56,7 @@ const WeeklyView = ({ entries }) => {
     const cellEntries = entries.filter((entry) => {
       // formatting the 'datetime' property of each entry (this is the user defined date, NOT created_at)
       // entryDate is formatted to be compared to dateStr
-      const entryDate = entry.entry_datetime.split('T')[0];
+      const entryDate = format(entry.entry_datetime, 'yyyy-MM-dd');
       // entryHour is formatted to be compared to the current timeBlock.
       const entryHour = new Date(entry.entry_datetime).getHours();
 
