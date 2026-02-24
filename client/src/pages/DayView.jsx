@@ -61,7 +61,7 @@ const DayView = () => {
 
       // Filter by the date
       const dayEntries = response.data.filter((entry) => {
-        const entryDate = entry.entry_datetime.split('T')[0];
+        const entryDate = format(new Date(entry.entry_datetime), 'yyyy-MM-dd');
         return entryDate === date;
       });
 
