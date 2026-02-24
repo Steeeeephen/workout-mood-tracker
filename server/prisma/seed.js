@@ -4,7 +4,6 @@ import bcrypt from "bcrypt";
 
 
 async function main() {
-    console.log('Start seeding...');
 
     // Hash the password once for all users
     const hashedPassword = await bcrypt.hash('12345', 10);
@@ -24,7 +23,6 @@ async function main() {
             },
         });
         users.push(user);
-        console.log(`Created user: ${user.name}`);
     }
 
     // Create 20 random entries across users
@@ -50,7 +48,6 @@ async function main() {
         });
     }
 
-    console.log('Seeding completed!');
 }
 
 main()

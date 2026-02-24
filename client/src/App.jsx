@@ -13,8 +13,6 @@ import { NotificationProvider } from './context/NotificationContext.jsx';
 import Footer from './components/Footer.jsx';
 
 function App() {
-  console.log('rendering');
-
   return (
     <main className="min-h-screen flex flex-col">
       <NotificationProvider>

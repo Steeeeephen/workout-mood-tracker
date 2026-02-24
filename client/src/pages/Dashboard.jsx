@@ -24,7 +24,6 @@ const Dashboard = () => {
   const handleEdit = (entry) => {
     setEditingEntry(entry); // Store the clicked entry's data
     setIsModalOpen(true); // Show the modal
-    console.log(entry);
   };
 
   const handleDelete = (entry) => {
@@ -58,7 +57,6 @@ const Dashboard = () => {
 
       const todaysEntries = response.data.filter((entry) => {
         const entryDate = entry.entry_datetime.split('T')[0];
-        console.log(entryDate);
         return entryDate === todayDateString;
       });
 

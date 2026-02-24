@@ -19,7 +19,6 @@ const Login = () => {
     setIsLoggingIn(true);
     try {
       await login(email, password);
-      console.log('Login worked!');
       showSuccess('Welcome back!');
       navigate('/');
     } catch (err) {

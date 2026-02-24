@@ -22,7 +22,6 @@ const DayView = () => {
   const handleEdit = (entry) => {
     setEditingEntry(entry); // Store the clicked entry's data
     setIsModalOpen(true); // Show the modal
-    console.log(entry);
   };
 
   // Delete modal state management

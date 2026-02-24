@@ -16,7 +16,7 @@ BigInt.prototype.toJSON = function() {
 }
 
 app.use(cors({
-    origin: 'http://localhost:5173',
+    origin: process.env.CLIENT_URL,
     credentials: true
 }));
 
@@ -36,4 +36,4 @@ process.on('SIGINT', async () => {
 
 app.listen(PORT, () => {
     console.log(`Listening on port ${PORT}`)
-} )
+})
