@@ -8,11 +8,11 @@ import { useNavigate } from 'react-router-dom';
 import { isToday } from 'date-fns';
 
 const WeeklyView = ({ entries }) => {
-  const today = new Date().toISOString().split('T')[0];
+  // const today = new Date().toISOString().split('T')[0];
   const [weekOffset, setWeekOffset] = useState(0);
   const navigate = useNavigate();
 
-  const handleCellClick = (date, timeBlock) => {
+  const handleCellClick = (date) => {
     const dateStr = date.toISOString().split('T')[0];
     console.log(dateStr);
     navigate(`/day/${dateStr}`);
@@ -51,7 +51,7 @@ const WeeklyView = ({ entries }) => {
   // renderCell accepts two arguments, 'date' and 'timeBlock'.
   const renderCell = (date, timeBlock) => {
     // The date for this specific cell is passed and converted in a such a way to be easily compared to dates from db entries.
-    const dateStr = date.toISOString().split('T')[0];
+    const dateStr = format(date, 'yyyy-MM-dd');
 
     // Here a new array is returned from the 'entries' prop using the filter method.
     const cellEntries = entries.filter((entry) => {
@@ -127,7 +127,7 @@ const WeeklyView = ({ entries }) => {
                 className={`p-4 text-center border-b border-r border-gray-200 last:border-r-0 ${
                   isToday(date)
                     ? 'bg-linear-to-br from-teal-500 to-emerald-500 text-white font-bold'
-                    : 'bg-gradient-to-br from-gray-50 to-gray-100 text-gray-700 font-semibold'
+                    : 'bg-linear-to-br from-gray-50 to-gray-100 text-gray-700 font-semibold'
                 }`}
               >
                 <div className="text-sm uppercase tracking-wide">
@@ -146,7 +146,7 @@ const WeeklyView = ({ entries }) => {
           {timeBlocks.map((timeBlock) => (
             <Fragment key={timeBlock.label}>
               {/* Time label */}
-              <div className="bg-gradient-to-r from-gray-50 to-gray-100 p-3 text-xs text-gray-600 font-semibold flex items-center justify-end pr-4 border-b border-r border-gray-200 uppercase tracking-wide">
+              <div className="bg-linear-to-r from-gray-50 to-gray-100 p-3 text-xs text-gray-600 font-semibold flex items-center justify-end pr-4 border-b border-r border-gray-200 uppercase tracking-wide">
                 {timeBlock.label}
               </div>
 
