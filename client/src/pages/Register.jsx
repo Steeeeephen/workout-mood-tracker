@@ -41,7 +41,7 @@ const Register = () => {
   };
 
   return (
-    <div className="mt-12 mx-auto px-8 flex justify-between items-center gap-36 max-w-6xl">
+    <div className="grow mx-auto px-8 flex justify-between items-center gap-36 max-w-6xl">
       <div>
         <img src="/undraw_working-out_6ksl.svg" alt="" />
       </div>

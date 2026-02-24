@@ -80,7 +80,7 @@ const Dashboard = () => {
   }, []);
 
   return (
-    <div className="min-h-screen">
+    <div className="grow">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="mb-8">
@@ -96,14 +96,8 @@ const Dashboard = () => {
               Create Entry
             </button>
           </div>
-
-          <p className="text-teal-900 text-lg">Your fitness at a glance</p>
         </div>
 
-        {/* Stats section - you'll build this next */}
-        <div className="mb-8">{/* Stats cards will go here */}</div>
-
-        {/* Today's entries section - you'll build this after */}
         <div className="bg-slate-800/25 backdrop-blur rounded-xl p-6">
           <h2 className="text-2xl font-bold  mb-4">Today's Activities</h2>
           {/* Entries list will go here */}

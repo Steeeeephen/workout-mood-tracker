@@ -31,7 +31,7 @@ const Login = () => {
 
   return (
     <>
-      <div className="mt-12 mx-auto px-8 flex items-center gap-16 max-w-6xl">
+      <div className="mx-auto px-8 flex items-center gap-16 max-w-6xl grow">
         <div className="">
           <img src="/undraw_fitness-stats_bd09.svg" alt="" />
         </div>

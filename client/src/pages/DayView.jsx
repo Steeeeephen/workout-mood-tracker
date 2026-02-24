@@ -111,7 +111,6 @@ const DayView = () => {
       )}
 
       <div className="max-w-4xl mx-auto">
-        {/* Header with back button and date */}
         <div className="mb-6 flex items-center justify-between">
           <button
             onClick={() => navigate(-1)}
@@ -131,7 +130,6 @@ const DayView = () => {
           </button>
         </div>
 
-        {/* Entries timeline */}
         {isLoading ? (
           <div>Loading entries...</div>
         ) : entries.length === 0 ? (
