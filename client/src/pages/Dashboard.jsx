@@ -9,9 +9,10 @@ const Dashboard = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [entries, setEntries] = useState([]);
   const { showError } = useNotification();
+
   const todayDate = new Date();
-  const formattedTodayDate = format(todayDate, 'EEEE, MMMM d, yyyy'); // "Thursday, February 13, 2025"
   const todayDateString = format(todayDate, 'yyyy-MM-dd'); // "2025-02-13"
+  const formattedTodayDate = format(todayDate, 'EEEE, MMMM d, yyyy'); // "Thursday, February 13, 2025"
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingEntry, setEditingEntry] = useState(null);

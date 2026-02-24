@@ -5,12 +5,12 @@ import api from '../config/api.js';
 import EntryModal from '../components/EntryModal.jsx';
 
 const Calendar = () => {
-  const { user, loading } = useAuth();
+  const { user } = useAuth();
 
   const [entries, setEntries] = useState([]);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editingEntry, setEditingEntry] = useState(null);
+  const [setEditingEntry] = useState(null);
 
   const handleSuccess = () => {
     setIsModalOpen(false);

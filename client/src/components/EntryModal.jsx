@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { format, parseISO } from 'date-fns';
+import React, { useState } from 'react';
+import { format } from 'date-fns';
 import api from '../config/api.js';
 import { useNotification } from '../context/NotificationContext.jsx';
 
@@ -27,7 +27,7 @@ const EntryModal = ({ entry, onClose, onSuccess, defaultDate }) => {
       const token = localStorage.getItem('token');
 
       const payload = {
-        entry_datetime: parseISO(formData.entry_datetime),
+        entry_datetime: new Date(formData.entry_datetime),
         entry_type: formData.entry_type,
         mood: parseInt(formData.mood),
         content: formData.content,
@@ -81,6 +81,7 @@ const EntryModal = ({ entry, onClose, onSuccess, defaultDate }) => {
               onChange={(e) =>
                 setFormData({ ...formData, entry_type: e.target.value })
               }
+              required
             >
               <option value="" disabled>
                 Entry Type
