@@ -85,7 +85,7 @@ const Dashboard = () => {
         <div className="mb-8">
           <div className="flex justify-between">
             <h1 className="text-4xl md:text-5xl font-bold ">
-              {formattedTodayDate}
+              {formattedTodayDate} Just a test.
             </h1>
 
             <button

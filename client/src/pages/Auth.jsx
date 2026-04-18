@@ -6,7 +6,7 @@ const Auth = () => {
     <div className="grow mx-auto px-8 flex items-center gap-16 max-w-6xl">
       <div className="flex flex-col gap-5 flex-1">
         <h1 className="text-8xl font-extrabold leading-tight">
-          Find what works for you.
+          Find what works for you. tEST
         </h1>
         <h2 className="text-5xl font-semibold text-teal-800">
           {' '}
