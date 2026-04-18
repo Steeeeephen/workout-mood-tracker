@@ -22,7 +22,13 @@ const Login = () => {
       showSuccess('Welcome back!');
       navigate('/');
     } catch (err) {
-      showError('Invalid email or password');
+      if (err.response && err.response.status === 401) {
+        showError('Invalid email or password');
+      } else if (err.response && err.response.status === 500) {
+        showError('An error occurred. Please try again.');
+      } else {
+        showError('Unable to connect to server');
+      }
     } finally {
       setIsLoggingIn(false);
     }
