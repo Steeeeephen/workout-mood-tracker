@@ -1,10 +1,15 @@
 import './auth.css';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import api from '../config/api.js';
 import { useNotification } from '../context/NotificationContext';
 import { useNavigate } from 'react-router-dom';
 
 const Register = () => {
+
+  useEffect(() => {
+    document.title = 'Register - Workout Mood Tracker';
+  }, []);
+
   const [isRegistering, setIsRegistering] = useState(false);
   const navigate = useNavigate();
   const { showError, showSuccess } = useNotification();

@@ -1,10 +1,15 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import api from '../config/api.js';
 import { useNavigate } from 'react-router-dom'; // Add this
 import { useAuth } from '../context/AuthContext.jsx'; // Add this
 import { useNotification } from '../context/NotificationContext.jsx';
 
 const Login = () => {
+
+  useEffect(() => {
+    document.title = 'Login - Workout Mood Tracker';
+  }, []);
+
   const [isLoggingIn, setIsLoggingIn] = useState(false);
   const { showError, showSuccess } = useNotification();
 

@@ -7,12 +7,18 @@ import { useNotification } from '../context/NotificationContext.jsx';
 import api from '../config/api.js';
 
 const DayView = () => {
+  useEffect(() => {
+    document.title = `${format(parseISO(date), 'EEEE, MMMM d, yyyy')} - Workout Mood Tracker`;
+  }, []);
+
   const [isLoading, setIsLoading] = useState(false);
 
   const { showError } = useNotification();
 
   const { date } = useParams(); // The date comes from the url parameters...
+
   const navigate = useNavigate();
+
   const [entries, setEntries] = useState([]); // This day's entries are saved to an array called 'entries' this is done via the 'fetchDayEntries' function below.
 
   const [isModalOpen, setIsModalOpen] = useState(false);

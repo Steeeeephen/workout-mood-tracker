@@ -6,6 +6,11 @@ import EntryModal from '../components/EntryModal.jsx';
 import DeleteEntryModal from '../components/DeleteEntryModal.jsx';
 
 const Dashboard = () => {
+
+  useEffect(() => {
+    document.title = 'Today at a glance - Workout Mood Tracker';
+  }, []);
+
   const [isLoading, setIsLoading] = useState(false);
   const [entries, setEntries] = useState([]);
   const { showError } = useNotification();
@@ -85,7 +90,7 @@ const Dashboard = () => {
         <div className="mb-8">
           <div className="flex justify-between">
             <h1 className="text-4xl md:text-5xl font-bold ">
-              {formattedTodayDate} Just a test.
+              {formattedTodayDate}
             </h1>
 
             <button
