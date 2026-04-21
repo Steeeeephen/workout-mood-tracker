@@ -9,11 +9,11 @@
 
 ## Screenshots
 
-![Dashboard View](./assets/weekly-view-screenshot.jpg)
-*[Caption: brief description of what's shown]*
+![Weekly View](./assets/weekly-view-screenshot.jpg)
+*[Weekly view]*
 
 ![Detail View](./assets/day-view-screenshot.jpg)
-*[Caption: brief description of what's shown]*
+*[Day view]*
 
 ---
 
