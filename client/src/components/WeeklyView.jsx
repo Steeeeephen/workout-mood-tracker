@@ -8,12 +8,12 @@ import { useNavigate } from 'react-router-dom';
 import { isToday } from 'date-fns';
 
 const WeeklyView = ({ entries }) => {
-  // const today = new Date().toISOString().split('T')[0];
   const [weekOffset, setWeekOffset] = useState(0);
   const navigate = useNavigate();
 
   const handleCellClick = (date) => {
-    const dateStr = date.toISOString().split('T')[0];
+    // const dateStr = date.toISOString().split('T')[0];
+    const dateStr = format(date, 'yyyy-MM-dd');
     navigate(`/day/${dateStr}`);
   };
 
