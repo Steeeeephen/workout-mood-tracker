@@ -5,7 +5,6 @@ import { useAuth } from '../context/AuthContext.jsx'; // Add this
 import { useNotification } from '../context/NotificationContext.jsx';
 
 const Login = () => {
-
   useEffect(() => {
     document.title = 'Login - Workout Mood Tracker';
   }, []);
@@ -41,17 +40,13 @@ const Login = () => {
 
   return (
     <>
-      <div className="mx-auto px-8 flex items-center gap-16 max-w-6xl grow">
-        <div className="">
+      <div className="mx-auto px-8 flex items-center max-w-6xl grow w-full">
+        <div className="hidden md:block">
           <img src="/undraw_fitness-stats_bd09.svg" alt="" />
         </div>
 
-        <form
-          onSubmit={handleSubmit}
-          action=""
-          className="login-forms flex-1 space-y-4"
-        >
-          <h1 className="text-6xl font-extrabold mb-10 text-center">
+        <form onSubmit={handleSubmit} action="" className="login-forms">
+          <h1 className="text-3xl font-extrabold mb-10 text-center md:text-6xl ">
             Welcome Back!
           </h1>
           <label htmlFor="email" className="sr-only">

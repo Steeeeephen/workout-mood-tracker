@@ -8,24 +8,16 @@ const Auth = () => {
 
   return (
     <>
-      <div className="text-center text-lg bg-amber-200 py-1">
-        Please note! This site is for demo purposes only and it's advised you do
-        not enter any sensitive information.
-      </div>
-      <div className="grow mx-auto px-8 flex items-center gap-16 max-w-6xl">
-        <div className="flex flex-col gap-5 flex-1">
-          <h1 className="text-8xl font-extrabold leading-tight">
+      <div className="grow mx-auto px-8 flex flex-col-reverse items-center max-w-6xl w-full md:flex-row md:gap">
+        <div className="flex flex-col text-center gap-6 flex-1 md:text-start">
+          <h1 className="text-4xl font-extrabold leading-tight md:text-8xl">
             Find what works for you.
           </h1>
-          <h2 className="text-5xl font-semibold text-teal-800">
+          <h2 className="text-3xl text-teal-800 md:font-semibold">
             {' '}
             One workout at a time
           </h2>
-          <p className="text-lg text-gray-700 leading-relaxed">
-            {/*Lorem ipsum dolor sit amet, consectetur adipisicing elit...*/}
-          </p>
-
-          <div className="flex gap-8 mt-8 text-gray-600">
+          <div className="flex text-start text-gray-600 md:gap-8 md:mt-8">
             <div className="flex items-center gap-2">
               <span className="text-teal-600 text-2xl">✓</span>
               <span>Track workouts</span>
@@ -40,7 +32,7 @@ const Auth = () => {
             </div>
           </div>
 
-          <div className="flex gap-4">
+          <div className="flex justify-center gap-4 md:justify-start">
             <Link
               to="/login"
               className="px-8 py-3 bg-teal-600 text-white font-semibold rounded-lg hover:bg-teal-700 transition-colors shadow-md min-w-[140px] text-center"

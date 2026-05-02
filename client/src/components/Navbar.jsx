@@ -7,15 +7,18 @@ const Navbar = () => {
   const { isAuthenticated } = useAuth();
   return (
     <>
-      <nav className="flex justify-between w-3/4 mx-auto items-center py-6">
+      <div className="text-center md:text-lg bg-amber-200 py-1">
+        Please note! This site is for demo purposes only and it's advised you do
+        not enter any sensitive information.
+      </div>
+      <nav className="flex justify-between w-full mx-auto items-center py-6 md:w-3/4">
         <Link to="/">
-          <h1 className="text-4xl">
+          <h1 className="text-2xl md:text-5xl">
             <span className="font-extrabold">Workout</span> Mood Tracker
           </h1>
         </Link>
-        <div className="flex gap-4 items-center">
-          {isAuthenticated ? <UserNav /> : ''}
-        </div>
+
+        <div>{isAuthenticated ? <UserNav /> : ''}</div>
       </nav>
     </>
   );
