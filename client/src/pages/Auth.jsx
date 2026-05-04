@@ -35,7 +35,7 @@ const Auth = () => {
           <div className="flex justify-center gap-4 md:justify-start">
             <Link
               to="/login"
-              className="px-8 py-3 bg-teal-600 text-white font-semibold rounded-lg hover:bg-teal-700 transition-colors shadow-md min-w-[140px] text-center"
+              className="px-8 py-3 bg-teal-600 text-white font-semibold rounded-lg hover:bg-teal-700 transition-colors shadow-md min-w-35 text-center"
             >
               Login
             </Link>
