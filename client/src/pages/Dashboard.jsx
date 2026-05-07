@@ -6,6 +6,10 @@ import EntryModal from '../components/EntryModal.jsx';
 import DeleteEntryModal from '../components/DeleteEntryModal.jsx';
 
 const Dashboard = () => {
+  useEffect(() => {
+    document.title = 'Today at a glance - Workout Mood Tracker';
+  }, []);
+
   const [isLoading, setIsLoading] = useState(false);
   const [entries, setEntries] = useState([]);
   const { showError } = useNotification();
@@ -83,13 +87,13 @@ const Dashboard = () => {
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="mb-8">
-          <div className="flex justify-between">
-            <h1 className="text-4xl md:text-5xl font-bold ">
+          <div className="flex flex-col justify-between items-center md:flex-row md:items-start">
+            <h1 className="text-2xl font-bold md:text-5xl">
               {formattedTodayDate}
             </h1>
 
             <button
-              className="bg-green-400 rounded cursor-pointer p-3"
+              className="bg-green-400 rounded mt-4 cursor-pointer p-3 w-full md:w-auto md:mt-0"
               onClick={() => setIsModalOpen(true)}
             >
               Create Entry

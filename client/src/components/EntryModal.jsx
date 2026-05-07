@@ -59,15 +59,19 @@ const EntryModal = ({ entry, onClose, onSuccess, defaultDate }) => {
           <h2 className="text-xl font-bold">
             {entry ? 'Edit Entry' : 'New Entry'}
           </h2>{' '}
-          <button onClick={onClose} className="font-extrabold cursor-pointer">
+          <button
+            onClick={onClose}
+            className="font-extrabold text-2xl cursor-pointer"
+          >
             X
           </button>
         </div>
 
         <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
-          <div className="flex justify-between">
+          <div className="flex flex-col gap-4 justify-between md:flex md:flex-row">
             <input
               type="datetime-local"
+              className="text-lg"
               value={formData.entry_datetime}
               onChange={(e) =>
                 setFormData({ ...formData, entry_datetime: e.target.value })
@@ -76,6 +80,7 @@ const EntryModal = ({ entry, onClose, onSuccess, defaultDate }) => {
 
             <select
               name="entryType"
+              className="text-lg"
               id="entryType"
               value={formData.entry_type}
               onChange={(e) =>
@@ -93,10 +98,10 @@ const EntryModal = ({ entry, onClose, onSuccess, defaultDate }) => {
             </select>
           </div>
           <div>
-            <fieldset className="flex border p-2 rounded">
+            <fieldset className="flex justify-around items-center border p-2 rounded">
               <legend>Mood Rating</legend>
 
-              <div className="mr-4">
+              <div className="flex gap-1 items-center mr-4 text-lg">
                 <input
                   type="radio"
                   id="1"
@@ -110,7 +115,7 @@ const EntryModal = ({ entry, onClose, onSuccess, defaultDate }) => {
                 <label htmlFor="1">1</label>
               </div>
 
-              <div className="mr-4">
+              <div className="flex gap-1 items-center mr-4 text-lg">
                 <input
                   type="radio"
                   id="2"
@@ -124,7 +129,7 @@ const EntryModal = ({ entry, onClose, onSuccess, defaultDate }) => {
                 <label htmlFor="2">2</label>
               </div>
 
-              <div className="mr-4">
+              <div className="flex gap-1 items-center mr-4 text-lg">
                 <input
                   type="radio"
                   id="3"
@@ -138,7 +143,7 @@ const EntryModal = ({ entry, onClose, onSuccess, defaultDate }) => {
                 <label htmlFor="3">3</label>
               </div>
 
-              <div className="mr-4">
+              <div className="flex gap-1 items-center mr-4 text-lg">
                 <input
                   type="radio"
                   id="4"
@@ -152,7 +157,7 @@ const EntryModal = ({ entry, onClose, onSuccess, defaultDate }) => {
                 <label htmlFor="4">4</label>
               </div>
 
-              <div className="mr-4">
+              <div className="flex gap-1 items-center mr-4 text-lg">
                 <input
                   type="radio"
                   id="5"

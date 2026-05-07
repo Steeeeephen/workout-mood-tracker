@@ -5,14 +5,21 @@ import EntryModal from '../components/EntryModal.jsx';
 import DeleteEntryModal from '../components/DeleteEntryModal.jsx';
 import { useNotification } from '../context/NotificationContext.jsx';
 import api from '../config/api.js';
+import useIsMobile from '../hooks/useIsMobile.js';
 
 const DayView = () => {
+  useEffect(() => {
+    document.title = `${format(parseISO(date), 'EEEE, MMMM d, yyyy')} - Workout Mood Tracker`;
+  }, []);
+
   const [isLoading, setIsLoading] = useState(false);
 
   const { showError } = useNotification();
 
   const { date } = useParams(); // The date comes from the url parameters...
+
   const navigate = useNavigate();
+
   const [entries, setEntries] = useState([]); // This day's entries are saved to an array called 'entries' this is done via the 'fetchDayEntries' function below.
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -109,7 +116,10 @@ const DayView = () => {
         />
       )}
 
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-4xl mx-auto flex flex-col">
+        <h1 className="text-4xl font-bold text-gray-800 text-center mb-6">
+          {format(parseISO(date), 'EEEE, MMMM d, yyyy')}
+        </h1>
         <div className="mb-6 flex items-center justify-between">
           <button
             onClick={() => navigate(-1)}
@@ -117,9 +127,6 @@ const DayView = () => {
           >
             ← Back to Calendar
           </button>
-          <h1 className="text-4xl font-bold text-gray-800">
-            {format(parseISO(date), 'EEEE, MMMM d, yyyy')}
-          </h1>
 
           <button
             className=" px-8 py-3 bg-teal-600 text-white font-semibold rounded-lg hover:bg-teal-700 transition-colors shadow-md disabled:opacity-50 cursor-pointer"
@@ -138,24 +145,28 @@ const DayView = () => {
         ) : (
           <div className="space-y-6">
             {entries.map((entry) => (
-              <div key={entry.id} className="flex items-start gap-4">
+              <div
+                key={entry.id}
+                className="flex flex-col items-start gap-2 md:flex-row md:gap-4"
+              >
                 {/* Time */}
-                <div className="w-20 text-right text-sm font-semibold text-gray-600 pt-1">
+                <div className="w-20 text-right font-semibold text-gray-600 pt-1">
                   {format(new Date(entry.entry_datetime), 'h:mm a')}
                 </div>
 
                 {/* Timeline connector */}
-                <div className="flex flex-col items-center">
+                <div className="hidden flex-col items-center md:flex">
                   <div className="w-3 h-3 rounded-full bg-teal-500 border-2 border-white shadow"></div>
                   <div className="w-0.5 h-full bg-gray-300 -mt-1"></div>
                 </div>
 
                 {/* Entry card */}
                 <div
-                  className={`flex-1 border-2 p-4 rounded-lg shadow-sm ${moodColors[entry.mood]}`}
+                  className={`flex-1 border-2 p-4 rounded-lg shadow-sm w-full ${moodColors[entry.mood]}`}
                 >
-                  <div className="flex justify-between items-start mb-2">
+                  <div className="flex flex-row justify-between items-start mb-2">
                     <h3 className="font-bold text-lg">{entry.entry_type}</h3>
+                    {/**/}
                     <div className="flex gap-2">
                       <button
                         onClick={() => handleEdit(entry)}
@@ -170,6 +181,7 @@ const DayView = () => {
                         Delete
                       </button>
                     </div>
+                    {/*  */}
                   </div>
                   {entry.mood && (
                     <div className="text-sm font-semibold mb-2">
