@@ -11,7 +11,7 @@ const Navbar = () => {
         Please note! This site is for demo purposes only and it's advised you do
         not enter any sensitive information.
       </div>
-      <nav className="flex justify-between w-full mx-auto items-center py-6 md:w-3/4">
+      <nav className="flex relative justify-between w-11/12 mx-auto items-center py-6 md:w-3/4">
         <Link to="/">
           <h1 className="text-2xl md:text-5xl">
             <span className="font-extrabold">Workout</span> Mood Tracker
