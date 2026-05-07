@@ -3,7 +3,7 @@
 
 **One morning I was particularly frustrated during a workout in which I felt more flat than usual (probably an overload on energy drinks but let's not worry about that). I felt it might be a good idea to start taking notes about how I felt before, during, and after a workout -- so I built this app! Workout Mood Tracker allows users to track notes about their mood in the context of their workout schedule. Rather than tracking specific statistics regarding the workouts themselves, the focus is placed on logging how you feel.** 
 
-🔗 [Live Demo](https://workout-mood-tracker-seven.vercel.app/) &nbsp;|&nbsp; [GitHub Repo](#)
+🔗 [Live Demo](https://workout-mood-tracker-seven.vercel.app/) &nbsp;|&nbsp; [GitHub Repo](https://github.com/Steeeeephen/workout-mood-tracker)
 
 ---
 
