@@ -24,6 +24,7 @@
 - **Daily View** — When a user wants more information regarding an actual entry they can click on the specific day from the weekly view and that will enter a daily view. Here entries will be displayed in chronological order and users will be able to perform edit and delete operations as well. Users can also create an entry from the daily view, and in this case the current date will be selected in the date input.
 - **Secure user registration and login** — Each user's entries are private and only accessible to them.
 
+
 ---
 
 ## Tech Stack
@@ -100,7 +101,7 @@ While it was not an issue in development, I came across an issue regarding time 
 ---
 
 ## Roadmap
-- [ ] Mobile layout
+- [x] Mobile layout
 - [ ] Entry Search Functionality
 - [ ] User profile with personal stats
 - [ ] Google OAuth
