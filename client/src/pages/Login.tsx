@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import api from '../config/api.js';
 import { useNavigate } from 'react-router-dom'; // Add this
-import { useAuth } from '../context/AuthContext.jsx'; // Add this
-import { useNotification } from '../context/NotificationContext.jsx';
+import { useAuth } from '../context/AuthContext.js'; // Add this
+import { useNotification } from '../context/NotificationContext.js';
 
 const Login = () => {
   useEffect(() => {

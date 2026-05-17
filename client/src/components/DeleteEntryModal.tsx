@@ -1,7 +1,18 @@
 import React, { useState } from 'react';
-import api from '../config/api.js';
+import api from '../config/api';
+import { Entry } from '../types/types';
 
-const DeleteEntryModal = ({ entry, onClose, onSuccess }) => {
+interface DeleteEntryModalProps {
+  entry: Entry;
+  onClose: () => void;
+  onSuccess: (data: Entry) => void;
+}
+
+const DeleteEntryModal = ({
+  entry,
+  onClose,
+  onSuccess,
+}: DeleteEntryModalProps) => {
   const [isDeleting, setIsDeleting] = useState(false);
   const handleConfirmDelete = async () => {
     setIsDeleting(true);
@@ -11,7 +22,7 @@ const DeleteEntryModal = ({ entry, onClose, onSuccess }) => {
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      onSuccess();
+      onSuccess(entry);
     } catch (err) {
       console.error('Error deleting entry.', err);
     } finally {

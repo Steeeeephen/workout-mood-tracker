@@ -1,7 +1,7 @@
 import { Link, NavLink, useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext.jsx';
+import { useAuth } from '../context/AuthContext.js';
 import React, { useEffect, useState } from 'react';
-import { useNotification } from '../context/NotificationContext.jsx';
+import { useNotification } from '../context/NotificationContext.js';
 
 const UserNav = () => {
   const { user, setUser, logout } = useAuth(); // Need setUser for logout

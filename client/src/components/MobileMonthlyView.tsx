@@ -8,7 +8,7 @@ import {
   format,
   isToday,
 } from 'date-fns';
-import EntryModal from './EntryModal.jsx';
+import EntryModal from './EntryModal.js';
 
 const MobileMonthlyView = ({ entries, fetchEntries }) => {
   // I'm going to be reusing a good amount of code from WeeklyView to get the mobile calendar
