@@ -1,12 +1,9 @@
-// @ts-nocheck
-// noinspection JSValidateTypes
-
 import React, { Fragment } from 'react';
 import { startOfWeek, addDays, format } from 'date-fns';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { isToday } from 'date-fns';
-import EntryModal from './EntryModal.jsx';
+import EntryModal from './EntryModal.js';
 
 const WeeklyView = ({ entries, fetchEntries }) => {
   const [weekOffset, setWeekOffset] = useState(0);
@@ -21,7 +18,7 @@ const WeeklyView = ({ entries, fetchEntries }) => {
     fetchEntries();
   };
 
-  const handleCellClick = (date) => {
+  const handleCellClick = (date: Date) => {
     // const dateStr = date.toISOString().split('T')[0];
     const dateStr = format(date, 'yyyy-MM-dd');
     navigate(`/day/${dateStr}`);

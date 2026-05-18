@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { useAuth } from '../context/AuthContext.jsx';
-import WeeklyView from '../components/WeeklyView.jsx';
+import { useAuth } from '../context/AuthContext.js';
+import WeeklyView from '../components/WeeklyView.js';
 import api from '../config/api.js';
-import EntryModal from '../components/EntryModal.jsx';
-import MobileMonthlyView from '../components/MobileMonthlyView.jsx';
+import EntryModal from '../components/EntryModal.js';
+import MobileMonthlyView from '../components/MobileMonthlyView.js';
 import useIsMobile from '../hooks/useIsMobile.js';
 
 const Calendar = () => {
@@ -11,14 +11,14 @@ const Calendar = () => {
 
   const [entries, setEntries] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [setEditingEntry] = useState(null);
+  const [setEditingEntry] = useState(false);
   const isMobile = useIsMobile();
 
-  const handleSuccess = () => {
-    setIsModalOpen(false);
-    setEditingEntry(null);
-    fetchEntries();
-  };
+  // const handleSuccess = () => {
+  //   setIsModalOpen(false);
+  //   setEditingEntry(null);
+  //   fetchEntries();
+  // };
 
   useEffect(() => {
     // Setting page title
@@ -49,13 +49,13 @@ const Calendar = () => {
 
   return (
     <div className="w-full mx-auto md:w-10/12 md:m-auto grow">
-      {isModalOpen && (
-        <EntryModal
-          entry={null}
-          onClose={() => setIsModalOpen(false)}
-          onSuccess={handleSuccess}
-        />
-      )}
+      {/*{isModalOpen && (*/}
+      {/*  <EntryModal*/}
+      {/*    entry={null}*/}
+      {/*    onClose={() => setIsModalOpen(false)}*/}
+      {/*    onSuccess={handleSuccess}*/}
+      {/*  />*/}
+      {/*)}*/}
       {isMobile ? (
         <MobileMonthlyView entries={entries} fetchEntries={fetchEntries} />
       ) : (

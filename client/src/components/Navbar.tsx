@@ -1,6 +1,6 @@
-import { useAuth } from '../context/AuthContext.jsx';
+import { useAuth } from '../context/AuthContext.js';
 import { Link } from 'react-router-dom';
-import UserNav from './UserNav.jsx';
+import UserNav from './UserNav.js';
 import React from 'react';
 
 const Navbar = () => {

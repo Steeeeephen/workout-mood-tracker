@@ -1,11 +1,11 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import { format, parseISO } from 'date-fns';
-import EntryModal from '../components/EntryModal.jsx';
-import DeleteEntryModal from '../components/DeleteEntryModal.jsx';
-import { useNotification } from '../context/NotificationContext.jsx';
-import api from '../config/api.js';
-import useIsMobile from '../hooks/useIsMobile.js';
+import EntryModal from '../components/EntryModal';
+import DeleteEntryModal from '../components/DeleteEntryModal';
+import { useNotification } from '../context/NotificationContext';
+import api from '../config/api';
+import useIsMobile from '../hooks/useIsMobile';
 
 const DayView = () => {
   useEffect(() => {

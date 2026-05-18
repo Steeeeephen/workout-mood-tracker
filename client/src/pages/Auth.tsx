@@ -42,7 +42,7 @@ const Auth = () => {
 
             <Link
               to="/register"
-              className="px-8 py-3 border-2 border-teal-600 text-teal-600 font-semibold rounded-lg hover:bg-teal-50 transition-colors min-w-[140px] text-center"
+              className="px-8 py-3 border-2 border-teal-600 text-teal-600 font-semibold rounded-lg hover:bg-teal-50 transition-colors min-w-35 text-center"
             >
               Register
             </Link>

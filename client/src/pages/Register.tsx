@@ -1,7 +1,7 @@
 import './auth.css';
 import React, { useEffect, useState } from 'react';
 import api from '../config/api.js';
-import { useNotification } from '../context/NotificationContext';
+import { useNotification } from '../context/NotificationContext.js';
 import { useNavigate } from 'react-router-dom';
 
 const Register = () => {

@@ -1,9 +1,22 @@
 import React, { useState } from 'react';
 import { format } from 'date-fns';
-import api from '../config/api.js';
-import { useNotification } from '../context/NotificationContext.jsx';
+import api from '../config/api';
+import { useNotification } from '../context/NotificationContext';
+import { Entry } from '../types/types';
 
-const EntryModal = ({ entry, onClose, onSuccess, defaultDate }) => {
+interface EntryModalProps {
+  entry?: Entry | null;
+  onClose: () => void;
+  onSuccess: () => void;
+  defaultDate: string;
+}
+
+const EntryModal = ({
+  entry,
+  onClose,
+  onSuccess,
+  defaultDate,
+}: EntryModalProps) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { showError, showSuccess } = useNotification();
 
@@ -18,7 +31,7 @@ const EntryModal = ({ entry, onClose, onSuccess, defaultDate }) => {
     content: entry?.content || '',
   });
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     try {
@@ -183,7 +196,7 @@ const EntryModal = ({ entry, onClose, onSuccess, defaultDate }) => {
               }
               name="content"
               id="content"
-              rows="10"
+              rows={10}
             />
           </div>
           <button

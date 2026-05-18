@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { format } from 'date-fns';
-import { useNotification } from '../context/NotificationContext.jsx';
+import { useNotification } from '../context/NotificationContext.js';
 import api from '../config/api.js';
-import EntryModal from '../components/EntryModal.jsx';
-import DeleteEntryModal from '../components/DeleteEntryModal.jsx';
+import EntryModal from '../components/EntryModal.js';
+import DeleteEntryModal from '../components/DeleteEntryModal.js';
+import { Entry } from '../types/types';
 
 const Dashboard = () => {
   useEffect(() => {
@@ -11,7 +12,7 @@ const Dashboard = () => {
   }, []);
 
   const [isLoading, setIsLoading] = useState(false);
-  const [entries, setEntries] = useState([]);
+  const [entries, setEntries] = useState<Entry[]>([]);
   const { showError } = useNotification();
 
   const todayDate = new Date();
@@ -19,19 +20,19 @@ const Dashboard = () => {
   const formattedTodayDate = format(todayDate, 'EEEE, MMMM d, yyyy'); // "Thursday, February 13, 2025"
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editingEntry, setEditingEntry] = useState(null);
+  const [editingEntry, setEditingEntry] = useState<Entry | null>(null);
 
   // Delete modal state management
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [deletingEntry, setDeletingEntry] = useState(null);
+  const [deletingEntry, setDeletingEntry] = useState<Entry | null>(null);
 
   // 'handleEdit' is used to open the edit entry modal. It is wired to the 'Edit' button rendered to each entry in the 'entries' array.
-  const handleEdit = (entry) => {
+  const handleEdit = (entry: Entry) => {
     setEditingEntry(entry); // Store the clicked entry's data
     setIsModalOpen(true); // Show the modal
   };
 
-  const handleDelete = (entry) => {
+  const handleDelete = (entry: Entry) => {
     setDeletingEntry(entry);
     setIsDeleteModalOpen(true);
   };
@@ -44,13 +45,14 @@ const Dashboard = () => {
   };
 
   // Color coding based on mood rating (1-5)
-  const moodColors = {
-    1: 'bg-red-200 border-red-300', // Worst mood.
-    2: 'bg-orange-200 border-orange-300',
-    3: 'bg-yellow-200 border-yellow-300',
-    4: 'bg-lime-200 border-lime-300',
-    5: 'bg-green-200 border-green-300', // Best mood.
-  };
+  const moodColors = [
+    '',
+    'bg-red-200 border-red-300', // Worst mood.
+    'bg-orange-200 border-orange-300',
+    'bg-yellow-200 border-yellow-300',
+    'bg-lime-200 border-lime-300',
+    'bg-green-200 border-green-300', // Best mood.
+  ];
 
   const fetchTodaysEntries = async () => {
     setIsLoading(true);
@@ -60,14 +62,16 @@ const Dashboard = () => {
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      const todaysEntries = response.data.filter((entry) => {
+      const todaysEntries = response.data.filter((entry: Entry) => {
         const entryDate = format(new Date(entry.entry_datetime), 'yyyy-MM-dd');
         return entryDate === todayDateString;
       });
 
       // Sort by time
       todaysEntries.sort(
-        (a, b) => new Date(a.entry_datetime) - new Date(b.entry_datetime),
+        (a: Entry, b: Entry) =>
+          new Date(a.entry_datetime).getTime() -
+          new Date(b.entry_datetime).getTime(),
       );
       setEntries(todaysEntries);
     } catch (err) {
@@ -165,7 +169,7 @@ const Dashboard = () => {
       {/* Edit Modal - only renders when isEditModalOpen is true */}
       {isModalOpen && (
         <EntryModal
-          entry={editingEntry} // Pass the entry data to pre-fill the form
+          entry={editingEntry}
           defaultDate={todayDateString}
           onClose={() => {
             setIsModalOpen(false);
@@ -177,7 +181,8 @@ const Dashboard = () => {
 
       {isDeleteModalOpen && (
         <DeleteEntryModal
-          entry={deletingEntry}
+
+          entry={deletingEntry!} // Leaving this here because this syntax is a little new to me. The '!' after the argument apparently tells TS 'This will definitely not be null'.
           onClose={() => {
             setIsDeleteModalOpen(false);
             setDeletingEntry(null);
