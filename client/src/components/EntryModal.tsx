@@ -8,7 +8,7 @@ interface EntryModalProps {
   entry?: Entry | null;
   onClose: () => void;
   onSuccess: () => void;
-  defaultDate: string;
+  defaultDate?: string;
 }
 
 const EntryModal = ({
@@ -25,7 +25,7 @@ const EntryModal = ({
       ? format(new Date(entry.entry_datetime), "yyyy-MM-dd'T'HH:mm")
       : defaultDate
         ? `${defaultDate}T00:00`
-        : '', // ← Use defaultDate if creating
+        : '',
     entry_type: entry?.entry_type || '',
     mood: entry?.mood?.toString() || '',
     content: entry?.content || '',

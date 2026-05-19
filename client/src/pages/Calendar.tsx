@@ -2,16 +2,16 @@ import React, { useEffect, useState } from 'react';
 import { useAuth } from '../context/AuthContext.js';
 import WeeklyView from '../components/WeeklyView.js';
 import api from '../config/api.js';
-import EntryModal from '../components/EntryModal.js';
 import MobileMonthlyView from '../components/MobileMonthlyView.js';
 import useIsMobile from '../hooks/useIsMobile.js';
+import { Entry } from '../types/types.ts';
 
 const Calendar = () => {
   const { user } = useAuth();
 
-  const [entries, setEntries] = useState([]);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [setEditingEntry] = useState(false);
+  const [entries, setEntries] = useState<Entry[]>([]);
+  // const [isModalOpen, setIsModalOpen] = useState(false);
+  // const [setEditingEntry] = useState(false);
   const isMobile = useIsMobile();
 
   // const handleSuccess = () => {

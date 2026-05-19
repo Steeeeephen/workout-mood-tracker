@@ -102,6 +102,7 @@ While it was not an issue in development, I came across an issue regarding time 
 
 ## Roadmap
 - [x] Mobile layout
+- [x] Converted to TypeScript
 - [ ] Entry Search Functionality
 - [ ] User profile with personal stats
 - [ ] Google OAuth

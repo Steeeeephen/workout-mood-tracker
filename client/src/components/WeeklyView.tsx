@@ -4,13 +4,19 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { isToday } from 'date-fns';
 import EntryModal from './EntryModal.js';
+import { Entry } from '../types/types.ts';
 
-const WeeklyView = ({ entries, fetchEntries }) => {
+interface EntryProps {
+  entries: Entry[];
+  fetchEntries: () => void;
+}
+
+const WeeklyView = ({ entries, fetchEntries }: EntryProps) => {
   const [weekOffset, setWeekOffset] = useState(0);
   const navigate = useNavigate();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [setEditingEntry] = useState(null);
+  const [editingEntry, setEditingEntry] = useState(null);
 
   const handleSuccess = () => {
     setIsModalOpen(false);
@@ -32,7 +38,12 @@ const WeeklyView = ({ entries, fetchEntries }) => {
     addDays(currentWeekStart, i),
   );
 
-  // The choice is a bit arbitrary, but for now time will be divided into four hour blocks.
+  interface TimeBlock {
+    label: string;
+    startHour: number;
+  }
+
+  // The choice is a bit arbitrary, but for now time will be divided into four-hour blocks.
   // Future versions could be converted to hourly blocks but in the early stages of a portfolio project this seems appropriate.
   const timeBlocks = [
     { label: '12am - 4am', startHour: 0 },
@@ -44,18 +55,19 @@ const WeeklyView = ({ entries, fetchEntries }) => {
   ];
 
   // Entries will be color coded depending on mood. This gives users an easy way to identify before clicking on a day cell for more details.
-  const moodColors = {
-    1: 'bg-red-100 border-red-400 text-red-800',
-    2: 'bg-orange-100 border-orange-400 text-orange-800',
-    3: 'bg-yellow-100 border-yellow-400 text-yellow-800',
-    4: 'bg-lime-100 border-lime-400 text-lime-800',
-    5: 'bg-green-100 border-green-400 text-green-800',
-  };
+  const moodColors = [
+    '',
+    'bg-red-200 border-red-300', // Worst mood.
+    'bg-orange-200 border-orange-300',
+    'bg-yellow-200 border-yellow-300',
+    'bg-lime-200 border-lime-300',
+    'bg-green-200 border-green-300', // Best mood.
+  ];
 
   // The renderCell function is a helper function for the logic of conditionally
   // rendering mood entries to the correct date and time block of the weekly calendar view.
   // renderCell accepts two arguments, 'date' and 'timeBlock'.
-  const renderCell = (date, timeBlock) => {
+  const renderCell = (date: Date, timeBlock: TimeBlock) => {
     // The date for this specific cell is passed and converted in a such a way to be easily compared to dates from db entries.
     const dateStr = format(date, 'yyyy-MM-dd');
 
@@ -178,7 +190,7 @@ const WeeklyView = ({ entries, fetchEntries }) => {
                     data-day={dayIndex}
                     data-hour={timeBlock.startHour}
                     className="bg-white p-3 h-24 hover:bg-teal-50 cursor-pointer transition-all border-b border-r border-gray-200 last:border-r-0  overflow-auto"
-                    onClick={() => handleCellClick(date, timeBlock)}
+                    onClick={() => handleCellClick(date)}
                   >
                     {renderCell(date, timeBlock)}
                   </div>

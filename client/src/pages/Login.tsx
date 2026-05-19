@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import api from '../config/api.js';
 import { useNavigate } from 'react-router-dom'; // Add this
 import { useAuth } from '../context/AuthContext.js'; // Add this
 import { useNotification } from '../context/NotificationContext.js';
+import axios from 'axios';
 
 const Login = () => {
   useEffect(() => {
@@ -18,20 +18,22 @@ const Login = () => {
   const { login } = useAuth();
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoggingIn(true);
     try {
       await login(email, password);
       showSuccess('Welcome back!');
       navigate('/');
-    } catch (err) {
-      if (err.response && err.response.status === 401) {
-        showError('Invalid email or password');
-      } else if (err.response && err.response.status === 500) {
-        showError('An error occurred. Please try again.');
-      } else {
-        showError('Unable to connect to server');
+    } catch (err: unknown) {
+      if (axios.isAxiosError(err)) {
+        if (err.response && err.response.status === 401) {
+          showError('Invalid email or password');
+        } else if (err.response && err.response.status === 500) {
+          showError('An error occurred. Please try again.');
+        } else {
+          showError('Unable to connect to server');
+        }
       }
     } finally {
       setIsLoggingIn(false);

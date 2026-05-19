@@ -1,5 +1,5 @@
 import './auth.css';
-import React, { useEffect, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import api from '../config/api.js';
 import { useNotification } from '../context/NotificationContext.js';
 import { useNavigate } from 'react-router-dom';
@@ -23,14 +23,14 @@ const Register = () => {
     confirmPassword: '',
   });
 
-  const handleChange = (e) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
     });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsRegistering(true);
     try {

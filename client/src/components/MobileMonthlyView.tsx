@@ -6,11 +6,16 @@ import {
   eachDayOfInterval,
   getDay,
   format,
-  isToday,
 } from 'date-fns';
 import EntryModal from './EntryModal.js';
+import { Entry } from '../types/types.ts';
 
-const MobileMonthlyView = ({ entries, fetchEntries }) => {
+interface EntryProps {
+  entries: Entry[];
+  fetchEntries: () => void;
+}
+
+const MobileMonthlyView = ({ entries, fetchEntries }: EntryProps) => {
   // I'm going to be reusing a good amount of code from WeeklyView to get the mobile calendar
   // working. This is important to come back to later and possibly create a custom hook.
 
@@ -24,7 +29,7 @@ const MobileMonthlyView = ({ entries, fetchEntries }) => {
     fetchEntries();
   };
 
-  const handleCellClick = (date) => {
+  const handleCellClick = (date: Date) => {
     // const dateStr = date.toISOString().split('T')[0];
     const dateStr = format(date, 'yyyy-MM-dd');
     navigate(`/day/${dateStr}`);
@@ -39,15 +44,16 @@ const MobileMonthlyView = ({ entries, fetchEntries }) => {
   const dayHeaders = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
   // Entries will be color coded depending on mood. This gives users an easy way to identify before clicking on a day cell for more details.
-  const moodColors = {
-    1: 'bg-red-600',
-    2: 'bg-orange-300',
-    3: 'bg-yellow-300',
-    4: 'bg-lime-300',
-    5: 'bg-green-600',
-  };
+  const moodColors = [
+    '',
+    'bg-red-200 border-red-300', // Worst mood.
+    'bg-orange-200 border-orange-300',
+    'bg-yellow-200 border-yellow-300',
+    'bg-lime-200 border-lime-300',
+    'bg-green-200 border-green-300', // Best mood.
+  ];
 
-  const renderCells = (date) => {
+  const renderCells = (date: Date) => {
     const dateStr = format(date, 'yyyy-MM-dd');
 
     return entries

@@ -5,11 +5,11 @@ import EntryModal from '../components/EntryModal';
 import DeleteEntryModal from '../components/DeleteEntryModal';
 import { useNotification } from '../context/NotificationContext';
 import api from '../config/api';
-import useIsMobile from '../hooks/useIsMobile';
+import { Entry } from '../types/types.ts';
 
 const DayView = () => {
   useEffect(() => {
-    document.title = `${format(parseISO(date), 'EEEE, MMMM d, yyyy')} - Workout Mood Tracker`;
+    document.title = `${format(parseISO(date ?? ''), 'EEEE, MMMM d, yyyy')} - Workout Mood Tracker`;
   }, []);
 
   const [isLoading, setIsLoading] = useState(false);
@@ -20,22 +20,22 @@ const DayView = () => {
 
   const navigate = useNavigate();
 
-  const [entries, setEntries] = useState([]); // This day's entries are saved to an array called 'entries' this is done via the 'fetchDayEntries' function below.
+  const [entries, setEntries] = useState<Entry[]>([]); // This day's entries are saved to an array called 'entries' this is done via the 'fetchDayEntries' function below.
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editingEntry, setEditingEntry] = useState(null);
+  const [editingEntry, setEditingEntry] = useState<Entry | null>(null);
 
   // 'handleEdit' is used to open the edit entry modal. It is wired to the 'Edit' button rendered to each entry in the 'entries' array.
-  const handleEdit = (entry) => {
+  const handleEdit = (entry: Entry) => {
     setEditingEntry(entry); // Store the clicked entry's data
     setIsModalOpen(true); // Show the modal
   };
 
   // Delete modal state management
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [deletingEntry, setDeletingEntry] = useState(null);
+  const [deletingEntry, setDeletingEntry] = useState<Entry | null>(null);
 
-  const handleDelete = (entry) => {
+  const handleDelete = (entry: Entry) => {
     setDeletingEntry(entry);
     setIsDeleteModalOpen(true);
   };
@@ -49,13 +49,14 @@ const DayView = () => {
   };
 
   // Color coding based on mood rating (1-5)
-  const moodColors = {
-    1: 'bg-red-200 border-red-300', // Worst mood.
-    2: 'bg-orange-200 border-orange-300',
-    3: 'bg-yellow-200 border-yellow-300',
-    4: 'bg-lime-200 border-lime-300',
-    5: 'bg-green-200 border-green-300', // Best mood.
-  };
+  const moodColors = [
+    '',
+    'bg-red-200 border-red-300', // Worst mood.
+    'bg-orange-200 border-orange-300',
+    'bg-yellow-200 border-yellow-300',
+    'bg-lime-200 border-lime-300',
+    'bg-green-200 border-green-300', // Best mood.
+  ];
 
   // Fetch entries for the selected day.
   const fetchDayEntries = async () => {
@@ -67,14 +68,16 @@ const DayView = () => {
       });
 
       // Filter by the date
-      const dayEntries = response.data.filter((entry) => {
+      const dayEntries = response.data.filter((entry: Entry) => {
         const entryDate = format(new Date(entry.entry_datetime), 'yyyy-MM-dd');
         return entryDate === date;
       });
 
       // Sort by time
       dayEntries.sort(
-        (a, b) => new Date(a.entry_datetime) - new Date(b.entry_datetime),
+        (a: Entry, b: Entry) =>
+          new Date(a.entry_datetime).getTime() -
+          new Date(b.entry_datetime).getTime(),
       );
 
       setEntries(dayEntries);
@@ -96,7 +99,7 @@ const DayView = () => {
       {isModalOpen && (
         <EntryModal
           entry={editingEntry} // Pass the entry data to pre-fill the form
-          defaultDate={date}
+          defaultDate={date ?? ''}
           onClose={() => {
             setIsModalOpen(false);
             setEditingEntry(null); // Clear state when closing
@@ -107,7 +110,7 @@ const DayView = () => {
 
       {isDeleteModalOpen && (
         <DeleteEntryModal
-          entry={deletingEntry}
+          entry={deletingEntry!}
           onClose={() => {
             setIsDeleteModalOpen(false);
             setDeletingEntry(null);
@@ -118,7 +121,7 @@ const DayView = () => {
 
       <div className="max-w-4xl mx-auto flex flex-col">
         <h1 className="text-4xl font-bold text-gray-800 text-center mb-6">
-          {format(parseISO(date), 'EEEE, MMMM d, yyyy')}
+          {format(parseISO(date ?? ''), 'EEEE, MMMM d, yyyy')}
         </h1>
         <div className="mb-6 flex items-center justify-between">
           <button

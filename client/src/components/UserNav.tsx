@@ -5,7 +5,7 @@ import { useNotification } from '../context/NotificationContext.js';
 
 const UserNav = () => {
   const { user, setUser, logout } = useAuth(); // Need setUser for logout
-  const userName = user.first_name + ' ' + user.last_name;
+  const userName = `${user?.first_name ?? ''} ${user?.last_name ?? ''}`.trim();
   const { showSuccess } = useNotification();
   const navigate = useNavigate();
   const avatarUrl = `https://ui-avatars.com/api/?name=${userName}&background=0d9488&color=fff&size=50`;
