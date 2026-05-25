@@ -4,23 +4,16 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { isToday } from 'date-fns';
 import EntryModal from './EntryModal.js';
-import { Entry } from '../types/types.ts';
+import { useFetchEntries } from '../context/FetchEntriesContext.tsx';
 
-interface EntryProps {
-  entries: Entry[];
-  fetchEntries: () => void;
-}
-
-const WeeklyView = ({ entries, fetchEntries }: EntryProps) => {
+const WeeklyView = () => {
   const [weekOffset, setWeekOffset] = useState(0);
   const navigate = useNavigate();
-
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editingEntry, setEditingEntry] = useState(null);
+  const { fetchEntries, entries } = useFetchEntries();
 
   const handleSuccess = () => {
     setIsModalOpen(false);
-    setEditingEntry(null);
     fetchEntries();
   };
 

@@ -1,19 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { format } from 'date-fns';
-import { useNotification } from '../context/NotificationContext.js';
-import api from '../config/api.js';
 import EntryModal from '../components/EntryModal.js';
 import DeleteEntryModal from '../components/DeleteEntryModal.js';
 import { Entry } from '../types/types';
+import { useFetchEntries } from '../context/FetchEntriesContext.tsx';
 
 const Dashboard = () => {
   useEffect(() => {
     document.title = 'Today at a glance - Workout Mood Tracker';
   }, []);
 
-  const [isLoading, setIsLoading] = useState(false);
-  const [entries, setEntries] = useState<Entry[]>([]);
-  const { showError } = useNotification();
+  const { entries, isLoading, fetchEntries } = useFetchEntries();
 
   const todayDate = new Date();
   const todayDateString = format(todayDate, 'yyyy-MM-dd'); // "2025-02-13"
@@ -22,14 +19,12 @@ const Dashboard = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingEntry, setEditingEntry] = useState<Entry | null>(null);
 
-  // Delete modal state management
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [deletingEntry, setDeletingEntry] = useState<Entry | null>(null);
 
-  // 'handleEdit' is used to open the edit entry modal. It is wired to the 'Edit' button rendered to each entry in the 'entries' array.
   const handleEdit = (entry: Entry) => {
-    setEditingEntry(entry); // Store the clicked entry's data
-    setIsModalOpen(true); // Show the modal
+    setEditingEntry(entry);
+    setIsModalOpen(true);
   };
 
   const handleDelete = (entry: Entry) => {
@@ -40,11 +35,10 @@ const Dashboard = () => {
   const handleSuccess = () => {
     setIsModalOpen(false);
     setIsDeleteModalOpen(false);
-    setEditingEntry(null); // Clear the editing state
-    fetchTodaysEntries(); // Refresh to show updated entry
+    setEditingEntry(null);
+    fetchEntries();
   };
 
-  // Color coding based on mood rating (1-5)
   const moodColors = [
     '',
     'bg-red-200 border-red-300', // Worst mood.
@@ -54,46 +48,28 @@ const Dashboard = () => {
     'bg-green-200 border-green-300', // Best mood.
   ];
 
-  const fetchTodaysEntries = async () => {
-    setIsLoading(true);
-    try {
-      const token = localStorage.getItem('token');
-      const response = await api.get('/entries', {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-
-      const todaysEntries = response.data.filter((entry: Entry) => {
+  const todaysEntries = useMemo(() => {
+    return entries
+      .filter((entry: Entry) => {
         const entryDate = format(new Date(entry.entry_datetime), 'yyyy-MM-dd');
         return entryDate === todayDateString;
-      });
-
-      // Sort by time
-      todaysEntries.sort(
-        (a: Entry, b: Entry) =>
+      })
+      .sort((a: Entry, b: Entry) => {
+        return (
           new Date(a.entry_datetime).getTime() -
-          new Date(b.entry_datetime).getTime(),
-      );
-      setEntries(todaysEntries);
-    } catch (err) {
-      console.error(err);
-      showError('Failed to load entries.');
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchTodaysEntries();
-  }, []);
+          new Date(b.entry_datetime).getTime()
+        );
+      });
+  }, [entries]);
 
   return (
     <div className="grow">
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-6xl mx-auto border-2 border-gray-200 rounded-lg shadow-lg p-6 bg-white">
         {/* Header */}
         <div className="mb-8">
           <div className="flex flex-col justify-between items-center md:flex-row md:items-start">
             <h1 className="text-2xl font-bold md:text-5xl">
-              {formattedTodayDate}
+              Today's Activities
             </h1>
 
             <button
@@ -106,8 +82,7 @@ const Dashboard = () => {
         </div>
 
         <div className="bg-slate-800/25 backdrop-blur rounded-xl p-6">
-          <h2 className="text-2xl font-bold  mb-4">Today's Activities</h2>
-          {/* Entries list will go here */}
+          <h2 className="text-2xl font-bold  mb-4"> {formattedTodayDate}</h2>
           {isLoading ? (
             <div>Loading entries...</div>
           ) : entries.length === 0 ? (
@@ -116,7 +91,7 @@ const Dashboard = () => {
             </div>
           ) : (
             <div className="space-y-6">
-              {entries.map((entry) => (
+              {todaysEntries.map((entry) => (
                 <div key={entry.id} className="flex items-start gap-4">
                   {/* Time */}
                   <div className="w-20 text-right text-sm font-semibold text-gray-600 pt-1">
@@ -166,14 +141,13 @@ const Dashboard = () => {
         </div>
       </div>
 
-      {/* Edit Modal - only renders when isEditModalOpen is true */}
       {isModalOpen && (
         <EntryModal
           entry={editingEntry}
           defaultDate={todayDateString}
           onClose={() => {
             setIsModalOpen(false);
-            setEditingEntry(null); // Clear state when closing
+            setEditingEntry(null);
           }}
           onSuccess={handleSuccess}
         />
@@ -181,7 +155,6 @@ const Dashboard = () => {
 
       {isDeleteModalOpen && (
         <DeleteEntryModal
-
           entry={deletingEntry!} // Leaving this here because this syntax is a little new to me. The '!' after the argument apparently tells TS 'This will definitely not be null'.
           onClose={() => {
             setIsDeleteModalOpen(false);

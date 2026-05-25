@@ -1,4 +1,10 @@
-import { createContext, ReactNode, useContext, useState } from 'react';
+import {
+  createContext,
+  ReactNode,
+  useCallback,
+  useContext,
+  useState,
+} from 'react';
 
 interface NotificationContextType {
   error: string | null;
@@ -15,15 +21,15 @@ export const NotificationProvider = ({ children }: { children: ReactNode }) => {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
 
-  const showError = (message: string) => {
+  const showError = useCallback((message: string) => {
     setError(message);
     setTimeout(() => setError(null), 5000);
-  };
+  }, []);
 
-  const showSuccess = (message: string) => {
+  const showSuccess = useCallback((message: string) => {
     setSuccess(message);
     setTimeout(() => setSuccess(null), 3000);
-  };
+  }, []);
 
   const clearError = () => setError(null);
   const clearSuccess = () => setSuccess(null);

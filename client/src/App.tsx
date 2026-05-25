@@ -11,38 +11,41 @@ import Login from './pages/Login';
 import NotificationToast from './components/NotificationToast';
 import { NotificationProvider } from './context/NotificationContext';
 import Footer from './components/Footer';
+import { FetchEntriesProvider } from './context/FetchEntriesContext.tsx';
 
 function App() {
   return (
     <main className="min-h-screen flex flex-col">
       <NotificationProvider>
         <AuthProvider>
-          <BrowserRouter>
-            <Navbar />
-            <NotificationToast />
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route
-                path="/calendar"
-                element={
-                  <ProtectedRoute>
-                    <Calendar />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/day/:date"
-                element={
-                  <ProtectedRoute>
-                    <DayView />
-                  </ProtectedRoute>
-                }
-              />
-              <Route path="/register" element={<Register />} />
-              <Route path="/login" element={<Login />} />
-            </Routes>
-            <Footer />
-          </BrowserRouter>
+          <FetchEntriesProvider>
+            <BrowserRouter>
+              <Navbar />
+              <NotificationToast />
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route
+                  path="/calendar"
+                  element={
+                    <ProtectedRoute>
+                      <Calendar />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/day/:date"
+                  element={
+                    <ProtectedRoute>
+                      <DayView />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route path="/register" element={<Register />} />
+                <Route path="/login" element={<Login />} />
+              </Routes>
+              <Footer />
+            </BrowserRouter>
+          </FetchEntriesProvider>
         </AuthProvider>
       </NotificationProvider>
     </main>

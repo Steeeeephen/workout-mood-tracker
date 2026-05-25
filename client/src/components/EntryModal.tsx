@@ -20,12 +20,14 @@ const EntryModal = ({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { showError, showSuccess } = useNotification();
 
+  console.log(`Default Date: ${defaultDate}`);
+
   const [formData, setFormData] = useState({
     entry_datetime: entry?.entry_datetime
       ? format(new Date(entry.entry_datetime), "yyyy-MM-dd'T'HH:mm")
       : defaultDate
-        ? `${defaultDate}T00:00`
-        : '',
+        ? `${defaultDate}T${format(new Date(), 'HH:mm')}`
+        : format(new Date(), "yyyy-MM-dd'T'HH:mm"),
     entry_type: entry?.entry_type || '',
     mood: entry?.mood?.toString() || '',
     content: entry?.content || '',

@@ -8,29 +8,22 @@ import {
   format,
 } from 'date-fns';
 import EntryModal from './EntryModal.js';
-import { Entry } from '../types/types.ts';
+import SearchFilter from './SearchFilter.tsx';
+import { useFetchEntries } from '../context/FetchEntriesContext.tsx';
 
-interface EntryProps {
-  entries: Entry[];
-  fetchEntries: () => void;
-}
-
-const MobileMonthlyView = ({ entries, fetchEntries }: EntryProps) => {
+const MobileMonthlyView = () => {
   // I'm going to be reusing a good amount of code from WeeklyView to get the mobile calendar
   // working. This is important to come back to later and possibly create a custom hook.
-
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editingEntry, setEditingEntry] = useState(null);
+  const { fetchEntries, entries } = useFetchEntries();
 
   const handleSuccess = () => {
     setIsModalOpen(false);
-    setEditingEntry(null);
     fetchEntries();
   };
 
   const handleCellClick = (date: Date) => {
-    // const dateStr = date.toISOString().split('T')[0];
     const dateStr = format(date, 'yyyy-MM-dd');
     navigate(`/day/${dateStr}`);
   };
@@ -79,8 +72,9 @@ const MobileMonthlyView = ({ entries, fetchEntries }: EntryProps) => {
         <h2 className="text-2xl font-bold text-gray-800">
           {format(currentDate, 'MMMM yyyy')}
         </h2>
+
         <button
-          className="bg-green-400 rounded cursor-pointer p-3 w-full mt-3"
+          className="bg-green-400 cursor-pointer p-3 w-full"
           onClick={() => setIsModalOpen(true)}
         >
           Create Entry
@@ -97,7 +91,7 @@ const MobileMonthlyView = ({ entries, fetchEntries }: EntryProps) => {
       </div>
 
       {/* Calendar grid */}
-      <div className="grid grid-cols-7">
+      <div className="grid grid-cols-7 b">
         {emptyCells.map((_, i) => (
           <div key={`empty-${i}`} />
         ))}
@@ -106,7 +100,7 @@ const MobileMonthlyView = ({ entries, fetchEntries }: EntryProps) => {
 
           return (
             <div
-              className="flex flex-col items-center "
+              className="flex flex-col items-center border-b border-r border-gray-200"
               style={{ height: '64px' }}
               key={format(date, 'yyyy-MM-dd')}
               onClick={() => handleCellClick(date)}
@@ -124,6 +118,8 @@ const MobileMonthlyView = ({ entries, fetchEntries }: EntryProps) => {
           );
         })}
       </div>
+
+      <SearchFilter />
     </>
   );
 };
