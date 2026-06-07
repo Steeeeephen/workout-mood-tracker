@@ -10,21 +10,17 @@ export const registerUser = async (req, res) => {
 
     try {
 
-        // Checking if user already exists.
         const existingUser = await prisma.user.findUnique({where: {email}});
         if(existingUser){
             return res.status(400).json({ message: "User already exists." })
         }
 
-        // Hash the password with bcrypt.
         const hashedPassword = await bcrypt.hash(password, saltRounds);
 
-        // Create new user with field data, and hashed password.
         const user = await prisma.user.create({
             data: {first_name, last_name, email, password: hashedPassword}
         })
 
-        // Generate JWT token
         const token = jwt.sign(
             { userId: user.id, email: user.email },
             process.env.JWT_SECRET,
@@ -52,7 +48,6 @@ export const loginUser = async (req, res) => {
     const { email, password } = req.body;
 
     try{
-        // Find user by email
         const user = await prisma.user.findUnique({
             where: { email }
         });
@@ -61,21 +56,18 @@ export const loginUser = async (req, res) => {
             return res.status(401).json({ message: "Invalid email or password" });
         }
 
-        // Compare password w/hashed password
         const isPasswordValid = await bcrypt.compare(password, user.password);
 
         if(!isPasswordValid){
             return res.status(401).json({ message: "Invalid email or password." });
         }
 
-        // Generate JWT token
         const token = jwt.sign(
             {userId: user.id, email: user.email},
             process.env.JWT_SECRET,
             { expiresIn: '24h' }
         )
 
-        // Send response with token
         res.status(200).json({
             message: "Login successful",
             token: token,
@@ -87,7 +79,6 @@ export const loginUser = async (req, res) => {
             }
         });
 
-
     } catch (err) {
         console.error(err);
         res.status(500).json({ message: "Server error" });
@@ -95,10 +86,6 @@ export const loginUser = async (req, res) => {
 }
 
 export const logoutUser = (req, res) => {
-    // For JWT stored in localStorage (client-side):
-    // The client just deletes the token from localStorage
-    // Server doesn't need to do anything
-
-    res.status(200).json({ message: "Logout successful" });
+  res.status(200).json({ message: "Logout successful" });
 };
 
