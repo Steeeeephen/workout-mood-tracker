@@ -3,7 +3,7 @@ CREATE TYPE "EntryType" AS ENUM ('pre-workout', 'workout', 'post-workout', 'misc
 
 -- CreateTable
 CREATE TABLE "users" (
-    "id" BIGSERIAL NOT NULL,
+    "id" SERIAL NOT NULL,
     "first_name" TEXT NOT NULL,
     "last_name" TEXT NOT NULL,
     "email" TEXT NOT NULL,
@@ -16,12 +16,13 @@ CREATE TABLE "users" (
 
 -- CreateTable
 CREATE TABLE "entries" (
-    "id" BIGSERIAL NOT NULL,
-    "user_id" BIGINT NOT NULL,
+    "id" SERIAL NOT NULL,
+    "user_id" INTEGER NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
     "entry_type" "EntryType" NOT NULL,
-    "mood_rating" SMALLINT,
+    "entry_datetime" TIMESTAMP(3) NOT NULL,
+    "mood" SMALLINT,
     "content" TEXT,
     "details" JSONB,
 

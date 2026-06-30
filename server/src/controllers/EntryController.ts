@@ -1,6 +1,7 @@
-import { prisma } from "../lib/prisma.js";
+import { prisma } from "../lib/prisma.ts";
+import type { Request, Response } from "express";
 
-export const createEntry = async (req, res) => {
+export const createEntry = async (req: Request, res: Response) => {
   try {
     const entry = await prisma.entry.create({
       data: {
@@ -9,7 +10,7 @@ export const createEntry = async (req, res) => {
       },
     });
     res.status(201).json(entry);
-  } catch (err) {
+  } catch (err: Error | any) {
     console.error("Controller error:", err);
     res.status(500).json({
       error: "Failed to post data",
@@ -18,10 +19,14 @@ export const createEntry = async (req, res) => {
   }
 };
 
-export const getEntriesByDate = async (req, res) => {
+export const getEntriesByDate = async (req: Request, res: Response) => {
   try {
     const userId = req.userId;
     const { date } = req.params;
+
+    if (!userId) {
+      return res.status(401).json({ error: "Unauthorized" });
+    }
 
     const startOfDay = new Date(date + "T00:00:00.000Z");
     const endOfDay = new Date(date + "T23:59:59.999Z");
@@ -38,18 +43,22 @@ export const getEntriesByDate = async (req, res) => {
     });
 
     res.status(200).json(entries);
-  } catch (err) {
+  } catch (err: Error | any) {
     console.error("Error in controller:", err);
-    res.status.json({
+    res.status(500).json({
       error: "Failed to fetch data",
       message: err.message,
     });
   }
 };
 
-export const getEntries = async (req, res) => {
+export const getEntries = async (req: Request, res: Response) => {
   try {
     const userId = req.userId;
+
+    if (!userId) {
+      return res.status(401).json({ error: "Unauthorized" });
+    }
 
     const entries = await prisma.entry.findMany({
       where: {
@@ -57,18 +66,27 @@ export const getEntries = async (req, res) => {
       },
     });
     res.status(200).json(entries);
-  } catch (err) {
+  } catch (err: Error | any) {
     console.error("Error in controller:", err);
-    res.status.json({
+    res.status(500).json({
       error: "Failed to fetch data",
       message: err.message,
     });
   }
 };
 
-export const getEntry = async (req, res) => {
+export const getEntry = async (req: Request, res: Response) => {
   try {
     const userId = req.userId;
+
+    if (!userId) {
+      return res.status(401).json({ error: "Unauthorized" });
+    }
+
+    if (typeof req.params.id !== "string") {
+      return res.status(400).json({ error: "Invalid entry ID" });
+    }
+
     const entryId = parseInt(req.params.id);
 
     if (isNaN(entryId)) {
@@ -87,7 +105,7 @@ export const getEntry = async (req, res) => {
     }
 
     res.status(200).json(entry);
-  } catch (err) {
+  } catch (err: Error | any) {
     console.error("Error in controller:", err);
     res.status(500).json({
       error: "Error fetching data",
@@ -96,9 +114,18 @@ export const getEntry = async (req, res) => {
   }
 };
 
-export const updateEntry = async (req, res) => {
+export const updateEntry = async (req: Request, res: Response) => {
   try {
     const userId = req.userId;
+
+    if (!userId) {
+      return res.status(401).json({ error: "Unauthorized" });
+    }
+
+    if (typeof req.params.id !== "string") {
+      return res.status(400).json({ error: "Invalid entry ID" });
+    }
+
     const entryId = parseInt(req.params.id);
 
     if (isNaN(entryId)) {
@@ -114,7 +141,7 @@ export const updateEntry = async (req, res) => {
     });
 
     res.status(200).json(entry);
-  } catch (err) {
+  } catch (err: Error | any) {
     console.error("Error in controller", err);
     res.status(500).json({
       error: "Error updating data",
@@ -123,12 +150,20 @@ export const updateEntry = async (req, res) => {
   }
 };
 
-export const deleteEntry = async (req, res) => {
+export const deleteEntry = async (req: Request, res: Response) => {
   try {
     const userId = req.userId;
+
+    if (!userId) {
+      return res.status(401).json({ error: "Unauthorized" });
+    }
+
+    if (typeof req.params.id !== "string") {
+      return res.status(400).json({ error: "Invalid entry ID" });
+    }
+
     const entryId = parseInt(req.params.id);
 
-    // Validate it's a valid number
     if (isNaN(entryId)) {
       return res.status(400).json({ error: "Invalid entry ID" });
     }
@@ -149,7 +184,7 @@ export const deleteEntry = async (req, res) => {
     });
 
     res.status(204).send();
-  } catch (err) {
+  } catch (err: Error | any) {
     console.error("Error in controller", err);
     res.status(500).json({
       error: "Error deleting data",

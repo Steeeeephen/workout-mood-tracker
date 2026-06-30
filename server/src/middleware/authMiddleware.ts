@@ -1,7 +1,17 @@
 import jwt from "jsonwebtoken";
-import { prisma } from "../lib/prisma.js";
+import { prisma } from "../lib/prisma.ts";
+import type { NextFunction } from "express";
+import type { Request, Response } from "express";
 
-export const authenticateToken = async (req, res, next) => {
+interface CustomJwtPayload extends jwt.JwtPayload {
+  userId: number;
+}
+
+export const authenticateToken = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   const authHeader = req.headers["authorization"];
   const token = authHeader && authHeader.split(" ")[1];
 
@@ -12,7 +22,11 @@ export const authenticateToken = async (req, res, next) => {
   }
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(
+      token,
+      process.env.JWT_SECRET!,
+    ) as CustomJwtPayload;
+    console.log(typeof decoded.userId);
 
     const user = await prisma.user.findUnique({
       where: { id: decoded.userId },
@@ -23,7 +37,6 @@ export const authenticateToken = async (req, res, next) => {
     }
 
     req.userId = decoded.userId;
-
     next();
   } catch (err) {
     return res.status(403).json({ message: "Invalid or expired token." });
