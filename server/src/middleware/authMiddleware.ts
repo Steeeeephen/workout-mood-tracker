@@ -26,7 +26,6 @@ export const authenticateToken = async (
       token,
       process.env.JWT_SECRET!,
     ) as CustomJwtPayload;
-    console.log(typeof decoded.userId);
 
     const user = await prisma.user.findUnique({
       where: { id: decoded.userId },
