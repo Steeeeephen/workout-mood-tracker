@@ -53,7 +53,6 @@ const EntryModal = ({
           headers: { Authorization: `Bearer ${token}` },
         });
       } else {
-        // CREATE new entry
         await api.post('entries', payload, {
           headers: { Authorization: `Bearer ${token}` },
         });
@@ -83,35 +82,35 @@ const EntryModal = ({
         </div>
 
         <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
-          <div className="flex flex-col gap-4 justify-between md:flex md:flex-row">
-            <input
-              type="datetime-local"
-              className="text-lg"
-              value={formData.entry_datetime}
-              onChange={(e) =>
-                setFormData({ ...formData, entry_datetime: e.target.value })
-              }
-            />
+          {/*<div className="flex flex-col gap-4 justify-between md:flex md:flex-row">*/}
+          <input
+            type="datetime-local"
+            className="text-lg"
+            value={formData.entry_datetime}
+            onChange={(e) =>
+              setFormData({ ...formData, entry_datetime: e.target.value })
+            }
+          />
 
-            <select
-              name="entryType"
-              className="text-lg"
-              id="entryType"
-              value={formData.entry_type}
-              onChange={(e) =>
-                setFormData({ ...formData, entry_type: e.target.value })
-              }
-              required
-            >
-              <option value="" disabled>
-                Entry Type
-              </option>
-              <option value="PRE_WORKOUT">Pre Workout</option>
-              <option value="WORKOUT">Workout</option>
-              <option value="POST_WORKOUT">Post Workout</option>
-              <option value="MISC">Misc</option>
-            </select>
-          </div>
+          <select
+            name="entryType"
+            className="text-lg"
+            id="entryType"
+            value={formData.entry_type}
+            onChange={(e) =>
+              setFormData({ ...formData, entry_type: e.target.value })
+            }
+            required
+          >
+            <option value="" disabled>
+              Entry Type
+            </option>
+            <option value="PRE_WORKOUT">Pre Workout</option>
+            <option value="WORKOUT">Workout</option>
+            <option value="POST_WORKOUT">Post Workout</option>
+            <option value="MISC">Misc</option>
+          </select>
+          {/*</div>*/}
           <div>
             <fieldset className="flex justify-around items-center border p-2 rounded">
               <legend>Mood Rating</legend>
@@ -190,6 +189,7 @@ const EntryModal = ({
 
           <div className=" rounded-2xl">
             <label htmlFor="content">Notes</label>
+
             <textarea
               className="border-gray-300 bg-zinc-200 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent outline-none mb-4 p-3 w-full"
               value={formData.content}
@@ -200,6 +200,7 @@ const EntryModal = ({
               id="content"
               rows={10}
             />
+
           </div>
           <button
             className="w-full px-8 py-3 bg-teal-600 text-white font-semibold rounded-lg hover:bg-teal-700 transition-colors shadow-md disabled:opacity-50"
