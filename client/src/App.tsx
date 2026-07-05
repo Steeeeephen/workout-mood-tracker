@@ -12,6 +12,8 @@ import NotificationToast from './components/NotificationToast';
 import { NotificationProvider } from './context/NotificationContext';
 import Footer from './components/Footer';
 import { FetchEntriesProvider } from './context/FetchEntriesContext.tsx';
+import Profile from './pages/Profile.tsx';
+import RedirectIfAuth from './components/guards/RedirectIfAuth.tsx';
 
 function App() {
   return (
@@ -40,8 +42,23 @@ function App() {
                     </ProtectedRoute>
                   }
                 />
-                <Route path="/register" element={<Register />} />
-                <Route path="/login" element={<Login />} />
+                <Route path="/me" element={<Profile />} />
+                <Route
+                  path="/register"
+                  element={
+                    <RedirectIfAuth>
+                      <Register />
+                    </RedirectIfAuth>
+                  }
+                />
+                <Route
+                  path="/login"
+                  element={
+                    <RedirectIfAuth>
+                      <Login />
+                    </RedirectIfAuth>
+                  }
+                />
               </Routes>
               <Footer />
             </BrowserRouter>
