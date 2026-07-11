@@ -17,10 +17,13 @@ export const registerUser = async (
   req: Request<{}, {}, RegisterUserRequestBody>,
   res: Response,
 ) => {
-  const { first_name, last_name, email, password } = req.body;
 
   try {
+
+    const { first_name, last_name, email, password } = req.body;
+
     const existingUser = await prisma.user.findUnique({ where: { email } });
+
     if (existingUser) {
       return res.status(400).json({ message: "User already exists." });
     }
@@ -44,8 +47,8 @@ export const registerUser = async (
       email: user.email,
       first_name: user.first_name,
     });
-  } catch (err) {
-    console.error(err);
+  } catch (err: any) {
+    console.error("Error registering user:", err);
     return res.status(500).json({ message: "Error registering user" });
   }
 };

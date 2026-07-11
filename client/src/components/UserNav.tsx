@@ -24,7 +24,7 @@ const UserNav = () => {
     <>
       <div className="hidden gap-4 items-center md:flex">
         <Link to="/calendar">Calendar</Link>
-        <Link className="flex items-center" to="#">
+        <Link className="flex items-center" to="/me">
           <img className="rounded-full" src={avatarUrl} alt="" />
         </Link>
         <button

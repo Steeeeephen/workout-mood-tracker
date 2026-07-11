@@ -4,14 +4,18 @@ import api from '../config/api.js';
 import { useNotification } from '../context/NotificationContext.js';
 import { useNavigate } from 'react-router-dom';
 
+import { useAuth } from '../context/AuthContext.js';
+
 const Register = () => {
+  const [isRegistering, setIsRegistering] = useState(false);
+  const navigate = useNavigate();
+  const { showError, showSuccess } = useNotification();
+
   useEffect(() => {
     document.title = 'Register - Workout Mood Tracker';
   }, []);
 
-  const [isRegistering, setIsRegistering] = useState(false);
-  const navigate = useNavigate();
-  const { showError, showSuccess } = useNotification();
+
 
   // Common pattern for handling forms in react: don't create separate pieces of state for each field. Use one piece of state called formData (or something like that)
   // as an object with each property being a field in the form.
@@ -33,6 +37,13 @@ const Register = () => {
   const handleSubmit = async (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsRegistering(true);
+
+    if (formData.password !== formData.confirmPassword) {
+      showError('Passwords do not match');
+      setIsRegistering(false);
+      return;
+    }
+
     try {
       await api.post('/auth/register', formData);
       showSuccess('Account created! Please log in.');
@@ -61,7 +72,9 @@ const Register = () => {
           name="email"
           id="registerEmail"
           placeholder="Email"
-          className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent outline-none"
+          className={
+            'w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent outline-none'
+          }
           value={formData.email}
           onChange={handleChange}
           required
