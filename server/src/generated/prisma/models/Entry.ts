@@ -33,14 +33,14 @@ export type EntryAvgAggregateOutputType = {
 }
 
 export type EntrySumAggregateOutputType = {
-  id: bigint | null
-  user_id: bigint | null
+  id: number | null
+  user_id: number | null
   mood: number | null
 }
 
 export type EntryMinAggregateOutputType = {
-  id: bigint | null
-  user_id: bigint | null
+  id: number | null
+  user_id: number | null
   created_at: Date | null
   updated_at: Date | null
   entry_type: $Enums.EntryType | null
@@ -50,8 +50,8 @@ export type EntryMinAggregateOutputType = {
 }
 
 export type EntryMaxAggregateOutputType = {
-  id: bigint | null
-  user_id: bigint | null
+  id: number | null
+  user_id: number | null
   created_at: Date | null
   updated_at: Date | null
   entry_type: $Enums.EntryType | null
@@ -208,8 +208,8 @@ export type EntryGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
 }
 
 export type EntryGroupByOutputType = {
-  id: bigint
-  user_id: bigint
+  id: number
+  user_id: number
   created_at: Date
   updated_at: Date
   entry_type: $Enums.EntryType
@@ -243,8 +243,8 @@ export type EntryWhereInput = {
   AND?: Prisma.EntryWhereInput | Prisma.EntryWhereInput[]
   OR?: Prisma.EntryWhereInput[]
   NOT?: Prisma.EntryWhereInput | Prisma.EntryWhereInput[]
-  id?: Prisma.BigIntFilter<"Entry"> | bigint | number
-  user_id?: Prisma.BigIntFilter<"Entry"> | bigint | number
+  id?: Prisma.IntFilter<"Entry"> | number
+  user_id?: Prisma.IntFilter<"Entry"> | number
   created_at?: Prisma.DateTimeFilter<"Entry"> | Date | string
   updated_at?: Prisma.DateTimeFilter<"Entry"> | Date | string
   entry_type?: Prisma.EnumEntryTypeFilter<"Entry"> | $Enums.EntryType
@@ -269,11 +269,11 @@ export type EntryOrderByWithRelationInput = {
 }
 
 export type EntryWhereUniqueInput = Prisma.AtLeast<{
-  id?: bigint | number
+  id?: number
   AND?: Prisma.EntryWhereInput | Prisma.EntryWhereInput[]
   OR?: Prisma.EntryWhereInput[]
   NOT?: Prisma.EntryWhereInput | Prisma.EntryWhereInput[]
-  user_id?: Prisma.BigIntFilter<"Entry"> | bigint | number
+  user_id?: Prisma.IntFilter<"Entry"> | number
   created_at?: Prisma.DateTimeFilter<"Entry"> | Date | string
   updated_at?: Prisma.DateTimeFilter<"Entry"> | Date | string
   entry_type?: Prisma.EnumEntryTypeFilter<"Entry"> | $Enums.EntryType
@@ -305,8 +305,8 @@ export type EntryScalarWhereWithAggregatesInput = {
   AND?: Prisma.EntryScalarWhereWithAggregatesInput | Prisma.EntryScalarWhereWithAggregatesInput[]
   OR?: Prisma.EntryScalarWhereWithAggregatesInput[]
   NOT?: Prisma.EntryScalarWhereWithAggregatesInput | Prisma.EntryScalarWhereWithAggregatesInput[]
-  id?: Prisma.BigIntWithAggregatesFilter<"Entry"> | bigint | number
-  user_id?: Prisma.BigIntWithAggregatesFilter<"Entry"> | bigint | number
+  id?: Prisma.IntWithAggregatesFilter<"Entry"> | number
+  user_id?: Prisma.IntWithAggregatesFilter<"Entry"> | number
   created_at?: Prisma.DateTimeWithAggregatesFilter<"Entry"> | Date | string
   updated_at?: Prisma.DateTimeWithAggregatesFilter<"Entry"> | Date | string
   entry_type?: Prisma.EnumEntryTypeWithAggregatesFilter<"Entry"> | $Enums.EntryType
@@ -317,7 +317,6 @@ export type EntryScalarWhereWithAggregatesInput = {
 }
 
 export type EntryCreateInput = {
-  id?: bigint | number
   created_at?: Date | string
   updated_at?: Date | string
   entry_type: $Enums.EntryType
@@ -329,8 +328,8 @@ export type EntryCreateInput = {
 }
 
 export type EntryUncheckedCreateInput = {
-  id?: bigint | number
-  user_id: bigint | number
+  id?: number
+  user_id: number
   created_at?: Date | string
   updated_at?: Date | string
   entry_type: $Enums.EntryType
@@ -341,7 +340,6 @@ export type EntryUncheckedCreateInput = {
 }
 
 export type EntryUpdateInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   entry_type?: Prisma.EnumEntryTypeFieldUpdateOperationsInput | $Enums.EntryType
@@ -353,8 +351,8 @@ export type EntryUpdateInput = {
 }
 
 export type EntryUncheckedUpdateInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  user_id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  user_id?: Prisma.IntFieldUpdateOperationsInput | number
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   entry_type?: Prisma.EnumEntryTypeFieldUpdateOperationsInput | $Enums.EntryType
@@ -365,8 +363,8 @@ export type EntryUncheckedUpdateInput = {
 }
 
 export type EntryCreateManyInput = {
-  id?: bigint | number
-  user_id: bigint | number
+  id?: number
+  user_id: number
   created_at?: Date | string
   updated_at?: Date | string
   entry_type: $Enums.EntryType
@@ -377,7 +375,6 @@ export type EntryCreateManyInput = {
 }
 
 export type EntryUpdateManyMutationInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   entry_type?: Prisma.EnumEntryTypeFieldUpdateOperationsInput | $Enums.EntryType
@@ -388,8 +385,8 @@ export type EntryUpdateManyMutationInput = {
 }
 
 export type EntryUncheckedUpdateManyInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
-  user_id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  user_id?: Prisma.IntFieldUpdateOperationsInput | number
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   entry_type?: Prisma.EnumEntryTypeFieldUpdateOperationsInput | $Enums.EntryType
@@ -514,7 +511,6 @@ export type NullableStringFieldUpdateOperationsInput = {
 }
 
 export type EntryCreateWithoutUserInput = {
-  id?: bigint | number
   created_at?: Date | string
   updated_at?: Date | string
   entry_type: $Enums.EntryType
@@ -525,7 +521,7 @@ export type EntryCreateWithoutUserInput = {
 }
 
 export type EntryUncheckedCreateWithoutUserInput = {
-  id?: bigint | number
+  id?: number
   created_at?: Date | string
   updated_at?: Date | string
   entry_type: $Enums.EntryType
@@ -565,8 +561,8 @@ export type EntryScalarWhereInput = {
   AND?: Prisma.EntryScalarWhereInput | Prisma.EntryScalarWhereInput[]
   OR?: Prisma.EntryScalarWhereInput[]
   NOT?: Prisma.EntryScalarWhereInput | Prisma.EntryScalarWhereInput[]
-  id?: Prisma.BigIntFilter<"Entry"> | bigint | number
-  user_id?: Prisma.BigIntFilter<"Entry"> | bigint | number
+  id?: Prisma.IntFilter<"Entry"> | number
+  user_id?: Prisma.IntFilter<"Entry"> | number
   created_at?: Prisma.DateTimeFilter<"Entry"> | Date | string
   updated_at?: Prisma.DateTimeFilter<"Entry"> | Date | string
   entry_type?: Prisma.EnumEntryTypeFilter<"Entry"> | $Enums.EntryType
@@ -577,7 +573,7 @@ export type EntryScalarWhereInput = {
 }
 
 export type EntryCreateManyUserInput = {
-  id?: bigint | number
+  id?: number
   created_at?: Date | string
   updated_at?: Date | string
   entry_type: $Enums.EntryType
@@ -588,7 +584,6 @@ export type EntryCreateManyUserInput = {
 }
 
 export type EntryUpdateWithoutUserInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   entry_type?: Prisma.EnumEntryTypeFieldUpdateOperationsInput | $Enums.EntryType
@@ -599,7 +594,7 @@ export type EntryUpdateWithoutUserInput = {
 }
 
 export type EntryUncheckedUpdateWithoutUserInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.IntFieldUpdateOperationsInput | number
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   entry_type?: Prisma.EnumEntryTypeFieldUpdateOperationsInput | $Enums.EntryType
@@ -610,7 +605,7 @@ export type EntryUncheckedUpdateWithoutUserInput = {
 }
 
 export type EntryUncheckedUpdateManyWithoutUserInput = {
-  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  id?: Prisma.IntFieldUpdateOperationsInput | number
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   entry_type?: Prisma.EnumEntryTypeFieldUpdateOperationsInput | $Enums.EntryType
@@ -690,8 +685,8 @@ export type $EntryPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     user: Prisma.$UserPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
-    id: bigint
-    user_id: bigint
+    id: number
+    user_id: number
     created_at: Date
     updated_at: Date
     entry_type: $Enums.EntryType
@@ -1123,8 +1118,8 @@ export interface Prisma__EntryClient<T, Null = never, ExtArgs extends runtime.Ty
  * Fields of the Entry model
  */
 export interface EntryFieldRefs {
-  readonly id: Prisma.FieldRef<"Entry", 'BigInt'>
-  readonly user_id: Prisma.FieldRef<"Entry", 'BigInt'>
+  readonly id: Prisma.FieldRef<"Entry", 'Int'>
+  readonly user_id: Prisma.FieldRef<"Entry", 'Int'>
   readonly created_at: Prisma.FieldRef<"Entry", 'DateTime'>
   readonly updated_at: Prisma.FieldRef<"Entry", 'DateTime'>
   readonly entry_type: Prisma.FieldRef<"Entry", 'EntryType'>

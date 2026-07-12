@@ -3,7 +3,7 @@
 
 **One morning I was particularly frustrated during a workout in which I felt more flat than usual (probably an overload on energy drinks but let's not worry about that). I felt it might be a good idea to start taking notes about how I felt before, during, and after a workout -- so I built this app! Workout Mood Tracker allows users to track notes about their mood in the context of their workout schedule. Rather than tracking specific statistics regarding the workouts themselves, the focus is placed on logging how you feel.** 
 
-🔗 [Live Demo](https://workout-mood-tracker-seven.vercel.app/) &nbsp;|&nbsp; [GitHub Repo](#)
+🔗 [Live Demo](https://workout-mood-tracker-seven.vercel.app/) &nbsp;|&nbsp; [GitHub Repo](https://github.com/Steeeeephen/workout-mood-tracker)
 
 ---
 
@@ -23,6 +23,7 @@
 - **Weekly Calendar View** — The weekly calendar view has days divided into six 4-hour times blocks. Entries displayed are color-coded depending on the mood rating (1-5) given to that entry. Users can create entries from the weekly view. 
 - **Daily View** — When a user wants more information regarding an actual entry they can click on the specific day from the weekly view and that will enter a daily view. Here entries will be displayed in chronological order and users will be able to perform edit and delete operations as well. Users can also create an entry from the daily view, and in this case the current date will be selected in the date input.
 - **Secure user registration and login** — Each user's entries are private and only accessible to them.
+
 
 ---
 
@@ -100,7 +101,8 @@ While it was not an issue in development, I came across an issue regarding time 
 ---
 
 ## Roadmap
-- [ ] Mobile layout
+- [x] Mobile layout
+- [x] Converted to TypeScript
 - [ ] Entry Search Functionality
 - [ ] User profile with personal stats
 - [ ] Google OAuth
