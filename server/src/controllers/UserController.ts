@@ -1,7 +1,9 @@
 import { prisma } from "../lib/prisma.ts";
 import type { Request, Response } from "express";
-
+import bcrypt from "bcrypt";
 const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+const saltRounds = 10;
 
 export const getCurrentUser = async (req: Request, res: Response) => {
   try {
@@ -33,7 +35,7 @@ export const updateCurrentUser = async (req: Request, res: Response) => {
       return res.status(401).json({ error: "Unauthorized" });
     }
 
-    const { first_name, last_name, email } = req.body;
+    const { first_name, last_name, email, password } = req.body;
 
     if (first_name !== undefined && first_name.trim() === "") {
       return res.status(400).json({ error: "First name cannot be empty" });
@@ -54,9 +56,23 @@ export const updateCurrentUser = async (req: Request, res: Response) => {
       }
     }
 
+    const data: Record<string, unknown> = { first_name, last_name, email };
+
+    if (password) {
+      data.password = await bcrypt.hash(password, saltRounds);
+    }
+
     const user = await prisma.user.update({
       where: { id: userId },
-      data: { first_name, last_name, email },
+      data,
+      select: {
+        id: true,
+        first_name: true,
+        last_name: true,
+        email: true,
+        created_at: true,
+        updated_at: true,
+      },
     });
 
     res.status(200).json(user);
