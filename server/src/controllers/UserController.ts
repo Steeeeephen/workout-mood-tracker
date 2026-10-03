@@ -2,6 +2,7 @@ import { prisma } from "../lib/prisma.ts";
 import type { Request, Response } from "express";
 import bcrypt from "bcrypt";
 import { findUserByEmail } from "../lib/findUserByEmail.ts";
+import { signToken } from "../lib/token.ts";
 import type { UpdateUserInput } from "../schemas/userSchemas.ts";
 
 const saltRounds = 10;
@@ -87,6 +88,8 @@ export const updateCurrentUser = async (
 
     if (password) {
       data.password = await bcrypt.hash(password, saltRounds);
+      // Revoke every existing session; this one gets a fresh token below.
+      data.token_version = { increment: 1 };
     }
 
     const user = await prisma.user.update({
@@ -99,10 +102,17 @@ export const updateCurrentUser = async (
         email: true,
         created_at: true,
         updated_at: true,
+        token_version: true,
       },
     });
 
-    res.status(200).json(user);
+    const { token_version, ...profile } = user;
+
+    res.status(200).json(
+      password
+        ? { ...profile, token: signToken({ id: user.id, token_version }) }
+        : profile,
+    );
   } catch (err: any) {
     if (err.code === "P2002") {
       return res.status(409).json({ error: "Email already in use" });

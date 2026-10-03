@@ -17,10 +17,7 @@ const DeleteEntryModal = ({
   const handleConfirmDelete = async () => {
     setIsDeleting(true);
     try {
-      const token = localStorage.getItem('token');
-      await api.delete(`entries/${entry.id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      await api.delete(`entries/${entry.id}`);
 
       onSuccess(entry);
     } catch (err) {

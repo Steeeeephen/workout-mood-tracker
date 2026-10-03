@@ -33,12 +33,7 @@ export const FetchEntriesProvider = ({ children }: { children: ReactNode }) => {
   const fetchEntries = useCallback(async () => {
     setIsLoading(true);
     try {
-      const token = localStorage.getItem('token');
-      const response = await api.get('/entries', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await api.get('/entries');
       setEntries(response.data);
     } catch (err) {
       console.error(err);

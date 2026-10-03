@@ -7,7 +7,8 @@ import {
   useEffect,
   useState,
 } from 'react';
-import api from '../config/api.js';
+import api, { SESSION_EXPIRED_EVENT } from '../config/api.js';
+import { useNotification } from './NotificationContext';
 import { User } from '../types/types';
 
 interface AuthContextType {
@@ -19,6 +20,7 @@ interface AuthContextType {
   // setLoading: Dispatch<SetStateAction<boolean>>;
   login: (email: string, password: string) => Promise<any>;
   logout: () => void;
+  logoutAllDevices: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -27,6 +29,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
+  const { showError } = useNotification();
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -66,6 +69,23 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setIsAuthenticated(false);
   };
 
+  const logoutAllDevices = async () => {
+    await api.post('/auth/logout-all');
+    logout();
+  };
+
+  useEffect(() => {
+    const handleSessionExpired = () => {
+      setUser(null);
+      setIsAuthenticated(false);
+      showError('Your session has expired. Please log in again.');
+    };
+
+    window.addEventListener(SESSION_EXPIRED_EVENT, handleSessionExpired);
+    return () =>
+      window.removeEventListener(SESSION_EXPIRED_EVENT, handleSessionExpired);
+  }, [showError]);
+
   return (
     <AuthContext.Provider
       value={{
@@ -75,6 +95,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         loading,
         login,
         logout,
+        logoutAllDevices,
       }}
     >
       {children}

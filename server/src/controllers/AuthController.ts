@@ -1,8 +1,7 @@
 import { prisma } from "../lib/prisma.ts";
 import { findUserByEmail } from "../lib/findUserByEmail.ts";
 import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
-import "dotenv/config";
+import { signToken } from "../lib/token.ts";
 import type { Request, Response } from "express";
 import type { LoginInput, RegisterInput } from "../schemas/userSchemas.ts";
 
@@ -27,11 +26,7 @@ export const registerUser = async (
       data: { first_name, last_name, email, password: hashedPassword },
     });
 
-    const token = jwt.sign(
-      { userId: user.id, email: user.email },
-      process.env.JWT_SECRET!,
-      { expiresIn: "24h" },
-    );
+    const token = signToken(user);
 
     res.status(201).json({
       message: "User registered successfully",
@@ -65,11 +60,7 @@ export const loginUser = async (
       return res.status(401).json({ message: "Invalid email or password." });
     }
 
-    const token = jwt.sign(
-      { userId: user.id, email: user.email },
-      process.env.JWT_SECRET!,
-      { expiresIn: "24h" },
-    );
+    const token = signToken(user);
 
     res.status(200).json({
       message: "Login successful",
@@ -89,4 +80,23 @@ export const loginUser = async (
 
 export const logoutUser = (req: Request, res: Response) => {
   res.status(200).json({ message: "Logout successful" });
+};
+
+// Invalidates every token issued to this user, on every device.
+export const logoutAllDevices = async (req: Request, res: Response) => {
+  try {
+    if (!req.userId) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    await prisma.user.update({
+      where: { id: req.userId },
+      data: { token_version: { increment: 1 } },
+    });
+
+    res.status(200).json({ message: "Logged out of all devices" });
+  } catch (err) {
+    console.error("Error logging out of all devices:", err);
+    res.status(500).json({ message: "Server error" });
+  }
 };

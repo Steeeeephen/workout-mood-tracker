@@ -22,4 +22,24 @@ api.interceptors.request.use(
   },
 );
 
+// Fired when the server rejects our token (expired or revoked). AuthContext
+// listens for it and logs the user out.
+export const SESSION_EXPIRED_EVENT = 'auth:session-expired';
+
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    const url: string = error.config?.url ?? '';
+    // Login and register return 401 for bad credentials, not for a bad token.
+    const isCredentialRequest = /auth\/(login|register)$/.test(url);
+
+    if (error.response?.status === 401 && !isCredentialRequest) {
+      localStorage.removeItem('token');
+      window.dispatchEvent(new Event(SESSION_EXPIRED_EVENT));
+    }
+
+    return Promise.reject(error);
+  },
+);
+
 export default api;

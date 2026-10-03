@@ -5,7 +5,7 @@ import api from '../config/api.ts';
 import { useNotification } from '../context/NotificationContext';
 
 const Profile = () => {
-  const { user, setUser } = useAuth();
+  const { user, setUser, logoutAllDevices } = useAuth();
   const { showError, showSuccess } = useNotification();
   const [isUpdating, setIsUpdating] = useState(false);
 
@@ -40,8 +40,6 @@ const Profile = () => {
 
       e.preventDefault();
 
-      const token = localStorage.getItem('token');
-
       if (formData.password !== formData.confirmPassword) {
         showError("Passwords don't match. Please try again.");
         return;
@@ -57,13 +55,15 @@ const Profile = () => {
           : {}),
       };
 
-      const response = await api.patch('users/me/update', payload, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await api.patch('users/me/update', payload);
 
-      setUser(response.data);
+      // A password change revokes old sessions and returns a fresh token.
+      const { token, ...updatedUser } = response.data;
+      if (token) {
+        localStorage.setItem('token', token);
+      }
+
+      setUser(updatedUser);
       setFormData((prev) => ({
         ...prev,
         password: '',
@@ -201,6 +201,20 @@ const Profile = () => {
             {isUpdating ? 'Updating...' : 'Update Profile'}
           </button>
         </form>
+
+        <button
+          className="w-full mt-4 px-8 py-3 border-2 border-red-600 text-red-600 font-semibold rounded-lg hover:bg-red-50 transition-colors"
+          type="button"
+          onClick={async () => {
+            try {
+              await logoutAllDevices();
+            } catch (err) {
+              showError('Failed to log out of all devices. Please try again.');
+            }
+          }}
+        >
+          Log out of all devices
+        </button>
       </div>
     </>
   );

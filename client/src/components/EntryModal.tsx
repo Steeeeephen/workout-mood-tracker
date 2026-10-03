@@ -38,9 +38,6 @@ const EntryModal = ({
 
     try {
       setIsSubmitting(true);
-      // Get the user token
-      const token = localStorage.getItem('token');
-
       const payload = {
         entry_datetime: new Date(formData.entry_datetime),
         entry_type: formData.entry_type,
@@ -49,13 +46,9 @@ const EntryModal = ({
       };
 
       if (entry) {
-        await api.patch(`/entries/${entry.id}`, payload, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        await api.patch(`/entries/${entry.id}`, payload);
       } else {
-        await api.post('entries', payload, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        await api.post('entries', payload);
       }
       showSuccess('Entry saved!');
       onSuccess();
