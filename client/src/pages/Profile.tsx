@@ -1,5 +1,6 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import { useAuth } from '../context/AuthContext.tsx';
+import axios from 'axios';
 import api from '../config/api.ts';
 import { useNotification } from '../context/NotificationContext';
 
@@ -14,7 +15,13 @@ const Profile = () => {
     email: user?.email,
     password: '',
     confirmPassword: '',
+    currentPassword: '',
   });
+
+  const emailChanged =
+    (formData.email ?? '').trim().toLowerCase() !==
+    (user?.email ?? '').toLowerCase();
+  const needsCurrentPassword = emailChanged || formData.password !== '';
 
   useEffect(() => {
     if (user) {
@@ -45,6 +52,9 @@ const Profile = () => {
         last_name: formData.last_name,
         email: formData.email,
         ...(formData.password ? { password: formData.password } : {}),
+        ...(needsCurrentPassword
+          ? { current_password: formData.currentPassword }
+          : {}),
       };
 
       const response = await api.patch('users/me/update', payload, {
@@ -54,9 +64,20 @@ const Profile = () => {
       });
 
       setUser(response.data);
+      setFormData((prev) => ({
+        ...prev,
+        password: '',
+        confirmPassword: '',
+        currentPassword: '',
+      }));
       showSuccess('Profile updated successfully!');
     } catch (err) {
-      showError('Failed to update profile. Please try again.');
+      const data = axios.isAxiosError(err) ? err.response?.data : undefined;
+      showError(
+        data?.issues?.[0]?.message ??
+          data?.error ??
+          'Failed to update profile. Please try again.',
+      );
     } finally {
       setIsUpdating(false);
     }
@@ -124,6 +145,8 @@ const Profile = () => {
               id="password"
               placeholder="Leave blank to keep current password"
               className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent outline-none"
+              value={formData.password}
+              minLength={8}
               onChange={(e) =>
                 setFormData({ ...formData, password: e.target.value })
               }
@@ -138,10 +161,37 @@ const Profile = () => {
               placeholder="Leave blank to keep current password"
               id="confirmPassword"
               className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent outline-none"
+              value={formData.confirmPassword}
               onChange={(e) => {
                 setFormData({ ...formData, confirmPassword: e.target.value });
               }}
             />
+
+            {needsCurrentPassword && (
+              <>
+                <label
+                  htmlFor="currentPassword"
+                  className="text-lg font-semibold"
+                >
+                  Current Password
+                </label>
+                <input
+                  type="password"
+                  name="currentPassword"
+                  id="currentPassword"
+                  placeholder="Required to change your email or password"
+                  className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent outline-none"
+                  value={formData.currentPassword}
+                  required
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      currentPassword: e.target.value,
+                    })
+                  }
+                />
+              </>
+            )}
           </div>
           <button
             className="w-full px-8 py-3 bg-teal-600 text-white font-semibold rounded-lg hover:bg-teal-700 transition-colors shadow-md disabled:opacity-50"

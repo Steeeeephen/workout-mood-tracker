@@ -1,4 +1,5 @@
 import { prisma } from "../lib/prisma.ts";
+import { findUserByEmail } from "../lib/findUserByEmail.ts";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import "dotenv/config";
@@ -14,7 +15,7 @@ export const registerUser = async (
   try {
     const { first_name, last_name, email, password } = req.body;
 
-    const existingUser = await prisma.user.findUnique({ where: { email } });
+    const existingUser = await findUserByEmail(email);
 
     if (existingUser) {
       return res.status(400).json({ message: "User already exists." });
@@ -52,9 +53,7 @@ export const loginUser = async (
   const { email, password } = req.body;
 
   try {
-    const user = await prisma.user.findUnique({
-      where: { email },
-    });
+    const user = await findUserByEmail(email);
 
     if (!user) {
       return res.status(401).json({ message: "Invalid email or password" });

@@ -1,6 +1,7 @@
 import { prisma } from "../lib/prisma.ts";
 import type { Request, Response } from "express";
 import bcrypt from "bcrypt";
+import { findUserByEmail } from "../lib/findUserByEmail.ts";
 import type { UpdateUserInput } from "../schemas/userSchemas.ts";
 
 const saltRounds = 10;
@@ -38,16 +39,51 @@ export const updateCurrentUser = async (
       return res.status(401).json({ error: "Unauthorized" });
     }
 
-    const { first_name, last_name, email, password } = req.body;
+    const { first_name, last_name, email, password, current_password } =
+      req.body;
 
-    if (email !== undefined) {
-      const existing = await prisma.user.findUnique({ where: { email } });
+    const currentUser = await prisma.user.findUnique({ where: { id: userId } });
+
+    if (!currentUser) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    // The schema lowercases email, so compare against the stored one the same
+    // way. An unchanged email (in any case) is left as stored.
+    const newEmail =
+      email !== undefined && email !== currentUser.email.toLowerCase()
+        ? email
+        : undefined;
+
+    if (newEmail || password) {
+      if (!current_password) {
+        return res.status(400).json({
+          error: "Current password is required to change email or password",
+        });
+      }
+
+      const isPasswordValid = await bcrypt.compare(
+        current_password,
+        currentUser.password,
+      );
+
+      if (!isPasswordValid) {
+        return res.status(403).json({ error: "Current password is incorrect" });
+      }
+    }
+
+    if (newEmail) {
+      const existing = await findUserByEmail(newEmail);
       if (existing && existing.id !== userId) {
         return res.status(409).json({ error: "Email already in use" });
       }
     }
 
-    const data: Record<string, unknown> = { first_name, last_name, email };
+    const data: Record<string, unknown> = { first_name, last_name };
+
+    if (newEmail) {
+      data.email = newEmail;
+    }
 
     if (password) {
       data.password = await bcrypt.hash(password, saltRounds);

@@ -1,5 +1,13 @@
 import { afterAll, describe, expect, it } from "vitest";
-import { api, cleanupTestUsers, registerUser, testEmail } from "./helpers.ts";
+import bcrypt from "bcrypt";
+import { prisma } from "../src/lib/prisma.ts";
+import {
+  api,
+  cleanupTestUsers,
+  registerUser,
+  testEmail,
+  testEmailPrefix,
+} from "./helpers.ts";
 
 afterAll(cleanupTestUsers);
 
@@ -104,5 +112,50 @@ describe("POST /api/auth/login", () => {
     const res = await api().post("/api/auth/login").send({ email: user.email });
 
     expect(res.status).toBe(400);
+  });
+});
+
+describe("email case handling", () => {
+  it("stores emails lowercase and trimmed on registration", async () => {
+    const email = testEmail();
+    const res = await register({ email: `  ${email.toUpperCase()}  ` });
+
+    expect(res.status).toBe(201);
+    expect(res.body.email).toBe(email);
+  });
+
+  it("rejects registering an email that differs only in case", async () => {
+    const user = await registerUser();
+    const res = await register({ email: user.email.toUpperCase() });
+
+    expect(res.status).toBe(400);
+  });
+
+  it("logs in regardless of email case", async () => {
+    const user = await registerUser();
+    const res = await api()
+      .post("/api/auth/login")
+      .send({ email: user.email.toUpperCase(), password: user.password });
+
+    expect(res.status).toBe(200);
+  });
+
+  it("still logs in older accounts stored with a mixed-case email", async () => {
+    const legacyEmail = `${testEmailPrefix}-Legacy@Example.com`;
+    await prisma.user.create({
+      data: {
+        first_name: "Legacy",
+        last_name: "User",
+        email: legacyEmail,
+        password: await bcrypt.hash("password123", 10),
+      },
+    });
+
+    for (const email of [legacyEmail, legacyEmail.toLowerCase()]) {
+      const res = await api()
+        .post("/api/auth/login")
+        .send({ email, password: "password123" });
+      expect(res.status).toBe(200);
+    }
   });
 });

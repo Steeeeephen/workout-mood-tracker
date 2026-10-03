@@ -7,7 +7,12 @@ const name = (label: string) =>
     .min(1, `${label} cannot be empty`)
     .max(100, `${label} must be 100 characters or fewer`);
 
-const email = z.email("Invalid email format").max(254);
+// Emails are stored lowercase so "Bob@x.com" and "bob@x.com" are one account.
+const email = z
+  .string()
+  .trim()
+  .toLowerCase()
+  .pipe(z.email("Invalid email format").max(254));
 
 // bcrypt only uses the first 72 bytes of a password, so cap it there.
 const password = z
@@ -23,9 +28,9 @@ export const registerSchema = z.object({
 });
 
 // Login only checks presence so accounts created before validation existed
-// can still sign in.
+// can still sign in. Case is handled by the lookup, not the schema.
 export const loginSchema = z.object({
-  email: z.string().min(1, "Email is required"),
+  email: z.string().trim().min(1, "Email is required"),
   password: z.string().min(1, "Password is required"),
 });
 
@@ -34,6 +39,8 @@ export const updateUserSchema = z.object({
   last_name: name("Last name").optional(),
   email: email.optional(),
   password: password.optional(),
+  // Required by the controller when email or password changes.
+  current_password: z.string().optional(),
 });
 
 export type RegisterInput = z.infer<typeof registerSchema>;
