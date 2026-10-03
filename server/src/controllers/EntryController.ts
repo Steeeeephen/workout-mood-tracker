@@ -1,13 +1,33 @@
 import { prisma } from "../lib/prisma.ts";
 import type { Request, Response } from "express";
 
+const editableEntryFields = [
+  "entry_type",
+  "entry_datetime",
+  "mood",
+  "content",
+  "details",
+] as const;
+
+const pickEntryFields = (body: Record<string, unknown>) => {
+  const data: Record<string, unknown> = {};
+
+  for (const field of editableEntryFields) {
+    if (body[field] !== undefined) {
+      data[field] = body[field];
+    }
+  }
+
+  return data;
+};
+
 export const createEntry = async (req: Request, res: Response) => {
   try {
     const entry = await prisma.entry.create({
       data: {
-        ...req.body,
+        ...pickEntryFields(req.body),
         user_id: req.userId,
-      },
+      } as any,
     });
     res.status(201).json(entry);
   } catch (err: Error | any) {
@@ -137,11 +157,15 @@ export const updateEntry = async (req: Request, res: Response) => {
         id: entryId,
         user_id: userId,
       },
-      data: req.body,
+      data: pickEntryFields(req.body),
     });
 
     res.status(200).json(entry);
   } catch (err: Error | any) {
+    if (err.code === "P2025") {
+      return res.status(404).json({ error: "Entry not found" });
+    }
+
     console.error("Error in controller", err);
     res.status(500).json({
       error: "Error updating data",
