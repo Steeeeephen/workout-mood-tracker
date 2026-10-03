@@ -1,7 +1,7 @@
 import { prisma } from "../lib/prisma.ts";
 import type { Request, Response } from "express";
 import bcrypt from "bcrypt";
-const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+import type { UpdateUserInput } from "../schemas/userSchemas.ts";
 
 const saltRounds = 10;
 
@@ -27,7 +27,10 @@ export const getCurrentUser = async (req: Request, res: Response) => {
   }
 };
 
-export const updateCurrentUser = async (req: Request, res: Response) => {
+export const updateCurrentUser = async (
+  req: Request<{}, any, UpdateUserInput>,
+  res: Response,
+) => {
   try {
     const userId = req.userId;
 
@@ -36,18 +39,6 @@ export const updateCurrentUser = async (req: Request, res: Response) => {
     }
 
     const { first_name, last_name, email, password } = req.body;
-
-    if (first_name !== undefined && first_name.trim() === "") {
-      return res.status(400).json({ error: "First name cannot be empty" });
-    }
-
-    if (last_name !== undefined && last_name.trim() === "") {
-      return res.status(400).json({ error: "Last name cannot be empty" });
-    }
-
-    if (email !== undefined && !emailRegex.test(email)) {
-      return res.status(400).json({ error: "Invalid email format" });
-    }
 
     if (email !== undefined) {
       const existing = await prisma.user.findUnique({ where: { email } });

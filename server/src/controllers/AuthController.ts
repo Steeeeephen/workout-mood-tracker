@@ -3,31 +3,16 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import "dotenv/config";
 import type { Request, Response } from "express";
+import type { LoginInput, RegisterInput } from "../schemas/userSchemas.ts";
 
 const saltRounds = 10;
-const minPasswordLength = 8;
-
-interface RegisterUserRequestBody {
-  first_name: string;
-  last_name: string;
-  email: string;
-  password: string;
-}
 
 export const registerUser = async (
-  req: Request<{}, {}, RegisterUserRequestBody>,
+  req: Request<{}, any, RegisterInput>,
   res: Response,
 ) => {
-
   try {
-
     const { first_name, last_name, email, password } = req.body;
-
-    if (typeof password !== "string" || password.length < minPasswordLength) {
-      return res.status(400).json({
-        message: `Password must be at least ${minPasswordLength} characters.`,
-      });
-    }
 
     const existingUser = await prisma.user.findUnique({ where: { email } });
 
@@ -60,7 +45,10 @@ export const registerUser = async (
   }
 };
 
-export const loginUser = async (req: Request, res: Response) => {
+export const loginUser = async (
+  req: Request<{}, any, LoginInput>,
+  res: Response,
+) => {
   const { email, password } = req.body;
 
   try {

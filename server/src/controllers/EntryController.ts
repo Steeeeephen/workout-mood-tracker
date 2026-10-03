@@ -1,33 +1,29 @@
 import { prisma } from "../lib/prisma.ts";
 import type { Request, Response } from "express";
+import type {
+  CreateEntryInput,
+  UpdateEntryInput,
+} from "../schemas/entrySchemas.ts";
 
-const editableEntryFields = [
-  "entry_type",
-  "entry_datetime",
-  "mood",
-  "content",
-  "details",
-] as const;
+// Request bodies are parsed by validateBody in the router, which strips any
+// field not in the schema (user_id, id, timestamps, ...).
 
-const pickEntryFields = (body: Record<string, unknown>) => {
-  const data: Record<string, unknown> = {};
-
-  for (const field of editableEntryFields) {
-    if (body[field] !== undefined) {
-      data[field] = body[field];
-    }
-  }
-
-  return data;
-};
-
-export const createEntry = async (req: Request, res: Response) => {
+export const createEntry = async (
+  req: Request<{}, any, CreateEntryInput>,
+  res: Response,
+) => {
   try {
+    const userId = req.userId;
+
+    if (!userId) {
+      return res.status(401).json({ error: "Unauthorized" });
+    }
+
     const entry = await prisma.entry.create({
       data: {
-        ...pickEntryFields(req.body),
-        user_id: req.userId,
-      } as any,
+        ...req.body,
+        user_id: userId,
+      },
     });
     res.status(201).json(entry);
   } catch (err: Error | any) {
@@ -134,7 +130,10 @@ export const getEntry = async (req: Request, res: Response) => {
   }
 };
 
-export const updateEntry = async (req: Request, res: Response) => {
+export const updateEntry = async (
+  req: Request<{ id: string }, any, UpdateEntryInput>,
+  res: Response,
+) => {
   try {
     const userId = req.userId;
 
@@ -157,7 +156,7 @@ export const updateEntry = async (req: Request, res: Response) => {
         id: entryId,
         user_id: userId,
       },
-      data: pickEntryFields(req.body),
+      data: req.body,
     });
 
     res.status(200).json(entry);

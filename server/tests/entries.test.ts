@@ -51,6 +51,42 @@ describe("POST /api/entries", () => {
   });
 });
 
+describe("entry validation", () => {
+  it.each([
+    ["a missing entry_type", { entry_type: undefined }],
+    ["an unknown entry_type", { entry_type: "BANANA" }],
+    ["a missing entry_datetime", { entry_datetime: undefined }],
+    ["a null entry_datetime", { entry_datetime: null }],
+    ["an unparseable entry_datetime", { entry_datetime: "yesterday" }],
+    ["a mood below 1", { mood: 0 }],
+    ["a mood above 5", { mood: 47 }],
+    ["a non-integer mood", { mood: 2.5 }],
+    ["a string mood", { mood: "4" }],
+    ["notes over 5000 characters", { content: "a".repeat(5001) }],
+  ])("rejects %s on create", async (_label, body) => {
+    const res = await createEntry(owner, body);
+    expect(res.status).toBe(400);
+    expect(res.body.error).toBe("Invalid request body");
+  });
+
+  it("accepts a null mood (no mood selected)", async () => {
+    const res = await createEntry(owner, { mood: null });
+    expect(res.status).toBe(201);
+    expect(res.body.mood).toBeNull();
+  });
+
+  it("rejects an out-of-range mood on update", async () => {
+    const { body: entry } = await createEntry(owner);
+
+    const res = await api()
+      .patch(`/api/entries/${entry.id}`)
+      .set("Authorization", `Bearer ${owner.token}`)
+      .send({ mood: 6 });
+
+    expect(res.status).toBe(400);
+  });
+});
+
 describe("PATCH /api/entries/:id", () => {
   it("updates allowed fields and ignores protected ones", async () => {
     const { body: entry } = await createEntry(owner);
