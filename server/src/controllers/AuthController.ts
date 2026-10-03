@@ -5,12 +5,13 @@ import "dotenv/config";
 import type { Request, Response } from "express";
 
 const saltRounds = 10;
+const minPasswordLength = 8;
 
 interface RegisterUserRequestBody {
   first_name: string;
   last_name: string;
   email: string;
-  password?: string;
+  password: string;
 }
 
 export const registerUser = async (
@@ -22,13 +23,19 @@ export const registerUser = async (
 
     const { first_name, last_name, email, password } = req.body;
 
+    if (typeof password !== "string" || password.length < minPasswordLength) {
+      return res.status(400).json({
+        message: `Password must be at least ${minPasswordLength} characters.`,
+      });
+    }
+
     const existingUser = await prisma.user.findUnique({ where: { email } });
 
     if (existingUser) {
       return res.status(400).json({ message: "User already exists." });
     }
 
-    const hashedPassword = await bcrypt.hash(password ?? "", saltRounds);
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
 
     const user = await prisma.user.create({
       data: { first_name, last_name, email, password: hashedPassword },
